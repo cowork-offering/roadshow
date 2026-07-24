@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The AI Delivery Engine. A delivery engine that turns a refined ticket into reviewed, deployed, Salesforce-native code, with a person approving at every gate. The same engine understands the org, so the whole team can ask it before anything is built." />
+<link rel="icon" href="ds/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#0A0A0B" />
+<link rel="stylesheet" href="ds/tokens.css?v=r3" />
+<title>The Delivery Engine · spec to ship, a person at every gate</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scrollbar-gutter:stable}
+  body{margin:0;background:#000;color:var(--dark-ink);
+    font-family:var(--font-sans);font-weight:var(--fw-regular);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:color-mix(in srgb,var(--steel) 34%,transparent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  :root{
+    --rail:clamp(20px,4.4vw,80px);
+    --accent:#A100FF;
+    --lav:#C9A9FF;
+    --steel:#8FA0BC;            /* delivery = cool steel, not violet */
+    --steel-deep:#12161E;
+    --steel-ink:#35507A;        /* readable steel emphasis on light ground */
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --silk:cubic-bezier(.16,1,.3,1);
+    --gap:10px;
+  }
+  main,footer{background:#000}
+
+  .ul{position:relative}
+  .ul::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;
+    transform:scaleX(0);transform-origin:right;transition:transform .42s var(--ease)}
+  .ul:hover::after,.ul:focus-visible::after{transform:scaleX(1);transform-origin:left}
+
+  /* ================= HEADER ================= */
+  header{position:fixed;inset:0 0 auto;height:68px;z-index:80;display:flex;align-items:center;
+    transition:background .4s ease,backdrop-filter .4s ease}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:transparent;transition:background .4s ease}
+  header.scrolled{background:rgba(0,0,0,.6);backdrop-filter:saturate(1.1) blur(16px);-webkit-backdrop-filter:saturate(1.1) blur(16px)}
+  header.scrolled::after{background:rgba(255,255,255,.12)}
+  .hd-in{width:100%;padding:0 var(--rail);display:flex;align-items:center;gap:16px}
+  .brand{display:flex;align-items:baseline;gap:14px}
+  .brand .logo{height:34px;width:auto;display:block;transform:translateY(3.70%)}
+  .brand .div{width:1px;height:11px;background:rgba(255,255,255,.4);flex:none;transform:translateY(-2px)}
+  .brand .wm{font-size:14px;font-weight:var(--fw-medium);letter-spacing:.02em;color:#fff;white-space:nowrap;
+    transform:translateY(-2px)}
+  @media(max-width:560px){
+    .brand{gap:11px}
+    .brand .logo{height:26px}
+    .brand .wm{font-size:12.5px;transform:translateY(-1.5px)}
+    .brand .div{height:10px;transform:translateY(-1.5px)}
+  }
+  .burger{margin-left:auto;appearance:none;background:transparent;border:0;cursor:pointer;padding:8px;
+    display:inline-flex;flex-direction:row;align-items:center;gap:12px}
+  .burger .lbl{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:#fff}
+  .burger .lines{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .burger .lines span{display:block;height:1.5px;width:22px;background:#fff;transition:width .3s var(--ease)}
+  .burger .lines span:nth-child(2){width:15px}
+  .burger:hover .lines span:nth-child(2){width:22px}
+  .burger:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+
+  .menu{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;justify-content:center;
+    padding:0 var(--rail);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
+  .menu.open{opacity:1;visibility:visible}
+  body.menu-open{overflow:hidden}
+  .menu-close{position:absolute;top:16px;right:var(--rail);appearance:none;background:transparent;border:0;
+    color:#fff;font-size:26px;line-height:1;cursor:pointer;padding:8px}
+  .menu a{display:block;font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:-0.02em;
+    font-size:clamp(30px,6vw,68px);line-height:1.08;color:#fff;padding:6px 0;position:relative;width:max-content}
+  .menu a .mn{font-size:.3em;font-weight:var(--fw-semibold);letter-spacing:.14em;color:var(--dark-ink-2);
+    vertical-align:middle;margin-right:16px;font-variant-numeric:tabular-nums}
+  .menu a[aria-current]{color:var(--steel)}
+  .menu a::after{content:"";position:absolute;left:0;bottom:2px;height:2px;width:100%;background:var(--accent);
+    transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+  .menu a:hover::after,.menu a:focus-visible::after{transform:scaleX(1)}
+
+  /* ================= HERO (b-roll film, once, then held frame) ================= */
+  .film{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+    overflow:hidden;background:#000}
+  .film .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;
+    transform:scale(1.04)}
+  .film .plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;
+    transform:scale(1.04);opacity:0;transition:opacity 1.2s var(--silk);pointer-events:none}
+  .film.landed .plate{opacity:1}
+  .waves{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:.75}
+  .film .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(0,0,0,.44) 0%, rgba(0,0,0,.36) 26%, rgba(0,0,0,.56) 50%,
+      rgba(0,0,0,.78) 74%, rgba(0,0,0,.97) 100%)}
+  .film-in{position:relative;z-index:3;padding:0 var(--rail) clamp(48px,9vh,104px);width:100%}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:11px;font-weight:var(--fw-semibold);
+    text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.9);margin:0 0 clamp(20px,3vh,34px)}
+  .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--steel)}
+
+  h1.titles{margin:0;font-weight:var(--fw-bold);text-transform:uppercase;text-wrap:balance;
+    font-size:clamp(38px,9.6vw,124px);line-height:.9;letter-spacing:-0.035em;color:#fff}
+  h1.titles .line{display:block;overflow:hidden;padding-bottom:.05em}
+  h1.titles .line.l2{margin-left:clamp(20px,7vw,150px)}
+  h1.titles .li{display:inline-block;transform:none}
+
+  .meta{margin:clamp(26px,4vh,44px) 0 0;display:flex;justify-content:flex-end}
+  .meta-in{max-width:50ch}
+  .meta .rule{width:52px;height:2px;background:var(--steel);margin-bottom:18px}
+  .meta .kick{margin:0;font-weight:var(--fw-bold);font-size:clamp(17px,1.5vw,22px);line-height:1.2;
+    letter-spacing:-0.02em;color:#fff}
+  .meta .body{margin:12px 0 0;font-size:clamp(14px,1.1vw,16.5px);line-height:1.55;color:rgba(255,255,255,.82);text-wrap:pretty}
+  .meta .body b{color:#fff;font-weight:var(--fw-medium)}
+  .cue{margin-top:clamp(22px,3vh,34px);display:inline-flex;align-items:center;gap:12px;
+    font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:#fff}
+  .cue svg{width:14px;height:14px;fill:none;stroke:var(--steel);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .cue .chev{animation:nudge 2.4s var(--ease) infinite}
+  @keyframes nudge{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(3px)}}
+  .cue:focus-visible{outline:2px solid var(--steel);outline-offset:3px}
+
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes lineUp{from{transform:translateY(116%)}to{transform:translateY(0)}}
+  body.js .eyebrow{opacity:0;animation:rise 1.1s var(--silk) .9s forwards}
+  body.js h1.titles .li{transform:translateY(116%);animation:lineUp 1.15s var(--silk) var(--d,1.4s) forwards}
+  body.js .meta{opacity:0;animation:rise 1.15s var(--silk) 2.5s forwards}
+  body.js .cue{opacity:0;animation:rise 1s var(--silk) 3.1s forwards}
+
+  /* ================= CHAPTER SCAFFOLD ================= */
+  /* unified inset floor — room owns the top/bottom inset (canon, shared sitewide) */
+  .room{padding-top:max(90px,8vh);padding-bottom:clamp(60px,10vh,124px)}
+  .chap{padding:0 var(--rail) clamp(34px,4.2vh,50px);display:grid;
+    grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(20px,4vw,58px)}
+  .chap .idx{font-weight:var(--fw-light);font-size:clamp(62px,10vw,148px);line-height:.8;letter-spacing:-0.04em;
+    color:var(--dark-idx);font-variant-numeric:tabular-nums;user-select:none}
+  .chap .lead{display:flex;flex-direction:column;min-width:0;padding-top:clamp(6px,1.2vw,16px)}
+  .chap .k{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--steel);
+    display:inline-flex;align-items:center;gap:11px;margin:0 0 16px}
+  .chap .k .dot{width:5px;height:5px;border-radius:50%;background:var(--steel);flex:none}
+  .chap h2{margin:0;font-weight:var(--fw-bold);letter-spacing:-0.025em;line-height:1.05;text-wrap:balance;
+    font-size:clamp(28px,4.3vw,58px);color:#fff;max-width:20ch}
+  .chap .of{font-size:11px;font-weight:var(--fw-medium);letter-spacing:.02em;color:var(--dark-ink-2);
+    font-variant-numeric:tabular-nums;white-space:nowrap;padding-top:clamp(6px,1.2vw,16px)}
+  .chap .intro-p{grid-column:2/3;margin:18px 0 0;max-width:62ch;font-size:clamp(14px,1.15vw,17px);
+    line-height:1.55;color:var(--dark-ink-2);text-wrap:pretty}
+  .chap .intro-p b{color:#fff;font-weight:var(--fw-medium)}
+  @media(max-width:640px){
+    .chap{grid-template-columns:1fr;gap:6px}
+    .chap .idx{font-size:clamp(52px,17vw,74px)}.chap .of{display:none}
+    .chap .intro-p{grid-column:1}
+    .chap h2{font-size:clamp(26px,7.4vw,40px)}
+  }
+
+  .sec-rail{padding:0 var(--rail) clamp(14px,3vh,24px);display:flex;align-items:baseline;
+    justify-content:space-between;gap:18px}
+  .sec-rail .k{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--dark-ink-2)}
+  .sec-rail .k b{color:var(--steel);font-weight:var(--fw-semibold)}
+  .sec-rail .n{font-size:11px;font-weight:var(--fw-medium);letter-spacing:.02em;color:var(--dark-ink-2);font-variant-numeric:tabular-nums}
+
+  /* ================= INTRO STRIP (steel) ================= */
+  .intro{padding:clamp(8px,2vh,20px) var(--rail) 0;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+  .claim{background:#0C0F14;border-left:2px solid var(--steel);
+    padding:clamp(20px,2.4vw,32px) clamp(20px,2vw,30px);display:flex;flex-direction:column;justify-content:center;min-height:108px}
+  .claim .sn{font-size:10.5px;font-weight:var(--fw-semibold);letter-spacing:.16em;text-transform:uppercase;color:var(--dark-ink-2)}
+  .claim .sl{margin-top:10px;font-weight:var(--fw-bold);letter-spacing:-0.02em;line-height:1.1;
+    font-size:clamp(18px,2vw,26px);color:#fff}
+  .claim .sd{margin-top:8px;font-size:12px;line-height:1.5;color:var(--dark-ink-2)}
+  @media(max-width:760px){.intro{grid-template-columns:1fr}}
+
+  /* ================= VIDEO MOMENT ================= */
+  .filmtile{position:relative;border:1px solid var(--dark-line);background:#0C0F14;overflow:hidden;aspect-ratio:16/9}
+  .filmtile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .filmtile .poster{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;
+    background:#0C0F14;overflow:hidden}
+  .filmtile .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .filmtile .poster .pscrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.55))}
+  .filmtile .poster .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:74px;height:74px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);
+    display:flex;align-items:center;justify-content:center;transition:border-color .3s ease,transform .3s ease}
+  .filmtile .poster:hover .play{border-color:#fff;transform:translate(-50%,-50%) scale(1.05)}
+  .filmtile .poster .play svg{width:26px;height:26px;fill:#fff;margin-left:3px}
+  .filmtile .poster .vlabel{position:absolute;left:0;right:0;bottom:0;padding:16px clamp(18px,2vw,28px);
+    font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:#fff;text-align:left}
+  .filmtile .poster:focus-visible{outline:2px solid var(--steel);outline-offset:-3px}
+  .filmtile.playing .poster{display:none}
+  .filmtile-cap{margin:14px 0 0;font-size:12px;color:var(--dark-ink-2);line-height:1.5;max-width:64ch}
+
+  /* ===== Film feature room — brain-04 composition, steel identity (one composed locked screen) ===== */
+  .filmroom{padding-top:max(90px,8vh);padding-bottom:6vh;--film-h:43vh}   /* unified inset — shared sitewide */
+  .filmroom.room > .ch-in{margin-block:0}   /* top-anchor below the fixed header, not centered */
+  .filmroom .ch-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,58px);align-items:start;
+    margin-bottom:clamp(34px,5.4vh,64px)}
+  .filmroom .ch-num{font-weight:var(--fw-light);font-size:clamp(62px,10vw,148px);line-height:.8;color:var(--dark-idx);
+    font-variant-numeric:tabular-nums;letter-spacing:-0.04em;user-select:none}
+  .filmroom .ch-lead{padding-top:clamp(6px,1.2vw,16px)}
+  .filmroom .ch-eyebrow{display:inline-flex;align-items:center;gap:11px;margin:0 0 16px;font-size:11px;
+    font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--steel)}
+  .filmroom .ch-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--steel)}
+  .filmroom .ch-title{margin:0;font-weight:var(--fw-bold);letter-spacing:-0.025em;line-height:1.05;text-wrap:balance;
+    font-size:clamp(28px,4.3vw,58px);color:#fff;max-width:20ch}
+  .filmroom .ch-sub{margin:12px 0 0;font-size:clamp(14px,1.15vw,17px);line-height:1.55;color:var(--dark-ink-2);max-width:60ch;text-wrap:pretty}
+  .filmroom .ch-sub b{color:#fff;font-weight:var(--fw-medium)}
+  .filmroom .filmtile{width:min(100%, calc(var(--film-h,56vh) * 16 / 9));margin-inline:auto}
+  .filmroom .filmtile-cap{margin-top:12px;margin-inline:auto}
+  @media(max-width:640px){
+    .filmroom .ch-head{grid-template-columns:1fr;gap:6px}
+    .filmroom .ch-num{font-size:clamp(52px,17vw,74px)}
+    .filmroom .ch-title{font-size:clamp(26px,7.4vw,40px)}
+  }
+
+  /* ================= GRID + TILES (steel-cool) ================= */
+  .grid2{padding:0 var(--rail);display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap)}
+  .grid2 .span2{grid-column:1/-1}
+  .tile{position:relative;overflow:hidden;background:#0C0F14;display:block}
+  .tile:focus-visible{outline:2px solid var(--steel);outline-offset:-3px}
+
+  /* data cards */
+  .t-data{background:var(--steel-deep);color:#EAF0F8;display:flex;flex-direction:column;padding:clamp(14px,1.7vw,24px)}
+  .t-data .ck{font-size:10.5px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;
+    display:inline-flex;align-items:center;gap:9px;color:var(--steel)}
+  .t-data .ck .dot{width:5px;height:5px;border-radius:50%;background:var(--steel)}
+  .rowlist{margin-top:9px;display:flex;flex-direction:column;gap:5px}
+  .rowi{display:flex;gap:11px;align-items:flex-start;padding:6px 12px;border:1px solid rgba(143,160,188,.22);border-radius:4px}
+  .rowi .rd{width:8px;height:8px;border-radius:50%;flex:none;margin-top:3px;background:var(--steel)}
+  .rowi.ok .rd{background:#41d086}
+  .rowi.hold .rd{background:#f0ac4c}
+  .rowi.ask .rd{background:var(--lav)}
+  .rowi .rt{font-size:11.5px;color:#EAF0F8;font-weight:var(--fw-medium);line-height:1.3}
+  .rowi .rt small{display:block;color:rgba(234,240,248,.55);font-size:10.5px;font-weight:var(--fw-regular);margin-top:2px}
+  .rowi .rt code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;color:var(--steel);background:rgba(143,160,188,.12);
+    padding:1px 5px;border-radius:3px}
+  .t-data .legend{margin-top:12px;font-size:10.5px;color:rgba(234,240,248,.55);line-height:1.5}
+  .t-data .legend b{color:#EAF0F8;font-weight:var(--fw-medium)}
+
+  /* dependency ticket chips (chapter 02) */
+  .deps{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+  .depr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(143,160,188,.22);border-radius:4px}
+  .tk{display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#EAF0F8;
+    border:1px solid rgba(143,160,188,.34);border-radius:4px;padding:4px 9px;background:rgba(143,160,188,.08)}
+  .tk .pts{color:var(--steel);font-size:9.5px}
+  .depr .dl{font-size:11px;color:rgba(234,240,248,.6);flex:1;min-width:120px}
+  .depr .dep-arw{color:var(--steel);font-size:12px}
+
+  /* pipeline mini-rail live exhibit */
+  .t-live{background:#0B0E13;display:flex;flex-direction:column;padding:clamp(18px,2vw,28px);overflow:hidden}
+  .t-live .lk{font-size:10.5px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;
+    color:rgba(234,240,248,.55);display:inline-flex;align-items:center;gap:9px}
+  .t-live .lk .pd{width:6px;height:6px;border-radius:50%;background:var(--steel);animation:pulse 1.9s var(--ease) infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+  .t-live svg{width:100%;max-height:160px;min-height:0;margin-top:14px;display:block}
+  .rail-ax{stroke:rgba(234,240,248,.16);stroke-width:1.5}
+  .rail-fill{stroke:var(--steel);stroke-width:1.5}
+  .rail-g{fill:#0B0E13;stroke:rgba(234,240,248,.4);stroke-width:1.3}
+  .rail-g.on{fill:var(--steel);stroke:var(--steel)}
+  .rail-g.human{stroke:#f0ac4c}
+  .rail-g.human.on{fill:#f0ac4c;stroke:#f0ac4c}
+  .rail-dot{fill:#EAF0F8}
+  .rail-lab{fill:rgba(234,240,248,.6);font-family:var(--font-sans);font-weight:600;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+  .rail-lab.on{fill:#EAF0F8}
+  .rail-lab.hold{fill:#f0ac4c}
+  .t-live .rstate{margin-top:14px;font-size:11px;color:rgba(234,240,248,.6);line-height:1.45;min-height:30px}
+  .t-live .rstate b{color:#EAF0F8;font-weight:var(--fw-medium)}
+
+  /* positioning band */
+  .t-band{grid-column:1/-1;background:#0C0F14;border-top:1px solid rgba(143,160,188,.3);
+    display:flex;gap:clamp(18px,3vw,44px);flex-wrap:wrap;align-items:center;padding:clamp(16px,2vw,26px)}
+  .t-band .bk{font-size:10.5px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--steel);
+    display:inline-flex;align-items:center;gap:9px;flex:none;min-width:150px}
+  .t-band .bk .dot{width:6px;height:6px;background:var(--steel);border-radius:1px}
+  .t-band .bt{flex:1;min-width:260px;margin:0;font-weight:var(--fw-bold);letter-spacing:-0.02em;line-height:1.24;text-wrap:balance;
+    font-size:clamp(17px,1.9vw,25px);color:#EAF0F8;max-width:44ch}
+  .t-band .bt b{color:#fff;font-weight:var(--fw-bold)}
+  .t-band .bt span{color:var(--steel)}
+
+  /* outcome cards */
+  .oc{padding:0 var(--rail);display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+  .ocard{background:#0C0F14;border-top:2px solid var(--steel);padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;min-height:clamp(184px,17vw,220px)}
+  .ocard .on{font-weight:var(--fw-light);font-size:clamp(26px,2.6vw,34px);line-height:.9;letter-spacing:-0.03em;
+    color:var(--dark-idx);font-variant-numeric:tabular-nums}
+  .ocard .oh{margin:auto 0 0;font-weight:var(--fw-bold);letter-spacing:-0.02em;line-height:1.14;font-size:clamp(16px,1.5vw,20px);color:#EAF0F8}
+  .ocard .op{margin:10px 0 0;font-size:12px;line-height:1.5;color:rgba(234,240,248,.55)}
+  @media(max-width:900px){.oc{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.oc{grid-template-columns:1fr}}
+
+  /* ================= UNDER THE HOOD - light editorial exhibit ================= */
+  .uh{background:var(--light-ground);color:var(--light-ink);padding:max(90px,8vh) var(--rail) 6vh}
+  .uh-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,58px);align-items:start;max-width:1040px;margin:0 auto}
+  .uh-head .idx{font-weight:var(--fw-light);font-size:clamp(62px,10vw,148px);line-height:.8;letter-spacing:-0.04em;color:var(--light-idx);user-select:none}
+  .uh-head .lead{display:flex;flex-direction:column;padding-top:clamp(6px,1.2vw,16px)}
+  .uh-head .k{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--steel-ink);
+    display:inline-flex;align-items:center;gap:11px;margin:0 0 16px}
+  .uh-head .k .dot{width:5px;height:5px;border-radius:50%;background:var(--steel-ink);flex:none}
+  .uh-head h2{margin:0;font-weight:var(--fw-bold);letter-spacing:-0.025em;line-height:1.05;text-wrap:balance;font-size:clamp(28px,4.3vw,58px);color:var(--light-ink);max-width:20ch}
+  .uh-head p{margin:12px 0 0;max-width:64ch;font-size:clamp(14px,1.15vw,17px);line-height:1.55;color:var(--light-ink-2);text-wrap:pretty}
+  @media(max-width:640px){.uh-head{grid-template-columns:1fr;gap:6px}.uh-head .idx{font-size:clamp(52px,17vw,74px)}.uh-head h2{font-size:clamp(26px,7.4vw,40px)}}
+  .uh-exhibit{max-width:985px;margin:clamp(8px,1.1vh,13px) auto 0;border:1px solid var(--light-line);background:#fff;
+    padding:clamp(10px,1.2vw,16px)}
+  .uh-exhibit svg{width:100%;height:auto;display:block}
+  .ax-line{stroke:#C9C8C4;stroke-width:1.3;fill:none}
+  .ax-line.dash{stroke-dasharray:5 5;stroke:#A9AAA7}
+  .ax-box{fill:#fff;stroke:#141414;stroke-width:1.3}
+  .ax-box.sys{fill:#FAFAF9}
+  .ax-box.emph{fill:#fff;stroke:var(--steel-ink);stroke-width:1.7}
+  .ax-t{fill:#141414;font-family:var(--font-sans);font-weight:600;font-size:13px;letter-spacing:-0.01em}
+  .ax-s{fill:#5C5C5C;font-family:var(--font-sans);font-weight:400;font-size:11px}
+  .ax-mono{fill:#5C5C5C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px}
+  .ax-k{fill:#818180;font-family:var(--font-sans);font-weight:600;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
+  .ax-emtxt{fill:var(--steel-ink);font-family:var(--font-sans);font-weight:600;font-size:13px;letter-spacing:-0.01em}
+  .ax-arrow{fill:#141414}
+  .ax-human{fill:#fff;stroke:#A9701A;stroke-width:1.6}
+  .ax-hlab{fill:#A9701A;font-family:var(--font-sans);font-weight:600;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase}
+  .ax-back{fill:#A9701A;font-family:var(--font-sans);font-weight:400;font-size:10.5px}
+  .uh-notes{max-width:985px;margin:clamp(8px,1.1vh,13px) auto 0;padding:clamp(10px,1.3vh,15px) 0 0;list-style:none;
+    border-top:1px solid var(--light-line);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px)}
+  .uh-note{display:flex;flex-direction:column;gap:5px}
+  .uh-note .nn{font-weight:var(--fw-light);font-size:clamp(22px,2vw,30px);line-height:.9;letter-spacing:-0.03em;
+    color:var(--steel-ink);font-variant-numeric:tabular-nums}
+  .uh-note .nt{margin-top:5px;font-weight:var(--fw-bold);letter-spacing:-0.01em;font-size:clamp(13.5px,1.1vw,15.5px);color:var(--light-ink)}
+  .uh-note .nd{font-size:11.5px;line-height:1.5;color:var(--light-ink-2)}
+  @media(max-width:760px){.uh-notes{grid-template-columns:1fr 1fr;gap:16px 20px}}
+  @media(max-width:440px){.uh-notes{grid-template-columns:1fr}}
+
+  /* ===== CH.03 flipped to the LIGHT register — breaks the ~7-room dark run so the
+     page rhythm alternates like credit-memo. .reg-light supplies the world; these
+     rules map this one room's (otherwise dark-hardcoded) components onto the light
+     register. Scoped to .lightband — no other room is affected. Steel identity uses
+     its deep variant (--steel-ink) so accents stay AA on white; status dots use the
+     light-register pass/warn values shared with credit-memo. ===== */
+  .lightband .chap .idx{color:var(--light-idx)}
+  .lightband .chap .k{color:var(--steel-ink)}
+  .lightband .chap .k .dot{background:var(--steel-ink)}
+  .lightband .chap h2{color:var(--light-ink)}
+  .lightband .chap .of{color:var(--light-ink-2)}
+  .lightband .chap .intro-p{color:var(--light-ink-2)}
+  .lightband .chap .intro-p b{color:var(--light-ink)}
+  .lightband .t-data{background:var(--light-ground-2);color:var(--light-ink);border:1px solid var(--light-line)}
+  .lightband .t-data .ck{color:var(--steel-ink)}
+  .lightband .t-data .ck .dot{background:var(--steel-ink)}
+  .lightband .rowi{border-color:var(--light-line);background:var(--light-panel)}
+  .lightband .rowi .rd{background:var(--steel-ink)}
+  .lightband .rowi.ok .rd{background:#1a8f57}
+  .lightband .rowi.hold .rd{background:#a25c00}
+  .lightband .rowi .rt{color:var(--light-ink)}
+  .lightband .rowi .rt small{color:var(--light-ink-2)}
+  .lightband .rowi .rt code{color:var(--steel-ink);background:color-mix(in srgb,var(--steel-ink) 12%,transparent)}
+  .lightband .t-data .legend{color:var(--light-ink-2)}
+  .lightband .t-data .legend b{color:var(--light-ink)}
+  .lightband .tile:focus-visible{outline-color:var(--steel-ink)}
+
+  /* ================= HANDOFF (closing room — canon, identical sitewide) ================= */
+  .handoff .k{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--thread);
+    display:inline-flex;align-items:center;gap:11px;margin-bottom:22px}
+  .handoff .k .rule{width:34px;height:1px;background:var(--thread)}
+  .handoff .stmt{margin:0;max-width:34ch;font-size:clamp(20px,2.6vw,34px);line-height:1.3;letter-spacing:-0.02em;color:var(--ink);text-wrap:balance}
+  .handoff .stmt b{font-weight:var(--fw-medium)}
+  .handoff .go{margin-top:36px;display:inline-flex;align-items:center;gap:16px}
+  .handoff .go .arw{width:46px;height:46px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--thread) 60%,transparent);
+    display:flex;align-items:center;justify-content:center;flex:none;transition:border-color .3s ease,transform .3s ease}
+  .handoff .go:hover .arw{border-color:var(--thread);transform:translateX(5px)}
+  .handoff .go .arw svg{width:19px;height:19px;fill:none;stroke:var(--thread);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .handoff .go .to{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2);display:block}
+  .handoff .go .nm{font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:-0.02em;font-size:clamp(20px,2.4vw,32px);color:var(--ink);display:block;margin-top:4px;position:relative;width:max-content}
+  .handoff .go .nm::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:var(--thread);transform:scaleX(0);transform-origin:right;transition:transform .42s var(--ease)}
+  .handoff .go:hover .nm::after{transform:scaleX(1);transform-origin:left}
+
+  /* quiet safe-harbor line (matches hub treatment) */
+  .closing-fine{margin:clamp(22px,3.4vh,40px) auto 0;max-width:74ch;text-align:center;
+    font-size:10.5px;line-height:1.5;letter-spacing:.01em;color:rgba(241,241,239,.55)}
+  @media(max-width:560px){.closing-fine{font-size:10px;max-width:40ch}}
+
+  /* ================= FOOTER ================= */
+  footer{border-top:1px solid rgba(255,255,255,.1);padding:26px var(--rail) 30px}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot-copy{font-size:12px;letter-spacing:.02em;color:var(--dark-ink-2)}
+  .foot-soc{display:flex;align-items:center;gap:18px}
+  .foot-soc a{display:inline-flex;color:var(--dark-ink-2);padding:2px;transition:color .25s ease}
+  .foot-soc a:hover,.foot-soc a:focus-visible{color:var(--lav)}
+  .foot-soc a:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+  .foot-soc svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  .rv{opacity:1}
+  body.js .rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  body.js .rv.in{opacity:1;transform:none}
+
+  /* ===== Full-screen scroll-snap rooms (shared spec, identical sitewide) ===== */
+  html{scroll-behavior:smooth}   /* anchor clicks only; native free scroll otherwise */
+  .film,.room,.uh,.closeroom{min-height:100svh;
+    display:flex;flex-direction:column}
+  .film{justify-content:flex-end}                 /* hero keeps its bottom-anchored composition */
+  /* rooms: content centers when short, top-aligns + scrolls when tall (no top clip) */
+  .room > :first-child,.uh > :first-child{margin-top:auto}
+  .room > :last-child,.uh > :last-child{margin-bottom:auto}
+  .uh > *{width:100%}   /* keep max-width children full-width in the flex column (svg must not shrink-wrap) */
+  /* final room holds the footer inside the lock (canon scaffold — identical sitewide) */
+  .chapter{padding:clamp(60px,10vh,124px) 0;position:relative}
+  .ch-in{padding:0 var(--rail);max-width:1420px;margin:0 auto}
+  .closeroom{padding-top:max(90px,8vh);padding-bottom:0}
+  .closeroom > .ch-in{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;margin:0 auto}
+  .closeroom > footer{flex:none;margin-top:0}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    .film .bg{transform:scale(1.04)}
+    body.js .rv{opacity:1;transform:none}
+    h1.titles .li{transform:none!important}
+    body.js .eyebrow,body.js .meta,body.js .cue{opacity:1!important}
+  }
+</style>
+</head>
+<body>
+
+<header id="hd">
+  <div class="hd-in">
+    <a class="brand" href="index.html" aria-label="Accenture Commercial Banking, back to hub">
+      <img class="logo" src="ds/logos/accenture-logo-white.svg" alt="Accenture" />
+      <span class="div" aria-hidden="true"></span>
+      <span class="wm">Commercial Banking</span>
+    </a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <span class="lbl">Menu</span>
+      <span class="lines" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Showcases" aria-hidden="true">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">&times;</button>
+  <a href="credit-memo.html"><span class="mn">01</span>Credit Memo</a>
+  <a href="customer-360.html"><span class="mn">02</span>Customer 360</a>
+  <a href="brain.html"><span class="mn">03</span>Credit Brain</a>
+  <a href="sdlc.html" aria-current="page"><span class="mn">04</span>Delivery Engine</a>
+</nav>
+
+<main>
+  <!-- ===================== HERO ===================== -->
+  <section class="film" id="film" aria-label="The AI Delivery Engine">
+    <video class="bg" id="filmVideo" muted playsinline preload="auto"
+           poster="media/hero-broll-2-hold.webp" aria-hidden="true" tabindex="-1"></video>
+    <img class="plate" id="plate" src="media/hero-broll-2-hold.webp"
+         srcset="media/hero-broll-2-hold-m.webp 760w, media/hero-broll-2-hold.webp 1920w" sizes="100vw"
+         alt="" aria-hidden="true" decoding="async" />
+    <canvas class="waves" id="waves" aria-hidden="true"></canvas>
+    <div class="scrim"></div>
+
+    <div class="film-in">
+      <p class="eyebrow"><span class="dot"></span>04 · AI Delivery Engine · a separate discipline</p>
+      <h1 class="titles" aria-label="The Delivery Engine.">
+        <span class="line l1" aria-hidden="true"><span class="li" style="--d:1.4s">The&nbsp;Delivery</span></span>
+        <span class="line l2" aria-hidden="true"><span class="li" style="--d:1.62s">Engine.</span></span>
+      </h1>
+      <div class="meta">
+        <div class="meta-in">
+          <div class="rule"></div>
+          <p class="kick">The factory that ships all of it, and the tool the whole team asks first.</p>
+          <p class="body">Everything the brain does is built the same disciplined way. A delivery engine that turns a refined ticket into reviewed, deployed, Salesforce-native code, <b>with a person approving at every gate</b>. The same engine understands the org, so a business developer can ask it before anything is built. Not part of the brain: the way it ships.</p>
+          <a class="cue" href="#run" data-skip aria-label="Scroll to the recorded session">
+            See the engine run
+            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INTRO STRIP ===================== -->
+  <section class="room">
+  <div class="sec-rail rv">
+    <span class="k">One factory behind every showcase · <b>and the org's memory the team asks</b></span>
+    <span class="n">The parallel track</span>
+  </div>
+  <div class="intro">
+    <div class="claim rv"><span class="sn">The discipline</span><span class="sl">Spec to ship</span><span class="sd">A refined ticket becomes reviewed, deployed, native code.</span></div>
+    <div class="claim rv"><span class="sn">The gates</span><span class="sl">A person at every gate</span><span class="sd">Refinement, architecture, deployment. The engine drafts, people approve.</span></div>
+    <div class="claim rv"><span class="sn">The other half</span><span class="sl">Org understanding on demand</span><span class="sd">Sandbox insight, blast radius and enterprise patterns, from the org itself.</span></div>
+  </div>
+
+  </section>
+
+  <!-- ===================== CHAPTER 01 - SEE IT RUN (video feature — brain-04 composition) ===================== -->
+  <section class="room filmroom" id="run" aria-labelledby="run-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">01</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>See it run</p>
+          <h2 class="ch-title rv" id="run-h">The same engine, live in the delivery cockpit.</h2>
+          <p class="ch-sub rv">A recorded session: refinement with real dependencies, an approved build spec, the architect gate holding the line, a governed deploy with a real identifier and one-click rollback. <b>Drafted by the engine, decided by a person.</b></p>
+        </div>
+      </div>
+
+      <div class="filmtile rv" id="filmtile">
+        <video id="walk" preload="none" muted playsinline controls poster="assets/sdlc-video-poster.jpg" controlslist="nodownload">
+          <source src="../delivery-cockpit-video-final.mp4" type="video/mp4" />
+        </video>
+        <button class="poster" id="vidPoster" aria-label="Play the delivery cockpit session">
+          <img src="assets/sdlc-video-poster.jpg" alt="" aria-hidden="true" />
+          <span class="pscrim"></span>
+          <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="vlabel">Play the session · muted, click for sound</span>
+        </button>
+      </div>
+      <p class="filmtile-cap">The delivery cockpit, recorded end to end. The engine drafts every ticket, a person approves at each gate.</p>
+    </div>
+  </section>
+
+  <!-- ===================== CHAPTER 02 - A TICKET, END TO END ===================== -->
+  <section class="room">
+  <div class="chap rv">
+    <span class="idx">02</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>A ticket, end to end</span>
+      <h2>Seven steps, three gates, a person at each.</h2>
+    </div>
+    <span class="of">Chapter 02 / 06</span>
+    <p class="intro-p">A story is refined against the org context, becomes an approved build spec verified against the live org, and only builds once a person signs. Build order is respected: the shared class is flagged at planning, so the dependent story waits its turn.</p>
+  </div>
+  <div class="grid2 rv">
+    <div class="tile t-live" id="railExhibit" aria-label="The pipeline, live">
+      <span class="lk"><span class="pd"></span>Live · the pipeline runs</span>
+      <svg id="railSvg" viewBox="0 0 640 110" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <line class="rail-ax" x1="40" y1="46" x2="600" y2="46"/>
+        <line class="rail-fill" id="railFill" x1="40" y1="46" x2="40" y2="46"/>
+        <circle class="rail-g" id="g0" cx="40"  cy="46" r="7"/>
+        <circle class="rail-g" id="g1" cx="180" cy="46" r="7"/>
+        <circle class="rail-g human" id="g2" cx="320" cy="46" r="9"/>
+        <circle class="rail-g" id="g3" cx="460" cy="46" r="7"/>
+        <circle class="rail-g" id="g4" cx="600" cy="46" r="7"/>
+        <circle class="rail-dot" id="railDot" cx="40" cy="46" r="3.4"/>
+        <text class="rail-lab" id="l0" x="40"  y="78" text-anchor="middle">Refine</text>
+        <text class="rail-lab" id="l1" x="180" y="78" text-anchor="middle">Spec</text>
+        <text class="rail-lab hold" id="l2" x="320" y="78" text-anchor="middle">Architect</text>
+        <text class="rail-lab" id="l3" x="460" y="78" text-anchor="middle">Quality</text>
+        <text class="rail-lab" id="l4" x="600" y="78" text-anchor="middle">Deploy</text>
+        <text class="rail-lab hold" id="holdLab" x="320" y="22" text-anchor="middle" style="opacity:0">Awaiting sign-off</text>
+      </svg>
+      <span class="rstate" id="railState"><b>COMP-042</b> · the gate will not open on its own.</span>
+    </div>
+    <div class="tile t-data">
+      <span class="ck"><span class="dot"></span>Seven steps, three gates</span>
+      <div class="rowlist">
+        <div class="rowi"><span class="rd"></span><span class="rt">Onboarding · the engagement learns the org once<small>domain model, brownfield intel, security flags. Org memory, not re-learned per story.</small></span></div>
+        <div class="rowi"><span class="rd"></span><span class="rt">Gate 1 · Refinement, in build order<small>COMP-043 depends on COMP-042. Shared class, flagged at planning, so it waits its turn.</small></span></div>
+        <div class="rowi"><span class="rd"></span><span class="rt">Gate 2 · A ticket becomes an approved build spec<small>verified against the live org, not a guess. One test per acceptance criterion.</small></span></div>
+        <div class="rowi hold"><span class="rd"></span><span class="rt">Human gate · Architect approval<small>the gate refuses until a person approves. It holds the line, even against the lead.</small></span></div>
+        <div class="rowi"><span class="rd"></span><span class="rt">Gate 3 · Quality gates, then a real deploy<small>then one click back if committee says no: object removed, field stays.</small></span></div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- ===================== CHAPTER 02b - BUILD ORDER ===================== -->
+  <section class="room">
+  <div class="chap rv">
+    <span class="idx">02</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>A ticket, end to end · continued</span>
+      <h2>Build order, known at planning, not mid-build.</h2>
+    </div>
+    <span class="of">Chapter 02 / 06</span>
+    <p class="intro-p">The shared class is flagged before the sprint starts, so the dependent story waits its turn rather than colliding mid-build.</p>
+  </div>
+  <div class="grid2 rv">
+    <div class="tile t-data span2">
+      <span class="ck"><span class="dot"></span>Refinement with dependency intelligence · Sprint 1</span>
+      <div class="deps">
+        <div class="depr"><span class="tk">COMP-042 <span class="pts">5 pts</span></span><span class="dl">Auto-allocation service for inbound Accounts. The shared class.</span></div>
+        <div class="depr"><span class="tk">COMP-043</span><span class="dep-arw">depends on &rarr;</span><span class="tk">COMP-042</span><span class="dl">Account enrichment trigger. Flagged at planning, waits its turn.</span></div>
+        <div class="depr"><span class="tk">COMP-044</span><span class="dl">Lead scoring engine. Also in play this sprint.</span></div>
+        <div class="depr"><span class="tk">COMP-045</span><span class="dl">Campaign attribution rollup. Also in play this sprint.</span></div>
+      </div>
+      <span class="legend">Build order is respected because the dependency is known at planning, not discovered mid-build. <b>The shared class ships first.</b></span>
+    </div>
+  </div>
+
+  </section>
+
+  <!-- ===================== CHAPTER 03 - VERIFIED, DEPLOYED, REVERSIBLE (flipped to light register — breaks the dark run) ===================== -->
+  <section class="room reg-light lightband">
+  <div class="chap rv">
+    <span class="idx">03</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>Verified, deployed, reversible</span>
+      <h2>Quality gates flip green, then a real deploy, reversible in one click.</h2>
+    </div>
+    <span class="of">Chapter 03 / 06</span>
+    <p class="intro-p">On approval the engine builds, the quality gates flip green in sequence, and it deploys to the org with a real identifier. Salesforce-native: managed package components, LWC and Apex, security enforced at the data layer. What it learns on one story graduates into a reusable skill.</p>
+  </div>
+  <div class="grid2 rv">
+    <div class="tile t-data">
+      <span class="ck"><span class="dot"></span>Quality gates · verified, not guessed</span>
+      <div class="rowlist">
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Apex tests<small>100 percent of new lines pass.</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Code analyzer<small>no critical or high findings. Clean.</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Security review<small>with sharing, WITH USER_MODE, enforced at the data layer.</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Deployed to the org<small><code>0Af5j00000KpQ2rCAF</code> · Object Manager: KYC Validation Result is live.</small></span></div>
+        <div class="rowi hold"><span class="rd"></span><span class="rt">Rollback, if committee says no<small>one click: the object is removed, the field stays. Every step attributed.</small></span></div>
+      </div>
+    </div>
+    <div class="tile t-data">
+      <span class="ck"><span class="dot"></span>Attributed audit trail · lessons graduate</span>
+      <div class="rowlist">
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Refinement approved<small>delivery lead</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Build spec approved<small>architect</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Deployed <code>0Af5j00000KpQ2rCAF</code><small>developer</small></span></div>
+        <div class="rowi"><span class="rd"></span><span class="rt">Lesson promoted to skill 25<small>trigger-safe territory allocation, captured on COMP-042. The library ticks 24 to 25.</small></span></div>
+      </div>
+      <span class="legend">Every move attributed, the whole session on the record. <b>The next story starts smarter.</b></span>
+    </div>
+  </div>
+
+  </section>
+
+  <!-- ===================== CHAPTER 04 - ORG UNDERSTANDING ON DEMAND ===================== -->
+  <section class="room">
+  <div class="chap rv">
+    <span class="idx">04</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>Org understanding on demand</span>
+      <h2>Before a line is written, the whole team can ask the org.</h2>
+    </div>
+    <span class="of">Chapter 04 / 06</span>
+    <p class="intro-p">Shipping is the visible half. The same engine carries the org context, so an internal business developer or functional consultant can ask it for grounded sandbox insight before anything is built. The answer comes from the org, not from tribal knowledge.</p>
+  </div>
+  <div class="grid2 rv">
+    <div class="tile t-data">
+      <span class="ck"><span class="dot"></span>Sandbox &amp; org insight on demand</span>
+      <div class="rowlist">
+        <div class="rowi ask"><span class="rd"></span><span class="rt">What is configured in this sandbox?<small>the object model, automations, flags and roster, read from brownfield intel.</small></span></div>
+        <div class="rowi ask"><span class="rd"></span><span class="rt">Which automations touch this object?<small>every flow, trigger and process that writes to it, named.</small></span></div>
+        <div class="rowi ask"><span class="rd"></span><span class="rt">Where does this field get written?<small>each class and flow that sets it, not a best guess.</small></span></div>
+        <div class="rowi ask"><span class="rd"></span><span class="rt">What changed since the last release?<small>the delta, read from the org.</small></span></div>
+      </div>
+      <span class="legend">Grounded in the engagement's <b>brownfield org context</b>. The answer is read from the org, never invented.</span>
+    </div>
+    <div class="tile t-data">
+      <span class="ck"><span class="dot"></span>Impact &amp; blast radius, before you build</span>
+      <div class="rowlist">
+        <div class="rowi ask"><span class="rd"></span><span class="rt">What would this change touch?<small>the classes, flows and objects in range, before the build decision.</small></span></div>
+        <div class="rowi ask"><span class="rd"></span><span class="rt">Which existing flows and classes are affected?<small>named, so the blast radius is known up front.</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Asked before the story, not after the incident<small>the business developer sizes the change before committing to it.</small></span></div>
+      </div>
+      <span class="legend">A build decision made <b>with the blast radius in hand</b>, not discovered in QA.</span>
+    </div>
+  </div>
+  </section>
+
+  <!-- ===================== CHAPTER 04b - PATTERNS & THE WHOLE TEAM ===================== -->
+  <section class="room">
+  <div class="chap rv">
+    <span class="idx">04</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>Org understanding on demand · continued</span>
+      <h2>Every build lands inside the architecture it enters.</h2>
+    </div>
+    <span class="of">Chapter 04 / 06</span>
+    <p class="intro-p">Enterprise pattern awareness means specs and generated code sit within the org's established conventions, not alongside them. The whole delivery team, including business developers, works from the same grounded understanding every day.</p>
+  </div>
+  <div class="grid2 rv">
+    <div class="tile t-data span2">
+      <span class="ck"><span class="dot"></span>Enterprise pattern awareness · a named capability</span>
+      <div class="rowlist">
+        <div class="rowi"><span class="rd"></span><span class="rt">The engine knows and enforces the org's enterprise patterns<small>service layer, domain and selector layers, unit-of-work, trigger frameworks.</small></span></div>
+        <div class="rowi ask"><span class="rd"></span><span class="rt">Which pattern applies to this story?<small>a business developer can ask before writing it, and get the answer that committee would.</small></span></div>
+        <div class="rowi ok"><span class="rd"></span><span class="rt">Specs and generated code land inside the established architecture<small>within the patterns, not alongside them. The build fits the org it enters.</small></span></div>
+      </div>
+      <span class="legend">Enterprise pattern awareness means the spec respects <b>service, domain, selector, unit-of-work and trigger-framework</b> conventions from the first line, so nothing lands off-pattern.</span>
+    </div>
+    <div class="tile t-band span2">
+      <span class="bk"><span class="dot"></span>The whole team, every day</span>
+      <p class="bt">Shipping is the visible half. <span>Org understanding</span> is what the whole delivery team, <b>including business developers</b>, uses every day.</p>
+    </div>
+  </div>
+
+  </section>
+
+  <!-- ===================== CHAPTER 05 - WHAT IT DOES ===================== -->
+  <section class="room">
+  <div class="chap rv">
+    <span class="idx">05</span>
+    <div class="lead">
+      <span class="k"><span class="dot"></span>What it does</span>
+      <h2>Four things a delivery engine does that a runbook cannot.</h2>
+    </div>
+    <span class="of">Chapter 05 / 06</span>
+    <p class="intro-p">The engine drafts and a person decides, on native Salesforce output, and it compounds: every lesson learned on one story is available to the next.</p>
+  </div>
+  <div class="oc rv">
+    <div class="ocard"><span class="on">01</span><span class="oh">Verified, not guessed</span><span class="op">Every build spec checked against the live org before a line is written.</span></div>
+    <div class="ocard"><span class="on">02</span><span class="oh">A person at every gate</span><span class="op">Refinement, architecture, deployment. The engine drafts, people approve.</span></div>
+    <div class="ocard"><span class="on">03</span><span class="oh">Salesforce-native output</span><span class="op">Managed packages, LWC, Apex, security enforced at the data layer.</span></div>
+    <div class="ocard"><span class="on">04</span><span class="oh">It compounds</span><span class="op">Lessons graduate into reusable skills. The next sprint starts ahead.</span></div>
+  </div>
+
+  </section>
+
+  <!-- ===================== CHAPTER 06 - UNDER THE HOOD (light editorial exhibit) ===================== -->
+  <section class="uh rv" aria-label="Under the hood">
+    <div class="uh-head">
+      <span class="idx">06</span>
+      <div class="lead">
+        <span class="k"><span class="dot"></span>Under the hood</span>
+        <h2>Configuration, not code.</h2>
+        <p>Swap the manifest, same engine. Read it left to right; the four notes below walk you through it.</p>
+      </div>
+    </div>
+    <div class="uh-exhibit">
+      <svg viewBox="44 14 1000 406" role="img" aria-label="Architecture. Manifest and context files on the left feed a linear pipeline, Refinement, Architecture, Quality gates and Deploy, with human approval gates at Refinement, Architecture and Deploy, a rollback return path from Deploy, and a lesson-capture loop from the end into a skill library that feeds the next story.">
+        <!-- column headers -->
+        <text class="ax-k" x="50"  y="30">Configuration</text>
+        <text class="ax-k" x="680" y="30" text-anchor="middle">The pipeline · a person at each gate</text>
+        <text class="ax-k" x="960" y="418" text-anchor="middle">The flywheel</text>
+
+        <!-- config box -->
+        <rect class="ax-box sys" x="50" y="120" width="235" height="210" rx="3"/>
+        <text class="ax-t"    x="68" y="150">manifest.yaml</text>
+        <text class="ax-mono" x="68" y="182">domain-model.md</text>
+        <text class="ax-mono" x="68" y="210">brownfield-intel.md</text>
+        <text class="ax-mono" x="68" y="238">team-roster.md</text>
+        <text class="ax-mono" x="68" y="266">security-model.md</text>
+        <text class="ax-s"    x="68" y="302">org memory, learned once</text>
+
+        <!-- feed arrow -->
+        <line class="ax-line" x1="285" y1="185" x2="333" y2="185"/>
+        <path class="ax-arrow" d="M333 179 l12 6 -12 6 z"/>
+
+        <!-- pipeline stages -->
+        <rect class="ax-box" x="345" y="152" width="150" height="66" rx="3"/>
+        <text class="ax-t" x="420" y="190" text-anchor="middle">Refinement</text>
+        <rect class="ax-box" x="525" y="152" width="150" height="66" rx="3"/>
+        <text class="ax-t" x="600" y="190" text-anchor="middle">Architecture</text>
+        <rect class="ax-box" x="705" y="152" width="150" height="66" rx="3"/>
+        <text class="ax-t" x="780" y="186" text-anchor="middle">Quality</text>
+        <text class="ax-t" x="780" y="203" text-anchor="middle">gates</text>
+        <rect class="ax-box emph" x="885" y="152" width="150" height="66" rx="3"/>
+        <text class="ax-emtxt" x="960" y="190" text-anchor="middle">Deploy</text>
+
+        <!-- links -->
+        <line class="ax-line" x1="495" y1="185" x2="525" y2="185"/>
+        <path class="ax-arrow" d="M525 179 l12 6 -12 6 z" transform="translate(-12,0)"/>
+        <line class="ax-line" x1="675" y1="185" x2="705" y2="185"/>
+        <path class="ax-arrow" d="M705 179 l12 6 -12 6 z" transform="translate(-12,0)"/>
+        <line class="ax-line" x1="855" y1="185" x2="885" y2="185"/>
+        <path class="ax-arrow" d="M885 179 l12 6 -12 6 z" transform="translate(-12,0)"/>
+
+        <!-- human gates -->
+        <circle class="ax-human" cx="420" cy="118" r="8"/>
+        <circle class="ax-human" cx="600" cy="118" r="8"/>
+        <circle class="ax-human" cx="960" cy="118" r="8"/>
+        <line class="ax-line" x1="420" y1="126" x2="420" y2="152" style="stroke:#A9701A"/>
+        <line class="ax-line" x1="600" y1="126" x2="600" y2="152" style="stroke:#A9701A"/>
+        <line class="ax-line" x1="960" y1="126" x2="960" y2="152" style="stroke:#A9701A"/>
+        <text class="ax-hlab" x="660" y="104" text-anchor="middle">a person approves at each gate</text>
+
+        <!-- rollback return path under deploy -->
+        <path class="ax-line" d="M945 218 C945 262, 720 250, 720 250" style="stroke:#A9701A"/>
+        <path class="ax-arrow" d="M726 244 l-12 6 12 6 z" style="fill:#A9701A"/>
+        <text class="ax-back" x="812" y="244" text-anchor="middle">rollback · one click: object removed, field stays</text>
+
+        <!-- lesson loop to skill library -->
+        <path class="ax-line" d="M1000 218 C1030 270, 1010 300, 980 322"/>
+        <path class="ax-arrow" d="M986 316 l-4 13 -9 -9 z"/>
+        <rect class="ax-box" x="760" y="322" width="275" height="60" rx="3"/>
+        <text class="ax-t" x="782" y="350">Skill library</text>
+        <text class="ax-s" x="782" y="370">lesson graduates · 24 &rarr; 25</text>
+
+        <!-- feedback dashed to refinement -->
+        <path class="ax-line dash" d="M760 352 C520 352, 420 320, 420 220"/>
+        <path class="ax-arrow" d="M414 226 l6 -12 6 12 z"/>
+        <text class="ax-back" x="560" y="378" text-anchor="middle">the next story starts smarter</text>
+      </svg>
+    </div>
+    <ol class="uh-notes" aria-label="How to read the diagram">
+      <li class="uh-note"><span class="nn">01</span><span class="nt">Configuration in</span><span class="nd">The manifest and org context, domain model, brownfield intel, roster and security, feed the pipeline. Learned once, not per story.</span></li>
+      <li class="uh-note"><span class="nn">02</span><span class="nt">A person at each gate</span><span class="nd">Refinement, Architecture and Deploy each hold on a human sign-off, the amber gates. Quality gates run clean before any deploy.</span></li>
+      <li class="uh-note"><span class="nn">03</span><span class="nt">Reversible deploy</span><span class="nd">The amber path back from Deploy is one-click rollback: the object is removed, the field stays. Every step attributed.</span></li>
+      <li class="uh-note"><span class="nn">04</span><span class="nt">It compounds</span><span class="nd">The loop returns each lesson into the skill library, 24 to 25, so the next story starts smarter.</span></li>
+    </ol>
+  </section>
+
+  <!-- ===================== THE RED LINE (closing room — canon pattern, footer pinned) ===================== -->
+  <section class="chapter reg-dark handoff closeroom" id="redline" aria-labelledby="rl-h">
+    <div class="ch-in">
+      <span class="k rv"><span class="rule"></span>How we ship all of the above</span>
+      <p class="stmt rv" id="rl-h">The credit memo, the relationship view, the brain itself: this is the factory that ships them, and the org memory the whole team asks. Same discipline, same gates, same governed write-back. <b>The engine drafts. A person decides.</b></p>
+      <a class="go rv" href="index.html" aria-label="Back to the roadshow hub">
+        <span class="arw"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span><span class="to">Back to the whole picture</span><span class="nm">The Roadshow</span></span>
+      </a>
+    </div>
+    <p class="closing-fine">Demonstration environment. Working prototypes shown; capabilities, timelines and outcomes are illustrative and subject to change.</p>
+    <footer>
+  <div class="foot-in">
+    <span class="foot-copy">© 2026 Accenture. All rights reserved.</span>
+    <nav class="foot-soc" aria-label="Accenture on social media">
+      <a href="https://x.com/Accenture" target="_blank" rel="noopener" aria-label="Accenture on X">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.2 4.2 L15.8 15.8 M15.8 4.2 L4.2 15.8"/></svg>
+      </a>
+      <a href="https://www.instagram.com/accenture" target="_blank" rel="noopener" aria-label="Accenture on Instagram">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <rect x="3.2" y="3.2" width="13.6" height="13.6" rx="4"/>
+          <circle cx="10" cy="10" r="3.1"/>
+          <circle cx="14.05" cy="5.95" r="0.55" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/company/accenture" target="_blank" rel="noopener" aria-label="Accenture on LinkedIn">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.6"/>
+          <line x1="6.9" y1="9.2" x2="6.9" y2="13.4"/>
+          <circle cx="6.9" cy="6.9" r="0.55" fill="currentColor" stroke="none"/>
+          <path d="M9.9 13.4 V9.2 M9.9 10.9 c0-1 .8-1.75 1.8-1.75 s1.7 .75 1.7 1.8 v2.45"/>
+        </svg>
+      </a>
+    </nav>
+  </div>
+    </footer>
+  </section>
+</main>
+
+<script>
+(function(){
+  var body=document.body;
+  body.classList.add('js');
+  var RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
+
+  var hd=document.getElementById('hd');
+  function onScroll(){ hd.classList.toggle('scrolled', window.scrollY>8); }
+  onScroll(); addEventListener('scroll', onScroll, {passive:true});
+
+  var burger=document.getElementById('burger'), menu=document.getElementById('menu'), mClose=document.getElementById('menuClose');
+  var menuInvoker=null;
+  function menuFocusables(){ return Array.prototype.slice.call(menu.querySelectorAll('a[href],button:not([disabled])')); }
+  function focusFirstMenuItem(){
+    var f=menuFocusables(); if(!f.length){ return; }
+    var target=f[1]||f[0], tries=0;
+    (function attempt(){
+      if(!menu.classList.contains('open')){ return; }
+      target.focus();
+      if(document.activeElement!==target && tries++<12){ requestAnimationFrame(attempt); }
+    })();
+  }
+  function openMenu(){
+    menuInvoker=document.activeElement;
+    menu.classList.add('open'); menu.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true');
+    document.body.classList.add('menu-open');
+    focusFirstMenuItem();
+  }
+  function closeMenu(){
+    if(!menu.classList.contains('open')){ return; }
+    menu.classList.remove('open'); menu.setAttribute('aria-hidden','true'); burger.setAttribute('aria-expanded','false');
+    document.body.classList.remove('menu-open');
+    if(menuInvoker&&menuInvoker.focus){ menuInvoker.focus(); } else { burger.focus(); }
+  }
+  burger.addEventListener('click', openMenu);
+  mClose.addEventListener('click', closeMenu);
+  menu.addEventListener('click', function(e){ if(e.target===menu){ closeMenu(); } });
+  menu.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ e.preventDefault(); closeMenu(); return; }
+    if(e.key!=='Tab'){ return; }
+    var f=menuFocusables(); if(!f.length){ return; }
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  });
+
+  /* film: hero-broll-2 plays once, then freezes and crossfades to the held frame */
+  var video=document.getElementById('filmVideo');
+  var film=document.getElementById('film');
+  var plate=document.getElementById('plate');
+  var plateOK=true;
+  plate.addEventListener('error', function(){ plateOK=false; film.classList.remove('landed'); });
+  function landPlate(){ if(plateOK){ film.classList.add('landed'); } }
+  var frozen=false;
+  function freezeFilm(){
+    frozen=true;
+    try{
+      video.pause();
+      if(isFinite(video.duration) && video.duration>0){ video.currentTime=video.duration; }
+    }catch(e){}
+    landPlate();
+  }
+  video.addEventListener('loadeddata', function(){
+    if(frozen){ return; }
+    var p=video.play(); if(p&&p.catch){ p.catch(function(){ landPlate(); }); }
+  });
+  video.addEventListener('ended', freezeFilm);
+  video.addEventListener('error', function(){ if(!frozen){ frozen=true; landPlate(); } }, true);
+  if(!RM){ video.src='media/hero-broll-2.mp4'; video.load(); }
+  else { landPlate(); }
+
+  /* ambient dotted wave field (steel-tinted) */
+  (function(){
+    if(RM){ return; }
+    var cv=document.getElementById('waves'); if(!cv) return;
+    var cx=cv.getContext('2d'); var W=0,H=0,DPR=Math.min(devicePixelRatio||1,1.6);
+    var STEP=46, dots=[], t0=performance.now(), raf=0, running=false;
+    function build(){
+      var host=cv.parentElement.getBoundingClientRect();
+      W=Math.max(1,host.width); H=Math.max(1,host.height);
+      cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+      cx.setTransform(DPR,0,0,DPR,0,0);
+      dots=[];
+      for(var y=STEP*0.5;y<H+STEP;y+=STEP){ for(var x=STEP*0.5;x<W+STEP;x+=STEP){ dots.push({x:x,y:y}); } }
+    }
+    function frame(now){
+      var t=(now-t0)/1000, live=1.8, sz=2.2;
+      cx.clearRect(0,0,W,H);
+      for(var i=0;i<dots.length;i++){
+        var d=dots[i], w=Math.sin(d.x*0.010+d.y*0.006+t*0.9), oy=w*8*live;
+        var a=Math.min(.8,(0.14+0.28*(w*0.5+0.5))*live);
+        cx.fillStyle='rgba(176,196,222,'+a.toFixed(3)+')';
+        cx.fillRect(d.x, d.y+oy, sz, sz);
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    build(); running=true; raf=requestAnimationFrame(frame);
+    var rt; addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(build,200); }, {passive:true});
+    /* pause when the hero scrolls off-viewport */
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ if(!running){ running=true; t0=performance.now(); raf=requestAnimationFrame(frame); } }
+          else { running=false; cancelAnimationFrame(raf); }
+        });
+      },{threshold:0});
+      io.observe(cv.parentElement);
+    }
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ cancelAnimationFrame(raf); } else if(running){ t0=performance.now(); raf=requestAnimationFrame(frame); }
+    });
+  })();
+
+  /* video click-to-play */
+  (function(){
+    var tile=document.getElementById('filmtile'), poster=document.getElementById('vidPoster'), v=document.getElementById('walk');
+    if(!tile||!poster||!v) return;
+    /* the poster hides only once playback actually starts, and is restored if the video errors */
+    v.addEventListener('playing', function(){ tile.classList.add('playing'); });
+    v.addEventListener('error', function(){ tile.classList.remove('playing'); });
+    poster.addEventListener('click', function(){
+      v.muted=false;
+      var p=v.play(); if(p&&p.catch){ p.catch(function(){ v.muted=true; v.play(); }); }
+    });
+  })();
+
+  /* pipeline mini-rail - self-playing loop: dot runs the rail, HOLDS at the architect
+     gate ("Awaiting sign-off"), the gate approves, the run completes, then it resets. */
+  (function(){
+    var svg=document.getElementById('railSvg'); if(!svg) return;
+    var host=document.getElementById('railExhibit');
+    var dot=document.getElementById('railDot');
+    var fill=document.getElementById('railFill');
+    var state=document.getElementById('railState');
+    var holdLab=document.getElementById('holdLab');
+    var gates=[0,1,2,3,4].map(function(i){ return document.getElementById('g'+i); });
+    var labs=[0,1,2,3,4].map(function(i){ return document.getElementById('l'+i); });
+    var X=[40,180,320,460,600];
+    var msgs=[
+      '<b>COMP-042</b> · refined against context, in build order.',
+      '<b>Build spec</b> · verified against the live org, not a guess.',
+      '<b>Architect gate</b> · the gate will not open on its own.',
+      '<b>Quality gates</b> · tests, analyzer, security. Green.',
+      '<b>Deployed</b> · 0Af5j00000KpQ2rCAF. Reversible in one click.'
+    ];
+    function setDot(x){ dot.setAttribute('cx',x); fill.setAttribute('x2',x); }
+    function lightGate(i,on){
+      gates[i].classList.toggle('on',on);
+      labs[i].classList.toggle('on',on);
+    }
+    function reset(){
+      setDot(40);
+      for(var i=0;i<5;i++){ lightGate(i,false); }
+      holdLab.style.opacity='0'; holdLab.textContent='Awaiting sign-off';
+    }
+    if(RM){ /* static: everything lit, dot at deploy */
+      setDot(600); for(var i=0;i<5;i++){ lightGate(i,true); }
+      state.innerHTML=msgs[4];
+      return;
+    }
+    /* lifecycle: retain every timer + raf handle so the loop can be cleared, then paused
+       when the exhibit is off-screen or the tab is hidden, and resumed on return. */
+    var timers=[], rafId=0, active=false, onscreen=false, visible=!document.hidden;
+    function T(fn,ms){ var id=setTimeout(fn,ms); timers.push(id); return id; }
+    function clearAll(){ timers.forEach(clearTimeout); timers=[]; if(rafId){ cancelAnimationFrame(rafId); rafId=0; } }
+    function tween(fromX,toX,dur,done){
+      var t0=performance.now();
+      (function step(now){
+        var k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3);
+        setDot(fromX+(toX-fromX)*e);
+        if(k<1){ rafId=requestAnimationFrame(step); } else { rafId=0; done&&done(); }
+      })(performance.now());
+    }
+    function run(){
+      reset();
+      state.innerHTML=msgs[0]; lightGate(0,true);
+      tween(X[0],X[1],1300,function(){
+        state.innerHTML=msgs[1]; lightGate(1,true);
+        tween(X[1],X[2],1300,function(){
+          /* HOLD at the human gate */
+          state.innerHTML=msgs[2]; holdLab.style.opacity='1';
+          T(function(){
+            holdLab.textContent='Approved by the architect';
+            lightGate(2,true);
+            T(function(){
+              holdLab.style.opacity='0'; holdLab.textContent='Awaiting sign-off';
+              state.innerHTML=msgs[3];
+              tween(X[2],X[3],1300,function(){
+                lightGate(3,true);
+                tween(X[3],X[4],1300,function(){
+                  lightGate(4,true); state.innerHTML=msgs[4];
+                  T(run, 4200);   /* loop */
+                });
+              });
+            },1500);
+          },2400);
+        });
+      });
+    }
+    function start(){ if(active) return; active=true; run(); }
+    function stop(){ if(!active) return; active=false; clearAll(); }
+    function sync(){ if(onscreen && visible){ start(); } else { stop(); } }
+
+    if('IntersectionObserver' in window){
+      var rio=new IntersectionObserver(function(es){
+        es.forEach(function(e){ onscreen=e.isIntersecting; });
+        sync();
+      },{threshold:0});
+      rio.observe(host);
+    } else { onscreen=true; }
+    document.addEventListener('visibilitychange', function(){ visible=!document.hidden; sync(); });
+
+    window.__startRail=function(){ onscreen=true; sync(); };
+  })();
+
+  /* reveals + rail trigger (fail-open) */
+  var rv=[].slice.call(document.querySelectorAll('.rv'));
+  var railHost=document.getElementById('railExhibit'), railDone=false;
+  function fireRail(){ if(railDone) return; railDone=true; if(window.__startRail){ window.__startRail(); } }
+  if(RM || !('IntersectionObserver' in window)){
+    rv.forEach(function(el){ el.classList.add('in'); }); fireRail();
+  } else {
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ var el=e.target;
+        var idx=rv.indexOf(el); el.style.transitionDelay=(Math.min(idx,8)*0.04)+'s';
+        el.classList.add('in');
+        if(el===railHost){ fireRail(); }
+        io.unobserve(el); } });
+    }, {rootMargin:'0px 0px -6% 0px', threshold:.1});
+    rv.forEach(function(el){ io.observe(el); });
+    if(railHost){ io.observe(railHost); }   /* railExhibit is not a .rv node; observe it so the pipeline rail fires */
+  }
+})();
+</script>
+<!-- scroll settle mechanism removed 2026-07-12: native free scrolling in both directions; anchor clicks still use scroll-behavior:smooth -->
+<script type="module" src="summit-widget.js?v=r7"></script>
+</body>
+</html>

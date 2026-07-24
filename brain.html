@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The Commercial Credit Brain. One reasoning core the bank owns: it reads the bank's systems where they are, remembers what it learns, and hands every decision to a person. The model is rented. The brain is owned." />
+<link rel="icon" href="ds/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#0A0A0B" />
+<link rel="stylesheet" href="ds/tokens.css?v=r3" />
+<title>The Credit Brain · one reasoning core the bank owns</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scrollbar-gutter:stable}
+  body{margin:0;background:#000;color:var(--dark-ink);
+    font-family:var(--font-sans);font-weight:var(--fw-regular);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:color-mix(in srgb,var(--accent) 34%,transparent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  :root{
+    --rail:clamp(20px,4.4vw,80px);
+    --accent:#A100FF;
+    --lav:#C9A9FF;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --silk:cubic-bezier(.16,1,.3,1);
+    --gap:10px;
+  }
+  main,footer{background:#000}
+
+  /* ================= HEADER ================= */
+  header{position:fixed;inset:0 0 auto;height:68px;z-index:80;display:flex;align-items:center;
+    transition:background .4s ease,backdrop-filter .4s ease}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:transparent;transition:background .4s ease}
+  header.scrolled{background:rgba(0,0,0,.6);backdrop-filter:saturate(1.1) blur(16px);-webkit-backdrop-filter:saturate(1.1) blur(16px)}
+  header.scrolled::after{background:rgba(255,255,255,.12)}
+  .hd-in{width:100%;padding:0 var(--rail);display:flex;align-items:center;gap:16px}
+  .brand{display:flex;align-items:baseline;gap:14px}
+  .brand .logo{height:34px;width:auto;display:block;transform:translateY(3.70%)}
+  .brand .div{width:1px;height:11px;background:rgba(255,255,255,.4);flex:none;transform:translateY(-2px)}
+  .brand .wm{font-size:14px;font-weight:var(--fw-medium);letter-spacing:.02em;color:#fff;white-space:nowrap;
+    transform:translateY(-2px)}
+  @media(max-width:560px){
+    .brand{gap:11px}
+    .brand .logo{height:26px}
+    .brand .wm{font-size:12.5px;transform:translateY(-1.5px)}
+    .brand .div{height:10px;transform:translateY(-1.5px)}
+  }
+  .burger{margin-left:auto;appearance:none;background:transparent;border:0;cursor:pointer;padding:8px;
+    display:inline-flex;flex-direction:row;align-items:center;gap:12px}
+  .burger .lbl{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:#fff}
+  .burger .lines{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .burger .lines span{display:block;height:1.5px;width:22px;background:#fff;transition:width .3s var(--ease)}
+  .burger .lines span:nth-child(2){width:15px}
+  .burger:hover .lines span:nth-child(2){width:22px}
+  .burger:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+
+  .menu{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;justify-content:center;
+    padding:0 var(--rail);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
+  .menu.open{opacity:1;visibility:visible}
+  body.menu-open{overflow:hidden}
+  .menu-close{position:absolute;top:16px;right:var(--rail);appearance:none;background:transparent;border:0;
+    color:#fff;font-size:26px;line-height:1;cursor:pointer;padding:8px}
+  .menu a{display:block;font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:-0.02em;
+    font-size:clamp(30px,6vw,68px);line-height:1.08;color:#fff;padding:6px 0;position:relative;width:max-content}
+  .menu a .mn{font-size:.3em;font-weight:var(--fw-semibold);letter-spacing:.14em;color:var(--dark-ink-2);
+    vertical-align:middle;margin-right:16px;font-variant-numeric:tabular-nums}
+  .menu a[aria-current]{color:var(--lav)}
+  .menu a::after{content:"";position:absolute;left:0;bottom:2px;height:2px;width:100%;background:var(--accent);
+    transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+  .menu a:hover::after,.menu a:focus-visible::after{transform:scaleX(1)}
+
+  /* ================= HERO (b-roll film, once, then held frame) — UNTOUCHED ================= */
+  .film{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+    overflow:hidden;background:#000}
+  .film .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;
+    transform:scale(1.04)}
+  .film .plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;
+    transform:scale(1.04);opacity:0;transition:opacity 1.2s var(--silk);pointer-events:none}
+  .film.landed .plate{opacity:1}
+  .waves{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:.9}
+  .film .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(0,0,0,.44) 0%, rgba(0,0,0,.36) 26%, rgba(0,0,0,.56) 50%,
+      rgba(0,0,0,.78) 74%, rgba(0,0,0,.97) 100%)}
+  .film-in{position:relative;z-index:3;padding:0 var(--rail) clamp(48px,9vh,104px);width:100%}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:11px;font-weight:var(--fw-semibold);
+    text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.9);margin:0 0 clamp(20px,3vh,34px)}
+  .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+  h1.titles{margin:0;font-weight:var(--fw-bold);text-transform:uppercase;
+    font-size:clamp(40px,10.2vw,132px);line-height:.9;letter-spacing:-0.035em;color:#fff;text-wrap:balance}
+  h1.titles .line{display:block;overflow:hidden;padding-bottom:.05em}
+  h1.titles .line.l2{margin-left:clamp(20px,7vw,150px)}
+  h1.titles .li{display:inline-block;transform:none}
+
+  .meta{margin:clamp(26px,4vh,44px) 0 0;display:flex;justify-content:flex-end}
+  .meta-in{max-width:48ch}
+  .meta .rule{width:52px;height:2px;background:var(--accent);margin-bottom:18px}
+  .meta .kick{margin:0;font-weight:var(--fw-bold);font-size:clamp(17px,1.5vw,22px);line-height:1.2;
+    letter-spacing:-0.02em;color:#fff}
+  .meta .body{margin:12px 0 0;font-size:clamp(14px,1.1vw,16.5px);line-height:1.55;color:rgba(255,255,255,.82);text-wrap:pretty}
+  .meta .body b{color:#fff;font-weight:var(--fw-medium)}
+  .meta .hon{margin:10px 0 0;font-size:12px;line-height:1.5;color:rgba(255,255,255,.6)}
+  .meta .hon b{color:rgba(255,255,255,.85);font-weight:var(--fw-medium)}
+  .cue{margin-top:clamp(22px,3vh,34px);display:inline-flex;align-items:center;gap:12px;
+    font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:#fff}
+  .cue svg{width:14px;height:14px;fill:none;stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .cue .chev{animation:nudge 2.4s var(--ease) infinite}
+  @keyframes nudge{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(3px)}}
+  .cue:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes lineUp{from{transform:translateY(116%)}to{transform:translateY(0)}}
+  body.js .eyebrow{opacity:0;animation:rise 1.1s var(--silk) .9s forwards}
+  body.js h1.titles .li{transform:translateY(116%);animation:lineUp 1.15s var(--silk) var(--d,1.4s) forwards}
+  body.js .meta{opacity:0;animation:rise 1.15s var(--silk) 2.5s forwards}
+  body.js .cue{opacity:0;animation:rise 1s var(--silk) 3.1s forwards}
+
+  /* ================= CHAPTER SCAFFOLD (register-driven bands) ================= */
+  .chapter{padding:max(90px,8vh) 0 clamp(60px,10vh,124px);position:relative}
+  .ch-in{padding:0 var(--rail);max-width:1420px;margin:0 auto}
+  .ch-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,58px);align-items:start;
+    margin-bottom:clamp(34px,4vh,52px)}
+  .ch-num{font-weight:var(--fw-light);font-size:clamp(62px,10vw,148px);line-height:.8;color:var(--idx);
+    font-variant-numeric:tabular-nums;letter-spacing:-0.04em;user-select:none}
+  .ch-lead{padding-top:clamp(6px,1.2vw,16px)}
+  .ch-eyebrow{display:inline-flex;align-items:center;gap:11px;margin:0 0 16px;font-size:11px;
+    font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-2)}
+  .ch-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  .ch-title{margin:0;font-weight:var(--fw-bold);letter-spacing:-0.025em;line-height:1.05;
+    font-size:clamp(28px,4.3vw,58px);color:var(--ink);max-width:20ch;text-wrap:balance}
+  .ch-sub{margin:14px 0 0;font-size:clamp(14px,1.15vw,17px);line-height:1.55;color:var(--ink-2);max-width:60ch;text-wrap:pretty}
+  .ch-sub b{color:var(--ink);font-weight:var(--fw-medium)}
+  @media(max-width:640px){
+    .ch-head{grid-template-columns:1fr;gap:6px}
+    .ch-num{font-size:clamp(52px,17vw,74px)}
+    .ch-title{font-size:clamp(26px,7.4vw,40px)}
+  }
+
+  /* keep: shared keyframes used outside this block */
+  @keyframes litPulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+  /* ================= LAYER STACK (owned-core architecture, read top to bottom) ================= */
+  .lstack-wrap{max-width:1040px;margin:clamp(6px,1vh,14px) auto 0}
+  .lstack{position:relative;display:flex;flex-direction:column;gap:4px;padding-left:26px}
+  .lstack-signal{position:absolute;left:5px;top:0;width:9px;height:9px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent);
+    transform:translateY(29px);transition:transform .72s var(--silk);z-index:3}
+  .lband{position:relative;display:grid;grid-template-columns:minmax(140px,186px) 1fr auto;
+    align-items:center;gap:clamp(14px,2vw,30px);min-height:48px;padding:8px clamp(16px,1.8vw,24px);
+    background:var(--panel);border:1px solid var(--line);
+    border-left:2px solid color-mix(in srgb,var(--accent) 24%,transparent);overflow:hidden}
+  .lband>*{position:relative;z-index:1}
+  .lband::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
+    background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 22%,transparent),transparent 62%);
+    transition:opacity .5s var(--ease)}
+  .lband.on{border-left-color:var(--accent)}
+  .lband.on::after{opacity:1}
+  .lb-role{font-size:clamp(13px,1.1vw,15px);font-weight:var(--fw-semibold);letter-spacing:-0.01em;color:var(--ink)}
+  .lb-desc{font-size:12.5px;line-height:1.45;color:var(--ink-2)}
+  .lb-desc b{color:var(--ink);font-weight:var(--fw-medium)}
+  .lb-tag{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+  .lchip{font-size:9.5px;font-weight:var(--fw-semibold);letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ink-2);border:1px solid var(--line);border-radius:4px;padding:3px 7px;white-space:nowrap}
+  .lchip.live{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+  /* the brain band, visually weighted */
+  .lband--brain{grid-template-columns:minmax(140px,186px) 1fr;min-height:60px;border-left-width:3px;
+    border-left-color:color-mix(in srgb,var(--accent) 55%,transparent);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 8%,var(--panel)),var(--panel))}
+  .lband--brain .lb-role{font-size:clamp(14px,1.25vw,17px);font-weight:var(--fw-bold)}
+  .brain-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .bcell{border:1px solid var(--line);border-top:2px solid color-mix(in srgb,var(--accent) 48%,transparent);
+    padding:7px 11px;background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .bcell .bk{font-size:11.5px;font-weight:var(--fw-semibold);color:var(--ink);letter-spacing:-0.01em;display:block}
+  .bcell .bd{margin:3px 0 0;font-size:10.5px;line-height:1.38;color:var(--ink-2)}
+  /* the systems band, chips fill the row */
+  .lband--systems{grid-template-columns:minmax(140px,186px) 1fr;min-height:50px}
+  .sys-chips{display:flex;flex-wrap:wrap;gap:6px}
+  /* running caption (swaps per hop) */
+  .lstack-cap{max-width:1040px;margin:clamp(10px,1.4vw,16px) auto 0;min-height:40px}
+  .lc-k{display:inline-flex;align-items:center;gap:9px;font-size:10.5px;font-weight:var(--fw-semibold);
+    text-transform:uppercase;letter-spacing:.16em;color:var(--accent)}
+  .lc-k .d{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+  .lc-t{margin:6px 0 0;font-size:clamp(13px,1.1vw,15.5px);line-height:1.45;color:var(--ink);max-width:64ch;min-height:1.45em}
+  .lc-k [data-lc-role],.lc-t{transition:opacity .3s var(--ease),transform .3s var(--ease)}
+  .lstack-cap.swapping .lc-k [data-lc-role],.lstack-cap.swapping .lc-t{opacity:0;transform:translateY(5px)}
+  @media(max-width:640px){
+    .lstack{padding-left:20px;gap:7px}
+    .lband,.lband--brain,.lband--systems{grid-template-columns:1fr;gap:8px;min-height:0;padding:14px 16px}
+    .lb-tag{justify-content:flex-start}
+    .brain-cells{grid-template-columns:1fr}
+  }
+
+  /* ================= CONVERGENCE (what feeds the brain) ================= */
+  .conv{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);
+    border-top:1px solid var(--line);padding-top:clamp(24px,3vh,38px)}
+  .conv-card{background:var(--panel);border:1px solid var(--line);padding:clamp(20px,2.3vw,32px);
+    display:flex;flex-direction:column;position:relative}
+  .conv-card .cmark{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:var(--fw-semibold);
+    text-transform:uppercase;letter-spacing:.12em;color:var(--thread)}
+  .conv-card .cmark .td{width:6px;height:6px;border-radius:50%;background:var(--thread)}
+  .conv-card .cvt{margin:16px 0 0;font-weight:var(--fw-bold);letter-spacing:-0.02em;line-height:1.1;
+    font-size:clamp(19px,2.1vw,28px);color:var(--ink);text-wrap:balance}
+  .conv-card .cvd{margin:12px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-2);max-width:44ch}
+  .conv-card .cvd b{color:var(--ink);font-weight:var(--fw-medium)}
+  .conv-sep{display:flex;align-items:center;gap:18px;margin:clamp(22px,3vh,34px) 0 clamp(18px,2.4vh,26px)}
+  .conv-sep .ln{flex:1;height:1px;background:var(--line)}
+  .conv-sep .lb{font-size:10.5px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
+  .conv-apart{border:1px dashed color-mix(in srgb,var(--ink) 26%,transparent);background:transparent;
+    padding:clamp(20px,2.3vw,30px);display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,2.6vw,40px);align-items:center}
+  .conv-apart .ak{font-size:10px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2);
+    white-space:nowrap;align-self:start;padding-top:4px}
+  .conv-apart .at{font-weight:var(--fw-bold);letter-spacing:-0.02em;font-size:clamp(17px,1.8vw,24px);color:var(--ink)}
+  .conv-apart .ad{margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--ink-2);max-width:64ch}
+  .conv-apart .ad b{color:var(--ink);font-weight:var(--fw-medium)}
+  @media(max-width:760px){.conv{grid-template-columns:1fr}.conv-apart{grid-template-columns:1fr;gap:12px}}
+
+  /* the carry chapter: rail + live flywheel side by side */
+  .carry-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:var(--gap);
+    border-top:1px solid var(--line);padding-top:clamp(24px,3vh,38px)}
+  @media(max-width:920px){.carry-grid{grid-template-columns:1fr}}
+  .carry-list{list-style:none;margin:0;padding:0}
+  .carry-row{display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,1.6vw,22px);
+    padding:16px 0;border-bottom:1px solid var(--line)}
+  .carry-row:first-child{border-top:1px solid var(--ink)}
+  .carry-row .cn{font-size:12px;font-weight:var(--fw-light);color:var(--ink-2);font-variant-numeric:tabular-nums;padding-top:3px}
+  .carry-row .cw{font-size:clamp(14px,1.3vw,17px);font-weight:var(--fw-medium);letter-spacing:-0.015em;color:var(--ink)}
+  .carry-row .cx{margin:6px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-2);max-width:52ch}
+  .carry-row .cx b{color:var(--ink);font-weight:var(--fw-medium)}
+
+  /* live flywheel exhibit, retained; uses shared @keyframes litPulse */
+  .t-live{background:#0E0A14;display:flex;flex-direction:column;padding:clamp(18px,2vw,28px);overflow:hidden;
+    border:1px solid var(--dark-line);min-height:270px}
+  .t-live .lk{font-size:10.5px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;
+    color:var(--dark-ink-2);display:inline-flex;align-items:center;gap:9px}
+  .t-live .lk .pd{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.9s var(--ease) infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+  .fly{margin:auto 0;display:flex;align-items:center;gap:clamp(10px,1.4vw,20px);padding-top:14px;flex-wrap:wrap}
+  .fly .fstep{display:flex;flex-direction:column;gap:3px}
+  .fly .fstep .fn{font-size:9px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.12em;color:var(--dark-ink-2)}
+  .fly .fstep .ft{font-size:clamp(13px,1.15vw,16px);font-weight:var(--fw-bold);letter-spacing:-0.02em;color:#fff}
+  .fly .farw{color:var(--accent);flex:none}
+  .fly .farw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .t-live .skillrow{margin-top:14px;display:flex;align-items:center;gap:12px}
+  .t-live .skillrow .cnt{font-weight:var(--fw-light);font-size:clamp(24px,2.6vw,34px);letter-spacing:-0.03em;color:#fff;font-variant-numeric:tabular-nums}
+  .t-live .skillrow .cl{font-size:10px;color:var(--dark-ink-2);line-height:1.4}
+  .t-live .skillrow .badge{margin-left:auto;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:var(--fw-semibold);
+    color:var(--lav);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:5px;padding:4px 9px;
+    animation:litPulse 2.6s var(--ease) infinite}
+
+  /* ================= FILM TILE (the reinvention film, click-to-play) ================= */
+  .filmtile{position:relative;border:1px solid var(--line);background:#0C0C0E;overflow:hidden;aspect-ratio:16/9;
+    border-top:1px solid var(--line)}
+  .filmtile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0C0C0E}
+  .filmtile .poster{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;
+    background:#0C0C0E;overflow:hidden}
+  .filmtile .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .filmtile .poster .pscrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.55))}
+  .filmtile .poster .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:74px;height:74px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);
+    display:flex;align-items:center;justify-content:center;transition:border-color .3s ease,transform .3s ease}
+  .filmtile .poster:hover .play{border-color:#fff;transform:translate(-50%,-50%) scale(1.05)}
+  .filmtile .poster .play svg{width:26px;height:26px;fill:#fff;margin-left:3px}
+  .filmtile .poster .vlabel{position:absolute;left:0;right:0;bottom:0;padding:16px clamp(18px,2vw,28px);
+    font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:#fff;text-align:left}
+  .filmtile .poster:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+  .filmtile.playing .poster{display:none}
+  .filmtile-cap{margin:14px 0 0;font-size:12px;color:var(--ink-2);line-height:1.5;max-width:66ch}
+  .filmtile-cap b{color:var(--ink);font-weight:var(--fw-medium)}
+
+  /* ===== Film feature room — one composed locked screen (canon, identical sitewide) ===== */
+  .filmroom{padding-top:max(90px,8vh);padding-bottom:6vh;--film-h:43vh}   /* unified inset — shared sitewide */
+  .filmroom.chapter > .ch-in{margin-block:0}   /* top-anchor below the fixed header, not centered */
+  .filmroom .ch-head{margin-bottom:clamp(34px,5.4vh,64px)}
+  .filmroom .ch-sub{margin-top:12px}
+  .filmroom .filmtile{width:min(100%, calc(var(--film-h,56vh) * 16 / 9));margin-inline:auto}
+  .filmroom .filmtile-cap{margin-top:12px;margin-inline:auto}
+
+  /* ================= FACT COLUMNS (ch05, typographic) ================= */
+  .factcols{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);
+    border-top:1px solid var(--line);padding-top:clamp(24px,3vh,38px)}
+  .fcol{background:var(--panel);border:1px solid var(--line);padding:clamp(18px,2.1vw,28px)}
+  .fcol .fh{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.12em;
+    display:inline-flex;align-items:center;gap:9px;color:var(--ink-2);margin:0 0 4px}
+  .fcol .fh .gd{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .fcol.gov .fh .gd{background:var(--ink-2)}
+  .fcol ul{list-style:none;margin:16px 0 0;padding:0}
+  .fcol li{display:grid;grid-template-columns:minmax(110px,158px) 1fr;gap:14px;align-items:baseline;
+    padding:10px 0;border-top:1px solid var(--line);font-size:13px;color:var(--ink)}
+  .fcol li .fk{font-weight:var(--fw-medium);letter-spacing:-0.01em}
+  .fcol li .fx{font-size:12px;color:var(--ink-2);line-height:1.45}
+  .fcol .fn2{margin-top:14px;font-size:11px;color:var(--ink-2);line-height:1.5}
+  .fcol .fn2 b{color:var(--ink);font-weight:var(--fw-medium)}
+  @media(max-width:720px){.factcols{grid-template-columns:1fr}}
+
+  /* ================= LAYER DEFINITION RAIL (ch06, typographic) ================= */
+  .lrail{list-style:none;margin:clamp(24px,3vh,38px) auto 0;padding:0;border-top:1px solid var(--ink);max-width:1040px}
+  .lrail li{display:grid;grid-template-columns:2.4ch minmax(150px,210px) 1fr auto;gap:clamp(12px,2vw,26px);
+    align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+  .lrail .ln2{font-size:12px;font-weight:var(--fw-light);color:var(--ink-2);font-variant-numeric:tabular-nums;text-align:right}
+  .lrail .lt2{font-size:clamp(14px,1.3vw,17px);font-weight:var(--fw-medium);letter-spacing:-0.015em;color:var(--ink)}
+  .lrail .ld2{font-size:12.5px;color:var(--ink-2);line-height:1.45}
+  .lrail .lo{font-size:10px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:4px 11px;white-space:nowrap;
+    min-width:104px;text-align:center;justify-self:end}
+  .lrail .lo.own{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 46%,transparent)}
+  .lrail-cap{margin:16px auto 0;max-width:1040px;font-size:13px;color:var(--ink-2);line-height:1.6}
+  .lrail-cap b{color:var(--ink);font-weight:var(--fw-semibold)}
+  @media(max-width:720px){
+    .lrail li{grid-template-columns:2.4ch 1fr auto;row-gap:4px}
+    .lrail .ld2{grid-column:2/4}
+  }
+
+  /* ================= LIVE-VS-ROADMAP STATUS ================= */
+  .status2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:clamp(22px,3.4vh,40px)}
+  .scol{background:var(--panel);border:1px solid var(--line);padding:clamp(18px,2.1vw,28px)}
+  .scol .sh{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.12em;
+    display:inline-flex;align-items:center;gap:9px;color:var(--ink-2);margin:0 0 4px}
+  .scol .sh .gd{width:8px;height:8px;border-radius:50%}
+  .scol.live .sh .gd{background:var(--accent)}
+  .scol.roadmap .sh .gd{background:var(--ink-2)}
+  .scol ul{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:0}
+  .scol li{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+    padding:11px 0;border-top:1px solid var(--line);font-size:13px;color:var(--ink)}
+  .scol li .sysn{font-size:11px;color:var(--ink-2);font-weight:var(--fw-medium)}
+  .scol .sn2{margin-top:14px;font-size:11px;color:var(--ink-2);line-height:1.5}
+  @media(max-width:720px){.status2{grid-template-columns:1fr}}
+
+  /* ================= HANDOFF / RED LINE (closing room — canon, identical sitewide) ================= */
+  .handoff .k{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.16em;color:var(--thread);
+    display:inline-flex;align-items:center;gap:11px;margin-bottom:22px}
+  .handoff .k .rule{width:34px;height:1px;background:var(--thread)}
+  .handoff .stmt{margin:0;max-width:34ch;font-size:clamp(20px,2.6vw,34px);line-height:1.3;letter-spacing:-0.02em;color:var(--ink);text-wrap:balance}
+  .handoff .stmt b{font-weight:var(--fw-medium)}
+  .handoff .go{margin-top:36px;display:inline-flex;align-items:center;gap:16px}
+  .handoff .go .arw{width:46px;height:46px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--thread) 60%,transparent);
+    display:flex;align-items:center;justify-content:center;flex:none;transition:border-color .3s ease,transform .3s ease}
+  .handoff .go:hover .arw{border-color:var(--thread);transform:translateX(5px)}
+  .handoff .go .arw svg{width:19px;height:19px;fill:none;stroke:var(--thread);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .handoff .go .to{font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2);display:block}
+  .handoff .go .nm{font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:-0.02em;font-size:clamp(20px,2.4vw,32px);color:var(--ink);display:block;margin-top:4px;position:relative;width:max-content}
+  .handoff .go .nm::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:var(--thread);transform:scaleX(0);transform-origin:right;transition:transform .42s var(--ease)}
+  .handoff .go:hover .nm::after{transform:scaleX(1);transform-origin:left}
+
+  /* ================= FOOTER ================= */
+  footer{border-top:1px solid rgba(255,255,255,.1);padding:26px var(--rail) 30px}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot-copy{font-size:12px;letter-spacing:.02em;color:var(--dark-ink-2)}
+  .foot-soc{display:flex;align-items:center;gap:18px}
+  .foot-soc a{display:inline-flex;color:var(--dark-ink-2);padding:2px;transition:color .25s ease}
+  .foot-soc a:hover,.foot-soc a:focus-visible{color:var(--lav)}
+  .foot-soc a:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+  .foot-soc svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.5;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  /* quiet safe-harbor line (matches hub treatment) */
+  .closing-fine{margin:clamp(22px,3.4vh,40px) auto 0;max-width:74ch;text-align:center;
+    font-size:10.5px;line-height:1.5;letter-spacing:.01em;color:rgba(241,241,239,.55)}
+  @media(max-width:560px){.closing-fine{font-size:10px;max-width:40ch}}
+
+  .rv{opacity:1}
+  body.js .rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  body.js .rv.in{opacity:1;transform:none}
+
+  /* ===== Full-screen scroll-snap rooms (shared spec, identical sitewide) ===== */
+  html{scroll-behavior:smooth}   /* anchor clicks only; native free scroll otherwise */
+  .film,.chapter{min-height:100svh;
+    display:flex;flex-direction:column}
+  .film{justify-content:flex-end}                 /* hero keeps its bottom-anchored composition */
+  .chapter > .ch-in{margin-block:auto}            /* centers when short; top-aligns + scrolls when tall (no top clip) */
+  /* final chapter holds the footer inside the lock */
+  .closeroom{padding-top:max(90px,8vh);padding-bottom:0}
+  .closeroom > .ch-in{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;margin:0 auto}
+  .closeroom > footer{flex:none;margin-top:0}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    .film .bg{transform:scale(1.04)}
+    body.js .rv{opacity:1;transform:none}
+    h1.titles .li{transform:none!important}
+    body.js .eyebrow,body.js .meta,body.js .cue{opacity:1!important}
+  }
+</style>
+</head>
+<body>
+
+<header id="hd">
+  <div class="hd-in">
+    <a class="brand" href="index.html" aria-label="Accenture Commercial Banking, back to hub">
+      <img class="logo" src="ds/logos/accenture-logo-white.svg" alt="Accenture" />
+      <span class="div" aria-hidden="true"></span>
+      <span class="wm">Commercial Banking</span>
+    </a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <span class="lbl">Menu</span>
+      <span class="lines" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Showcases" aria-hidden="true">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">&times;</button>
+  <a href="credit-memo.html"><span class="mn">01</span>Credit Memo</a>
+  <a href="customer-360.html"><span class="mn">02</span>Customer 360</a>
+  <a href="brain.html" aria-current="page"><span class="mn">03</span>Credit Brain</a>
+  <a href="sdlc.html"><span class="mn">04</span>Delivery Engine</a>
+</nav>
+
+<main>
+  <!-- ===================== HERO (UNTOUCHED) ===================== -->
+  <section class="film" id="film" aria-label="The Commercial Credit Brain">
+    <video class="bg" id="filmVideo" muted playsinline preload="auto"
+           poster="media/hero-broll-1-hold.webp" aria-hidden="true" tabindex="-1"></video>
+    <img class="plate" id="plate" src="media/hero-broll-1-hold.webp"
+         srcset="media/hero-broll-1-hold-m.webp 760w, media/hero-broll-1-hold.webp 1920w" sizes="100vw"
+         alt="" aria-hidden="true" decoding="async" />
+    <canvas class="waves" id="waves" aria-hidden="true"></canvas>
+    <div class="scrim"></div>
+
+    <div class="film-in">
+      <p class="eyebrow"><span class="dot"></span>03 · Commercial Credit Brain</p>
+      <h1 class="titles" aria-label="The Credit Brain.">
+        <span class="line l1" aria-hidden="true"><span class="li" style="--d:1.4s">The&nbsp;Credit</span></span>
+        <span class="line l2" aria-hidden="true"><span class="li" style="--d:1.62s">Brain.</span></span>
+      </h1>
+      <div class="meta">
+        <div class="meta-in">
+          <div class="rule"></div>
+          <p class="kick">The model is rented. The brain is owned.</p>
+          <p class="body">The credit memo and the relationship view are two capabilities. Behind them sits <b>one reasoning core the bank owns</b>: it reads the bank's systems where they are, remembers what it learns, and hands every decision to a person.</p>
+          <p class="hon">A working prototype that demonstrates the pattern end to end, <b>not a shipped product</b>. Live and placeholder pieces are marked honestly.</p>
+          <a class="cue" href="#architecture" data-skip aria-label="Scroll to the architecture">
+            The architecture, top to bottom
+            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 01 · THE ARCHITECTURE, TOP TO BOTTOM ===================== -->
+  <section class="chapter reg-dark" id="architecture" aria-labelledby="ar-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">01</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>The architecture, top to bottom</p>
+          <h2 class="ch-title rv" id="ar-h">One owned core, from the banker's question to the systems of record.</h2>
+          <p class="ch-sub rv">Read it top to bottom. The banker asks in plain language. The request activates a working solution. <b>The brain the bank owns</b> carries the memory, the governed retrieval and the human sign-off. Typed connectors reach each system where the data already lives. No bulk migration; the data is read in place.</p>
+        </div>
+      </div>
+
+      <div class="lstack-wrap rv">
+        <div class="lstack" id="lstack" role="img" aria-label="The owned-core architecture, read top to bottom. Where the banker works: Cowork and Claude, the banker asks in plain language. The working solutions the request activates: the Credit Memo and Customer 360, both live today. The brain the bank owns: institutional memory and the decision ledger, the why behind every credit decision, governed retrieval, and human attestation built for an SR 11-7 posture. MCP connectors that reach the systems of record. The systems themselves: nCino, the spreading engine, AFS servicing, Salesforce, Snowflake, S and P Capital IQ and IBISWorld. A single signal descends with the question and returns with the answer, every figure carrying its source.">
+          <span class="lstack-signal" id="lstackSignal" aria-hidden="true"></span>
+
+          <div class="lband" data-band="0">
+            <span class="lb-role">Where the banker works</span>
+            <span class="lb-desc">The banker asks in plain language, through the copilot.</span>
+            <span class="lb-tag"><span class="lchip">Cowork</span><span class="lchip">Claude</span></span>
+          </div>
+
+          <div class="lband" data-band="1">
+            <span class="lb-role">The working solution</span>
+            <span class="lb-desc">The request activates a capability that is <b>live today</b>.</span>
+            <span class="lb-tag"><span class="lchip live">Credit Memo</span><span class="lchip live">Customer 360</span></span>
+          </div>
+
+          <div class="lband lband--brain" data-band="2">
+            <span class="lb-role">The brain the bank owns</span>
+            <div class="brain-cells">
+              <div class="bcell"><span class="bk">Institutional memory · decision ledger</span><p class="bd">The why behind every credit decision is kept, not just the outcome.</p></div>
+              <div class="bcell"><span class="bk">Governed retrieval</span><p class="bd">Precedent found by meaning, then passed through a curation gate.</p></div>
+              <div class="bcell"><span class="bk">Human attestation</span><p class="bd">A person signs every decision. Built for an SR 11-7 posture.</p></div>
+            </div>
+          </div>
+
+          <div class="lband" data-band="3">
+            <span class="lb-role">MCP connectors</span>
+            <span class="lb-desc">Typed connectors act as the banker and reach each system in place. <b>No bulk migration; the data is read where it lives.</b></span>
+            <span class="lb-tag"><span class="lchip">Act as the user</span></span>
+          </div>
+
+          <div class="lband lband--systems" data-band="4">
+            <span class="lb-role">The systems of record</span>
+            <span class="sys-chips"><span class="lchip">nCino</span><span class="lchip">Spreading engine</span><span class="lchip">AFS servicing</span><span class="lchip">Salesforce</span><span class="lchip">Snowflake</span><span class="lchip">S&amp;P Capital IQ</span><span class="lchip">IBISWorld</span></span>
+          </div>
+        </div>
+
+        <div class="lstack-cap" id="lstackCap" aria-live="off">
+          <span class="lc-k"><span class="d"></span><span data-lc-role>Top to bottom</span></span>
+          <p class="lc-t" data-lc-beat>The banker asks, the brain reasons and remembers, the systems are read in place.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 · WHAT CONVERGES INTO IT ===================== -->
+  <section class="chapter reg-light" id="converge" aria-labelledby="cv-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">02</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>What converges into it</p>
+          <h2 class="ch-title rv" id="cv-h">Two capabilities today, converging into one asset.</h2>
+          <p class="ch-sub rv">The credit memo and the relationship view are not separate tools. They are two agents on one brain, the first lit nodes in a capability ring. Each carries its work back into a shared core, so the next deal starts sharper than the last.</p>
+        </div>
+      </div>
+
+      <div class="conv rv">
+        <div class="conv-card">
+          <span class="cmark"><span class="td"></span>Converges into the brain</span>
+          <span class="cvt">The Credit Memo</span>
+          <p class="cvd">Drafts the committee pack against the nCino Product Package, with the spreading engine and AFS servicing. <b>Drafted outside, decided inside nCino.</b></p>
+        </div>
+        <div class="conv-card">
+          <span class="cmark"><span class="td"></span>Converges into the brain</span>
+          <span class="cvt">Customer 360</span>
+          <p class="cvd">The account-level relationship view: exposure, covenants, whitespace and the structural signals that surface before a review date. <b>Feeds servicing and monitoring.</b></p>
+        </div>
+      </div>
+
+      <div class="conv-sep rv">
+        <span class="ln"></span><span class="lb">Built by, not part of</span><span class="ln"></span>
+      </div>
+
+      <div class="conv-apart rv">
+        <span class="ak">Parallel track</span>
+        <div>
+          <span class="at">The AI Delivery Engine is not a capability inside the brain.</span>
+          <p class="ad">It is the separate discipline that builds all of this: the factory that ships nCino and Salesforce-native work through its gates. It sits apart from the capability ring by design. <b>The brain is the asset; the delivery engine is how the asset gets built.</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 03 · WHAT IT CARRIES ===================== -->
+  <section class="chapter reg-dark" id="carries" aria-labelledby="cr-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">03</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>What it carries</p>
+          <h2 class="ch-title rv" id="cr-h">The asset is what it remembers.</h2>
+          <p class="ch-sub rv">A rented model forgets. The brain keeps what the bank learns: the decisions, the precedents, the house style, and the reason behind every credit call. That memory, governed and scoped, is the part the bank owns.</p>
+        </div>
+      </div>
+
+      <div class="carry-grid rv">
+        <ul class="carry-list">
+          <li class="carry-row">
+            <span class="cn">01</span>
+            <div><span class="cw">Decision ledger</span><p class="cx">Every hop is designed to be policy-checked and recorded. <b>The why behind every credit decision is kept</b>, not just the outcome, so a call can be explained and challenged later.</p></div>
+          </li>
+          <li class="carry-row">
+            <span class="cn">02</span>
+            <div><span class="cw">Institutional memory</span><p class="cx">An approved memo is a vote. A correction is a lesson. Signals accumulate into the bank's own house style rather than resetting with every session.</p></div>
+          </li>
+          <li class="carry-row">
+            <span class="cn">03</span>
+            <div><span class="cw">Tiered memory</span><p class="cx">Scoped by altitude: this deal, then the portfolio, then bank-wide policy. Each retrieval draws the right context at the right level, never the whole book at once.</p></div>
+          </li>
+          <li class="carry-row">
+            <span class="cn">04</span>
+            <div><span class="cw">Governed retrieval</span><p class="cx">Precedent found by meaning, not by filename, then passed through a curation gate before it is reused. Retrieval is a governed step, not a free-for-all search.</p></div>
+          </li>
+        </ul>
+
+        <div class="t-live rv" id="flyExhibit" aria-label="The learning loop, live">
+          <span class="lk"><span class="pd"></span>Live · it learns the house style</span>
+          <div class="fly">
+            <div class="fstep"><span class="fn">1 · This memo</span><span class="ft">A precedent captured</span></div>
+            <span class="farw"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <div class="fstep"><span class="fn">2 · The portfolio</span><span class="ft">A pattern promoted</span></div>
+            <span class="farw"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <div class="fstep"><span class="fn">3 · Bank-wide</span><span class="ft">A versioned skill</span></div>
+          </div>
+          <div class="skillrow">
+            <span class="cnt" id="skillCnt" data-from="2" data-to="3">v2</span>
+            <span class="cl">The best signals graduate<br>through a governed gate.</span>
+            <span class="badge">Skill v3 · promoted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 · THE REINVENTION, IN MOTION (FILM) ===================== -->
+  <section class="chapter reg-light filmroom" id="film-chapter" aria-labelledby="fl-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">04</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>The reinvention, in motion</p>
+          <h2 class="ch-title rv" id="fl-h">The whole blueprint, as one moving picture.</h2>
+          <p class="ch-sub rv">One reasoning core reaching the banking estate: the systems it reads, the memory it keeps, and the decisions it hands back to a person. The same pattern the ring above describes, rendered as the estate it serves.</p>
+        </div>
+      </div>
+
+      <div class="filmtile rv" id="filmtile">
+        <video id="reelVid" preload="none" playsinline controls poster="media/reinvention-poster.webp" controlslist="nodownload">
+          <source src="../reinvention-motion/reinvention-motion-v8.mp4" type="video/mp4" />
+        </video>
+        <button class="poster" id="vidPoster" aria-label="Play the reinvention film">
+          <img src="media/reinvention-poster.webp" alt="" aria-hidden="true" />
+          <span class="pscrim"></span>
+          <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="vlabel">Play the film · click for sound</span>
+        </button>
+      </div>
+      <p class="filmtile-cap"><b>The reinvention film.</b> One brain across the lending lifecycle, drawn as the estate it serves: the systems of record, the memory ring, and every decision returned to a banker.</p>
+    </div>
+  </section>
+
+  <!-- ===================== 05 · READ IN PLACE, GOVERNED ===================== -->
+  <section class="chapter reg-dark" id="read" aria-labelledby="rd-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">05</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>Read in place, governed on every call</p>
+          <h2 class="ch-title rv" id="rd-h">It meets the systems where they are, and acts as the banker.</h2>
+          <p class="ch-sub rv">The brain meets every system where it lives and acts as the banker, with her permissions only. Nothing is migrated, nothing re-keyed. <b>nCino stays the system of record.</b></p>
+        </div>
+      </div>
+
+      <div class="factcols rv">
+        <div class="fcol">
+          <p class="fh"><span class="gd"></span>Read in place</p>
+          <ul>
+            <li><span class="fk">nCino</span><span class="fx">holds the deal · stays the system of record</span></li>
+            <li><span class="fk">Spreading engine</span><span class="fx">financials, normalised</span></li>
+            <li><span class="fk">AFS</span><span class="fx">servicing · the live book</span></li>
+            <li><span class="fk">Salesforce</span><span class="fx">the relationship</span></li>
+            <li><span class="fk">Snowflake</span><span class="fx">the record and the ratings</span></li>
+          </ul>
+          <p class="fn2">Each system is read through a typed connector, where it lives. <b>No bulk migration, no duplicate system of record.</b></p>
+        </div>
+        <div class="fcol gov">
+          <p class="fh"><span class="gd"></span>Governed on every call</p>
+          <ul>
+            <li><span class="fk">Acts as the banker</span><span class="fx">her permissions only · no shared accounts, no confused deputy</span></li>
+            <li><span class="fk">Private inference</span><span class="fx">designed to run inside the bank's own cloud account · the pattern keeps bank data out of training</span></li>
+            <li><span class="fk">Audit ledger</span><span class="fx">every hop policy-checked and recorded, by design</span></li>
+            <li><span class="fk">Curation gate</span><span class="fx">precedent reviewed before it is reused</span></li>
+            <li><span class="fk">Humans decide</span><span class="fx">the memo stays a draft until committee</span></li>
+          </ul>
+          <p class="fn2">Identity, governance and observability wrap <b>every call</b>, from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 · THE ONE LAYER YOU OWN ===================== -->
+  <section class="chapter reg-light" id="hood" aria-labelledby="hd-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">06</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>Under the hood</p>
+          <h2 class="ch-title rv" id="hd-h">Five layers. The bank owns exactly one.</h2>
+          <p class="ch-sub rv">A custom orchestrator holds the bank's knowledge, scoped memory, skills and the governance gates. Above it sits the rented model. Below it, the tools, the data foundation and the systems of record that already exist. Identity, governance and observability wrap every layer, from day one.</p>
+        </div>
+      </div>
+
+      <ul class="lrail rv" aria-label="The five layers and who owns each">
+        <li><span class="ln2">01</span><span class="lt2">The model</span><span class="ld2">swappable per task · private inference · built to keep bank data out of training</span><span class="lo">Rented</span></li>
+        <li><span class="ln2">02</span><span class="lt2">The brain</span><span class="ld2">knowledge · scoped memory · skills · governance gates</span><span class="lo own">Owned</span></li>
+        <li><span class="ln2">03</span><span class="lt2">The tools</span><span class="ld2">one typed MCP connector per system · acts as the user</span><span class="lo">Open standard</span></li>
+        <li><span class="ln2">04</span><span class="lt2">The data foundation</span><span class="ld2">vectors for retrieval by meaning · one entity resolved across systems</span><span class="lo">Commodity</span></li>
+        <li><span class="ln2">05</span><span class="lt2">The systems of record</span><span class="ld2">read where they live · never replaced · nCino stays the record</span><span class="lo">Already exists</span></li>
+      </ul>
+      <p class="lrail-cap rv"><b>The one layer you own.</b> Everything above is rented, everything below already exists.</p>
+    </div>
+  </section>
+
+  <!-- ===================== 06b · LIVE TODAY VS ROADMAP ===================== -->
+  <section class="chapter reg-light" id="status" aria-labelledby="st-h">
+    <div class="ch-in">
+      <div class="ch-head">
+        <span class="ch-num rv">06</span>
+        <div class="ch-lead">
+          <p class="ch-eyebrow rv"><span class="dot"></span>Under the hood, continued</p>
+          <h2 class="ch-title rv" id="st-h">Two capabilities live today. The rest join the same core.</h2>
+        </div>
+      </div>
+
+      <!-- live today vs roadmap -->
+      <div class="status2 rv">
+        <div class="scol live">
+          <p class="sh"><span class="gd"></span>Live today</p>
+          <ul>
+            <li><span>Credit Analysis</span><span class="sysn">Spreading engine · Credit Memo</span></li>
+            <li><span>Servicing &amp; Monitoring</span><span class="sysn">Customer 360 · Early Warning</span></li>
+          </ul>
+          <p class="sn2">Two capabilities work end to end today, drafting and monitoring against real records.</p>
+        </div>
+        <div class="scol roadmap">
+          <p class="sh"><span class="gd"></span>Roadmap</p>
+          <ul>
+            <li><span>Prospecting</span><span class="sysn">Salesforce</span></li>
+            <li><span>Sales</span><span class="sysn">nCino</span></li>
+            <li><span>Approval</span><span class="sysn">nCino</span></li>
+            <li><span>Offering &amp; Set-up</span><span class="sysn">Core banking</span></li>
+          </ul>
+          <p class="sn2">The remaining stages join the same core, marked as placeholder until they are live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE RED LINE (closing room — canon pattern, footer pinned) ===================== -->
+  <section class="chapter reg-dark handoff closeroom" id="redline" aria-labelledby="rl-h">
+    <div class="ch-in">
+      <span class="k rv"><span class="rule"></span>Step back onto the floor</span>
+      <p class="stmt rv" id="rl-h">The memo, the relationship view, the discipline that ships them: one owned brain runs beneath all of it, read in place and governed on every call. <b>Start with one capability. The whole blueprint follows.</b></p>
+      <a class="go rv" href="index.html" aria-label="Back to the roadshow hub">
+        <span class="arw"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span><span class="to">Back to the whole picture</span><span class="nm">The Roadshow</span></span>
+      </a>
+      <p class="closing-fine rv">Demonstration environment. Working prototypes shown; capabilities, timelines and outcomes are illustrative and subject to change.</p>
+    </div>
+
+    <footer>
+  <div class="foot-in">
+    <span class="foot-copy">© 2026 Accenture. All rights reserved.</span>
+    <nav class="foot-soc" aria-label="Accenture on social media">
+      <a href="https://x.com/Accenture" target="_blank" rel="noopener" aria-label="Accenture on X">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.2 4.2 L15.8 15.8 M15.8 4.2 L4.2 15.8"/></svg>
+      </a>
+      <a href="https://www.instagram.com/accenture" target="_blank" rel="noopener" aria-label="Accenture on Instagram">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <rect x="3.2" y="3.2" width="13.6" height="13.6" rx="4"/>
+          <circle cx="10" cy="10" r="3.1"/>
+          <circle cx="14.05" cy="5.95" r="0.55" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/company/accenture" target="_blank" rel="noopener" aria-label="Accenture on LinkedIn">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.6"/>
+          <line x1="6.9" y1="9.2" x2="6.9" y2="13.4"/>
+          <circle cx="6.9" cy="6.9" r="0.55" fill="currentColor" stroke="none"/>
+          <path d="M9.9 13.4 V9.2 M9.9 10.9 c0-1 .8-1.75 1.8-1.75 s1.7 .75 1.7 1.8 v2.45"/>
+        </svg>
+      </a>
+    </nav>
+  </div>
+    </footer>
+  </section>
+</main>
+
+<script>
+(function(){
+  var body=document.body;
+  body.classList.add('js');
+  var RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
+
+  var hd=document.getElementById('hd');
+  function onScroll(){ hd.classList.toggle('scrolled', window.scrollY>8); }
+  onScroll(); addEventListener('scroll', onScroll, {passive:true});
+
+  var burger=document.getElementById('burger'), menu=document.getElementById('menu'), mClose=document.getElementById('menuClose');
+  var menuInvoker=null;
+  function menuFocusables(){ return Array.prototype.slice.call(menu.querySelectorAll('a[href],button:not([disabled])')); }
+  function focusFirstMenuItem(){
+    var f=menuFocusables(); if(!f.length){ return; }
+    var target=f[1]||f[0], tries=0;
+    (function attempt(){
+      if(!menu.classList.contains('open')){ return; }
+      target.focus();
+      if(document.activeElement!==target && tries++<12){ requestAnimationFrame(attempt); }
+    })();
+  }
+  function openMenu(){
+    menuInvoker=document.activeElement;
+    menu.classList.add('open'); menu.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true');
+    document.body.classList.add('menu-open');
+    focusFirstMenuItem();
+  }
+  function closeMenu(){
+    if(!menu.classList.contains('open')){ return; }
+    menu.classList.remove('open'); menu.setAttribute('aria-hidden','true'); burger.setAttribute('aria-expanded','false');
+    document.body.classList.remove('menu-open');
+    if(menuInvoker&&menuInvoker.focus){ menuInvoker.focus(); } else { burger.focus(); }
+  }
+  burger.addEventListener('click', openMenu);
+  mClose.addEventListener('click', closeMenu);
+  menu.addEventListener('click', function(e){ if(e.target===menu){ closeMenu(); } });
+  menu.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ e.preventDefault(); closeMenu(); return; }
+    if(e.key!=='Tab'){ return; }
+    var f=menuFocusables(); if(!f.length){ return; }
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  });
+
+  /* film: hero-broll-1 plays once, then freezes and crossfades to the held frame */
+  var video=document.getElementById('filmVideo');
+  var film=document.getElementById('film');
+  var plate=document.getElementById('plate');
+  var plateOK=true;
+  plate.addEventListener('error', function(){ plateOK=false; film.classList.remove('landed'); });
+  function landPlate(){ if(plateOK){ film.classList.add('landed'); } }
+  var frozen=false;
+  function freezeFilm(){
+    frozen=true;
+    try{
+      video.pause();
+      if(isFinite(video.duration) && video.duration>0){ video.currentTime=video.duration; }
+    }catch(e){}
+    landPlate();
+  }
+  video.addEventListener('loadeddata', function(){
+    if(frozen){ return; }
+    var p=video.play(); if(p&&p.catch){ p.catch(function(){ landPlate(); }); }
+  });
+  video.addEventListener('ended', freezeFilm);
+  video.addEventListener('error', function(){ if(!frozen){ frozen=true; landPlate(); } }, true);
+  if(!RM){ video.src='media/hero-broll-1.mp4'; video.load(); }
+  else { landPlate(); }
+
+  /* ambient dotted wave field over the hero */
+  (function(){
+    if(RM){ return; }
+    var cv=document.getElementById('waves'); if(!cv) return;
+    var cx=cv.getContext('2d'); var W=0,H=0,DPR=Math.min(devicePixelRatio||1,1.6);
+    var STEP=46, dots=[], t0=performance.now(), raf=0;
+    function build(){
+      var host=cv.parentElement.getBoundingClientRect();
+      W=Math.max(1,host.width); H=Math.max(1,host.height);
+      cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+      cx.setTransform(DPR,0,0,DPR,0,0);
+      dots=[];
+      for(var y=STEP*0.5;y<H+STEP;y+=STEP){ for(var x=STEP*0.5;x<W+STEP;x+=STEP){ dots.push({x:x,y:y}); } }
+    }
+    function frame(now){
+      var t=(now-t0)/1000, live=1.8, sz=2.2;
+      cx.clearRect(0,0,W,H);
+      for(var i=0;i<dots.length;i++){
+        var d=dots[i], w=Math.sin(d.x*0.010+d.y*0.006+t*0.9), oy=w*8*live;
+        var a=Math.min(.85,(0.16+0.30*(w*0.5+0.5))*live);
+        cx.fillStyle='rgba(200,180,255,'+a.toFixed(3)+')';
+        cx.fillRect(d.x, d.y+oy, sz, sz);
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    build(); var running=true; raf=requestAnimationFrame(frame);
+    var rt; addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(build,200); }, {passive:true});
+    /* pause when hero off-viewport */
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ if(!running){ running=true; t0=performance.now(); raf=requestAnimationFrame(frame); } }
+          else { running=false; cancelAnimationFrame(raf); }
+        });
+      },{threshold:0});
+      io.observe(cv.parentElement);
+    }
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ cancelAnimationFrame(raf); } else if(running){ t0=performance.now(); raf=requestAnimationFrame(frame); }
+    });
+  })();
+
+  /* reinvention film — click-to-play with sound */
+  (function(){
+    var tile=document.getElementById('filmtile'), poster=document.getElementById('vidPoster'), v=document.getElementById('reelVid');
+    if(!tile||!poster||!v) return;
+    /* only cover the poster once playback actually starts; restore it on error/rejection */
+    var reveal=function(){ tile.classList.add('playing'); };
+    var restore=function(){ tile.classList.remove('playing'); v.muted=true; };
+    v.addEventListener('playing', reveal);
+    v.addEventListener('error', restore, true);
+    poster.addEventListener('click', function(){
+      v.muted=false;
+      var p=v.play();
+      if(p&&p.catch){ p.catch(function(){ v.muted=true; var p2=v.play(); if(p2&&p2.catch){ p2.catch(restore); } }); }
+    });
+  })();
+
+  /* skill counter — v2 -> v3 tick when the flywheel reveals */
+  var fired=false;
+  function fireSkill(){
+    if(fired) return; fired=true;
+    var el=document.getElementById('skillCnt'); if(!el) return;
+    if(RM){ el.textContent='v3'; return; }
+    setTimeout(function(){ el.textContent='v3'; }, 1400);
+  }
+
+  /* reveals (fail-open) */
+  var rv=[].slice.call(document.querySelectorAll('.rv'));
+  var flyHost=document.getElementById('flyExhibit');
+  if(RM || !('IntersectionObserver' in window)){
+    rv.forEach(function(el){ el.classList.add('in'); }); fireSkill();
+  } else {
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ var el=e.target;
+        var idx=rv.indexOf(el); el.style.transitionDelay=(Math.min(idx,8)*0.04)+'s';
+        el.classList.add('in');
+        if(el===flyHost){ fireSkill(); }
+        io.unobserve(el); } });
+    }, {rootMargin:'0px 0px -6% 0px', threshold:.1});
+    rv.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---- owned-core layer stack: a signal descends with the question, returns with the answer ---- */
+  (function(){
+    var stack=document.getElementById('lstack'); if(!stack) return;
+    var bands=[].slice.call(stack.querySelectorAll('.lband'));
+    var sig=document.getElementById('lstackSignal');
+    var cap=document.getElementById('lstackCap');
+    var capRole=cap&&cap.querySelector('[data-lc-role]');
+    var capBeat=cap&&cap.querySelector('[data-lc-beat]');
+    if(!bands.length){ return; }
+
+    var steps=[
+      [0,'The banker asks','The banker asks in plain language.'],
+      [1,'The solution','The request activates the credit memo.'],
+      [2,'The brain','The brain routes it through governed memory.'],
+      [3,'The connector','A typed connector reaches the system of record.'],
+      [4,'Read in place','The memo agent reads the deal from nCino.'],
+      [3,'The answer returns','Every figure returns with its source attached.'],
+      [2,'Remembered','The decision and its why are remembered for the next deal.'],
+      [0,'Back to the banker','The banker has the answer, with its sources.']
+    ];
+    var i=0, timer=null, inView=false, capTO=null;
+
+    function place(n){
+      if(!sig){ return; }
+      var b=bands[n]; if(!b){ return; }
+      var y=b.offsetTop + b.offsetHeight/2 - sig.offsetHeight/2;
+      sig.style.transform='translateY('+y+'px)';
+    }
+    function light(n){ for(var s=0;s<bands.length;s++){ bands[s].classList.toggle('on', s===n); } }
+    function setCap(role,txt){ if(capRole){ capRole.textContent=role; } if(capBeat){ capBeat.textContent=txt; } }
+    function swapCap(role,txt){
+      if(!cap){ setCap(role,txt); return; }
+      cap.classList.add('swapping');
+      clearTimeout(capTO);
+      capTO=setTimeout(function(){ setCap(role,txt); cap.classList.remove('swapping'); },170);
+    }
+    function apply(){ var st=steps[i]; place(st[0]); light(st[0]); swapCap(st[1],st[2]); }
+    function tick(){ i=(i+1)%steps.length; apply(); }
+    function start(){ if(timer){ return; } apply(); timer=setInterval(tick,2700); }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+    function maybe(){ if(inView&&!document.hidden){ start(); } else { stop(); } }
+
+    if(RM){ light(2); if(sig){ sig.style.display='none'; } return; }
+
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ inView=e.isIntersecting; }); maybe();
+      },{threshold:.18}).observe(stack);
+    } else { inView=true; maybe(); }
+    document.addEventListener('visibilitychange', maybe);
+    var rt; addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(function(){ place(steps[i][0]); },160); }, {passive:true});
+  })();
+})();
+</script>
+<!-- scroll settle mechanism removed 2026-07-12: native free scrolling in both directions; anchor clicks still use scroll-behavior:smooth -->
+<script type="module" src="summit-widget.js?v=r7"></script>
+</body>
+</html>
