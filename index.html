@@ -8,6 +8,8 @@
 <link rel="icon" href="ds/favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#0A0A0B" />
 <link rel="stylesheet" href="ds/tokens.css?v=r3" />
+<meta name="robots" content="noindex,nofollow" />
+<script src="gate.js?v=1"></script>
 <style>
   *,*::before,*::after{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scrollbar-gutter:stable}   /* native snap removed → gentle JS settle (see script); stable gutter = no layout shift when scrollbar toggles */
@@ -727,10 +729,16 @@
     video.src = CANDIDATES[ci++];
     video.load();
   }
+  /* GATE: while the invitation overlay is up nothing plays; the film starts the moment
+     the glass parts (rsGate.whenOpen). If no gate is loaded, this runs immediately. */
+  function gateOpen(fn){ if(window.rsGate && window.rsGate.locked){ window.rsGate.whenOpen(fn); } else { fn(); } }
   video.addEventListener('loadeddata', function(){
     if(frozen){ return; }
-    var p = video.play();
-    if(p && p.catch){ p.catch(function(){}); }
+    gateOpen(function(){
+      if(frozen){ return; }
+      var p = video.play();
+      if(p && p.catch){ p.catch(function(){}); }
+    });
   });
   /* start the dissolve 0.6s before the end (duration read live, survives film swaps).
      The film is a single continuous push that decelerates to rest, and the landing
@@ -846,7 +854,7 @@
      or dead, the title still delivers. armOpening is idempotent (runs once). */
   var opened = false;
   function armOpening(){ if(opened){ return; } opened = true; startOpening(); }
-  if(!RM){
+  if(!RM){ gateOpen(function(){
     body.classList.add('playing');   /* engage the film state now: header stays hidden and
                                          scroll locks from first paint, so waiting on the
                                          film to actually start causes no flash. The title
@@ -855,7 +863,7 @@
     video.addEventListener('playing', armOpening, {once:true});
     video.addEventListener('canplay', armOpening, {once:true});
     setTimeout(armOpening, 700);   /* unconditional fallback: text appears even if the film never plays */
-  }
+  }); }
   else { opened = true; settled=true; landPlate(); }   /* reduced motion lands directly on the plate */
 
   /* ---- idle attract loop (booth): untouched at scroll-top for IDLE_MS → replay ---- */
