@@ -24,14 +24,20 @@ This film uses the craft rules of the `hypevideo` skill (`knowledge/skills/hypev
 
 **Departures from hypevideo:**
 - **Length:** 4:30 explainer, as the script asks, rather than the 75 s music-cut spine.
-- **Music:** none. The film is narration only.
+- **Music:** "Tech Talk" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0. It is upbeat electronic at 139.6 BPM, credited on the closing card as the licence requires.
+  - **Length:** extended from 4:02 to 4:30 by repeating 16 bars from its middle, spliced on the downbeat where the music best matches itself (0.998 spectral match). See `extend_music.py`.
+  - **Mix:** the bed head-fades from silence over 2.5 s, ducks under every spoken line (150 ms attack, 600 ms release) and sits at about -21 dB in the gaps.
+  - **Licensing:** it is not a licensed library track. If a licensed library such as Epidemic is required for client use, swap the file and re-run `mix.py`; nothing else changes.
 - **Plates and people:** none. Every shot is a product screen, a diagram or a title card.
 - **Screens:**
   - The script asks for real recordings with synthetic content. These are faithful recreations, rendered as HTML, of Claude Cowork, Jira, Claude Code in a terminal and a GitHub pull request.
   - Every value on them is synthetic.
   - Miles directed this as a demonstration of how the flow could work.
   - Real recordings can replace any screen scene without re-timing. The shot list below gives the exact state each one needs.
-- **Voice:** a local neural TTS (Kokoro v1.0, voice `af_heart`). The ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`. To swap them in, regenerate the 40 lines in `lines.json` with ElevenLabs and rebuild the track with `build_audio.py`. The cue times stay the same.
+- **Voice:** Chatterbox (Resemble AI, MIT licence), an expressive open TTS model, run locally at exaggeration 0.7.
+  - **Expressiveness:** it carries about twice the pitch movement of the first cut's voice (14 to 15 semitones of range against 7.5), at a livelier pace of about 3.5 to 4.4 words a second.
+  - **Pronunciation:** "nCino" is spelled "Encino" in the voice input only, so it is said "en-SEE-no". The captions are unchanged.
+  - **ElevenLabs:** the ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`. To use them instead, regenerate the 40 lines in `lines.json` into `v2/` and re-run `timing.py`, `render.js` and `mix.py`.
 
 ## Scenes, cues and captions
 
@@ -39,16 +45,16 @@ Times are absolute. Narration cues are the start of each spoken sentence.
 
 | # | Window | Screen | Narration cues | On-screen captions (from the script) |
 |---|---|---|---|---|
-| 1 | 0:00-0:10 | Title cards | 0.4, 6.3 | "What if your delivery methodology didn't live in documents, but ran inside the work?" then "AI in Delivery. A New Zealand bank, one feature, one day." |
-| 2 | 0:10-0:35 | Engine diagram | 10.5, 13.5, 22.1, 25.5, 29.3 | "Grounded in the bank's own repository and nCino's own guidance through the Admin MCP. Human checkpoints at every gate. Hooks and CI enforce the rules mechanically." Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". |
+| 1 | 0:00-0:10 | Title cards | 0.4, 6.0 | "What if your delivery methodology didn't live in documents, but ran inside the work?" then "AI in Delivery. A New Zealand bank, one feature, one day." |
+| 2 | 0:10-0:35 | Engine diagram | 10.5, 14.6, 22.0, 25.9, 30.2 | "Grounded in the bank's own repository and nCino's own guidance through the Admin MCP. Human checkpoints at every gate. Hooks and CI enforce the rules mechanically." Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". |
 | 3 | 0:35-0:40 | Title | 35.5 | "One feature. Morning in Wellington, afternoon in Manila." |
-| 4 | 0:40-1:10 | Claude Cowork | 40.5, 47.7, 51.5, 55.8, 65.3 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
-| 5 | 1:10-1:50 | Claude Cowork, reconcile report | 70.5, 76.3, 86.0, 96.7, 101.8 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
-| 6 | 1:50-2:30 | Claude Cowork, then Jira | 110.5, 117.9, 123.0, 128.4, 138.9, 147.1 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
+| 4 | 0:40-1:10 | Claude Cowork | 40.5, 46.9, 51.6, 56.8, 65.7 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
+| 5 | 1:10-1:50 | Claude Cowork, reconcile report | 70.5, 75.9, 83.7, 92.8, 97.3 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
+| 6 | 1:50-2:30 | Claude Cowork, then Jira | 110.5, 117.1, 121.9, 127.5, 136.6, 143.5 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
 | 7 | 2:30-2:35 | Title | 150.5 | "Six hours later." |
-| 8 | 2:35-3:35 | Claude Code, terminal | 155.5, 166.9, 175.6, 183.5, 193.3, 201.2, 206.4 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who executes in ST2. The developer never edits it again." |
-| 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.7, 230.0, 237.0 | "Nothing merges by machine. A named reviewer approves. On merge, CI deploys to ST2; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
-| 10 | 4:00-4:20 | Figures | 240.5, 249.3, 253.9 | Labelled "Measured sprints · AI on against AI off": velocity to SIT ≈ 3×; story points to SIT ≈ 2.8×, story size unchanged; per developer ≈ 2×. "Bugs per story rose from 0.77 to 1.08. Faster build exposes acceptance-criteria gaps sooner. That is why the shaping agents exist." "The bank plans on 30 to 40 percent on design, build and unit test only, and zero on SIT and UAT. The measured uplift is the evidence, not the commitment." |
+| 8 | 2:35-3:35 | Claude Code, terminal | 155.5, 164.9, 172.6, 179.3, 187.3, 194.5, 199.2 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who executes in ST2. The developer never edits it again." |
+| 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.2, 228.8, 234.8 | "Nothing merges by machine. A named reviewer approves. On merge, CI deploys to ST2; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
+| 10 | 4:00-4:20 | Figures | 240.5, 249.9, 255.2 | Labelled "Measured sprints · AI on against AI off": velocity to SIT ≈ 3×; story points to SIT ≈ 2.8×, story size unchanged; per developer ≈ 2×. "Bugs per story rose from 0.77 to 1.08. Faster build exposes acceptance-criteria gaps sooner. That is why the shaping agents exist." "The bank plans on 30 to 40 percent on design, build and unit test only, and zero on SIT and UAT. The measured uplift is the evidence, not the commitment." |
 | 11 | 4:20-4:30 | Close and credits | 260.5 | "Agents draft. People decide. Nothing merges by machine." / "An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026." / Credits: "Discovery and functional agents · Miles Blair, Delivery Lead. Code and development agents · Fabian Goetzens, Noland Smith. Run with the bank's nCino squad." Accenture mark. |
 
 The full narration is in `lines.json`, one sentence per entry.
@@ -85,19 +91,39 @@ These checks were done before export:
 ## Measurements
 
 - Picture: 6480 frames at 24 fps = 270.000 s.
-- Narration: 40 sentences. Each was measured after rendering and checked with speech-to-text (faster-whisper base.en). Every line transcribed as written. "nCino" transcribes as "Encino", which is the correct pronunciation.
-- Loudness of the narration master: -14.3 LUFS integrated, -1.0 dBTP.
+- Narration: 40 sentences, each measured after rendering and gated by speech-to-text (faster-whisper base.en, `gate.py`) for wording and pace.
+  - Seven lines failed the first gate and were regenerated: a mis-said word, a question-like rise, or a pace over 4.5 words a second.
+  - Two of those were still fast and were slowed by about 10% with pitch-preserving time-stretch.
+- Mix, before the single loudnorm gain (the separation column is the voice-to-bed gap):
+
+| Scene | Voice dB | Bed under voice | Separation | Bed in gaps |
+|---|---|---|---|---|
+| 1 | -19.1 | -37.4 | 18.2 | -30.9 |
+| 2 | -20.4 | -30.0 | 9.7 | -22.6 |
+| 3 | -19.5 | -29.8 | 10.3 | -23.4 |
+| 4 | -19.9 | -28.8 | 8.8 | -22.8 |
+| 5 | -20.3 | -30.4 | 10.1 | -21.4 |
+| 6 | -20.2 | -31.1 | 10.9 | -23.6 |
+| 7 | -20.0 | -27.6 | 7.6 | -20.9 |
+| 8 | -19.9 | -29.6 | 9.7 | -21.0 |
+| 9 | -19.7 | -29.6 | 9.9 | -23.0 |
+| 10 | -20.0 | -29.4 | 9.4 | -21.7 |
+| 11 | -20.0 | -35.0 | 15.0 | -30.5 |
+
+- Master: -14.1 LUFS integrated, -1.5 dBTP (web).
 
 ## Rebuild
 
-From this folder, with Node, Playwright (Chromium), ffmpeg and Python with `kokoro-onnx`:
+From this folder, with Node, Playwright (Chromium), ffmpeg, Python with `faster-whisper`, and a Python 3.11 venv with `chatterbox-tts`:
 
 ```bash
-python3 tts.py            # lines.json -> vo_<scene>_<n>.wav, vo_timing.json
-python3 timing.py         # vo_timing.json -> timing.json (cue times)
-node render.js full       # film.html + timing.json -> picture.mp4
-python3 build_audio.py    # cue placement + two-pass loudnorm -> vo_master.wav
-ffmpeg -i picture.mp4 -i vo_master.wav -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart nz-bank-showcase.mp4
+python3.11 tts_expressive.py   # lines.json -> v2/vo_<scene>_<n>.wav  (pass line keys to redo only those)
+python3 gate.py                # speech-to-text and pace gate on every line
+python3 timing.py              # needs vo_timing.json of measured durations -> timing.json (cue times)
+node render.js full            # film.html + timing.json -> picture.mp4
+python3 extend_music.py        # music/Tech_Talk.mp3 -> music/tt_ext.wav (4:29.5)
+python3 mix.py v2              # voice + ducked bed, level table, two-pass loudnorm -> mix_master.wav
+ffmpeg -i picture.mp4 -i mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase.mp4
 ```
 
 `film.html` is the whole film. Each element's arrival is tied to a narration cue (`data-in="<sentence>:<offset>"`), so changing a line and rebuilding re-times the picture automatically.
