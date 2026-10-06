@@ -1,0 +1,613 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:G;font-weight:400;src:url(../../ds/fonts/Graphik-Regular.woff2)}
+@font-face{font-family:G;font-weight:500;src:url(../../ds/fonts/Graphik-Medium.woff2)}
+@font-face{font-family:G;font-weight:600;src:url(../../ds/fonts/Graphik-Semibold.woff2)}
+@font-face{font-family:GM;font-weight:400;src:url(fonts/geist-mono-latin-400-normal.woff2)}
+@font-face{font-family:GM;font-weight:500;src:url(fonts/geist-mono-latin-500-normal.woff2)}
+@font-face{font-family:SS;font-weight:400;src:url(fonts/source-serif-4-latin-400-normal.woff2)}
+@font-face{font-family:SS;font-weight:600;src:url(fonts/source-serif-4-latin-600-normal.woff2)}
+@font-face{font-family:JB;font-weight:400;src:url(fonts/JetBrainsMono-Regular.ttf)}
+@font-face{font-family:JB;font-weight:700;src:url(fonts/JetBrainsMono-Bold.ttf)}
+:root{--paper:#F3F1EA;--ink:#1A1915;--ink2:#5E5A52;--ink3:#8D887E;--line:#DEDAD0;--acc:#A100FF;
+      --cw:#FAF9F5;--cwline:#E7E4DA;--clay:#D97757}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--paper);font-family:G,sans-serif;color:var(--ink)}
+section{position:absolute;inset:0;display:none;background:var(--paper);overflow:hidden}
+.cam{position:absolute;inset:0;transform-origin:50% 45%}
+em{font-style:normal;color:var(--acc)}
+.caret{display:inline-block;width:3px;height:.9em;background:var(--ink);margin-left:4px;vertical-align:-.08em}
+.abs{position:absolute}
+/* film type */
+.eyebrow{font-family:GM;font-size:18px;letter-spacing:4px;color:var(--ink2);text-transform:uppercase}
+.head{font-family:G;font-weight:500;font-size:58px;line-height:1.16;letter-spacing:-.6px;color:var(--ink)}
+.sub{font-family:G;font-size:30px;line-height:1.4;color:var(--ink2)}
+/* screen frame + caption band */
+.frame{position:absolute;left:120px;top:36px;width:1680px;height:872px;border-radius:14px;overflow:hidden;
+       border:1px solid #D3CFC4;background:var(--cw)}
+.cap{position:absolute;left:120px;top:934px;width:1290px;font-family:G;font-size:29px;line-height:1.36;color:var(--ink)}
+#clock{position:absolute;left:1360px;top:938px;width:440px;text-align:right;font-family:GM;font-size:20px;letter-spacing:2px;color:var(--ink2);display:none}
+#clock b{display:block;font-family:GM;font-weight:500;font-size:44px;letter-spacing:0;color:var(--ink);margin-top:4px}
+#clock.hot b{color:var(--acc)}
+#poc{position:absolute;left:120px;top:1040px;font-family:GM;font-size:15px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase}
+#cursor{position:absolute;left:0;top:0;width:34px;height:40px;display:none;z-index:50;pointer-events:none}
+#ring{position:absolute;width:56px;height:56px;border-radius:50%;border:3px solid var(--ink);display:none;z-index:49}
+
+/* ---------- Cowork ---------- */
+.cw{position:absolute;left:0;top:0;width:1344px;height:697.6px;transform:scale(1.25);transform-origin:0 0;background:var(--cw);font-family:G}
+.cw .top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;padding:0 22px;gap:14px;font-size:17px;color:var(--ink)}
+.cw .top .ico{width:20px;height:16px;border:2px solid #7d786e;border-radius:4px}
+.cw .rail{position:absolute;right:16px;top:62px;width:300px}
+.cw .rc{background:#fff;border:1px solid var(--cwline);border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:16px;font-weight:500}
+.cw .rc small{display:block;font-weight:400;font-size:13px;color:var(--ink3);margin:12px 0 6px}
+.cw .rc .it{font-weight:400;font-size:15px;display:flex;align-items:center;gap:8px;margin:5px 0}
+.cw .rc .dot{width:9px;height:9px;border-radius:2px;background:#0C66E4}
+.cw .chat{position:absolute;left:150px;width:740px;top:62px;bottom:118px;overflow:hidden}
+.cw .scroll{position:absolute;left:0;right:0;top:0}
+.cw .ub{margin:10px 0 18px auto;width:fit-content;max-width:560px;background:#EDEAE1;border-radius:14px;padding:12px 18px;font-size:17px;line-height:1.4}
+.cw .as{font-family:SS;font-size:19px;line-height:1.5;margin:6px 0 14px}
+.cw .step{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--ink2);margin:8px 0}
+.cw .step .ok{width:18px;height:18px;border-radius:50%;background:#2E7D4F;position:relative;flex:none}
+.cw .step .ok:after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.cw .step code{font-family:GM;font-size:13px;color:var(--ink3);background:#F0EDE4;border-radius:5px;padding:2px 7px}
+.spark{width:26px;height:26px}
+.cw .comp{position:absolute;left:220px;width:600px;bottom:22px;height:92px;background:#fff;border:1px solid var(--cwline);border-radius:16px;padding:14px 18px;font-size:17px}
+.cw .comp .ph{color:var(--ink3)}
+.cw .comp .row{position:absolute;left:18px;right:16px;bottom:12px;display:flex;align-items:center;gap:16px;color:var(--ink2);font-size:15px}
+.cw .comp .send{margin-left:auto;width:30px;height:30px;border-radius:8px;background:#E7C7BA}
+.cw .comp .send.on{background:var(--clay)}
+.card{background:#fff;border:1px solid var(--cwline);border-radius:14px;padding:20px 24px}
+.chip{display:inline-block;white-space:nowrap;font-family:GM;font-size:13px;letter-spacing:.5px;border-radius:6px;padding:3px 9px;background:#F0EDE4;color:var(--ink2)}
+.chip.p{background:#F3E6FF;color:#6C00AD}
+.chip.a{background:#FCEBD5;color:#8A4B00}
+.chip.g{background:#E2F2E7;color:#1F6B3D}
+.chip.r{background:#FBE3E1;color:#9B2A20}
+/* overlay panel inside cowork */
+.panel{position:absolute;left:16px;right:16px;top:58px;bottom:14px;background:#fff;border:1px solid var(--cwline);border-radius:16px;overflow:hidden}
+.panel .ph2{height:52px;display:flex;align-items:center;gap:12px;padding:0 22px;border-bottom:1px solid var(--cwline);font-size:16px;color:var(--ink2)}
+.panel .ph2 b{color:var(--ink);font-weight:500}
+.panel .body{position:absolute;left:0;right:0;top:52px;bottom:0;padding:22px 30px;overflow:hidden}
+.h3{font-family:G;font-weight:600;font-size:22px}
+.lbl{font-family:GM;font-size:13px;letter-spacing:2.5px;color:var(--ink3);text-transform:uppercase}
+.btn{display:inline-block;border-radius:10px;padding:10px 18px;font-size:16px;font-weight:500;border:1px solid var(--cwline);background:#fff}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* swimlanes */
+.lane{position:absolute;left:0;right:0;height:50px;border-top:1px solid var(--cwline)}
+.lane .ln{position:absolute;left:0;top:0;width:150px;height:50px;display:flex;align-items:center;font-size:14px;color:var(--ink2);padding-left:6px}
+.stp{position:absolute;height:34px;top:8px;border:1.5px solid #CFCAC0;border-radius:8px;background:#FBFAF7;font-size:14px;display:flex;align-items:center;justify-content:center;padding:0 10px;white-space:nowrap}
+.stp.f{border-color:var(--acc);background:#FAF3FF}
+.qrow{display:grid;grid-template-columns:60px 230px 1fr 140px;gap:16px;align-items:start;padding:10px 4px;border-top:1px solid var(--cwline);font-size:14px;line-height:1.4}
+.qrow .id{font-family:GM;font-weight:500;font-size:15px}
+.qrow .clk{font-family:GM;font-size:15px;text-align:right}
+.story{position:absolute;width:396px;background:#fff;border:1px solid var(--cwline);border-radius:14px;padding:18px 20px;font-size:15px;line-height:1.45}
+.story .k{font-family:GM;font-size:13px;color:var(--ink3)}
+.story .t{font-weight:500;font-size:18px;margin:6px 0 8px}
+.story ol{margin:8px 0 0 20px}
+.story li{margin:4px 0}
+.ttab{width:100%;border-collapse:collapse;font-size:15px}
+.ttab th{text-align:left;font-family:GM;font-weight:400;font-size:12.5px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;padding:10px 10px;border-bottom:1px solid var(--cwline)}
+.ttab td{padding:12px 10px;border-bottom:1px solid var(--cwline);vertical-align:top}
+.ttab td.m{font-family:GM;font-size:14px}
+/* ---------- Jira ---------- */
+.jira{position:absolute;left:0;top:0;width:1292.3px;height:670.8px;transform:scale(1.3);transform-origin:0 0;background:#fff;font-family:Inter,G,sans-serif;color:#172B4D}
+.jira .jt{height:56px;border-bottom:1px solid #DFE1E6;display:flex;align-items:center;gap:12px;padding:0 20px;font-size:16px}
+.jira .logo{width:24px;height:24px;border-radius:5px;background:#0C66E4}
+.jira .nav{position:absolute;left:0;top:56px;bottom:0;width:200px;border-right:1px solid #DFE1E6;padding:18px;font-size:15px;color:#44546F}
+.jira .nav div{margin:10px 0}
+.jira .main{position:absolute;left:200px;right:0;top:56px;bottom:0;padding:22px 30px}
+.jira .cols{display:flex;gap:16px;margin-top:20px}
+.jira .col{width:330px;background:#F7F8F9;border-radius:10px;padding:12px;min-height:500px}
+.jira .col h4{font-size:13px;font-weight:600;color:#44546F;letter-spacing:.5px;margin:4px 4px 12px}
+.jc{background:#fff;border-radius:8px;box-shadow:0 1px 1px rgba(9,30,66,.25);padding:11px 13px;margin-bottom:9px;font-size:14.5px;line-height:1.35}
+.jc .r{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12.5px;color:#626F86}
+.jc .ty{width:14px;height:14px;border-radius:3px}
+.jc .par{font-size:12px;border-radius:4px;padding:1px 6px;background:#F3F0FF;color:#5E4DB2}
+/* ---------- terminal ---------- */
+.term{position:absolute;inset:0;background:#191918;font-family:JB;font-size:23px;line-height:35px;color:#E8E6E1}
+.term .bar{height:38px;background:#262624;display:flex;align-items:center;gap:9px;padding:0 16px;font-family:G;font-size:14px;color:#9B988F}
+.term .bar i{width:13px;height:13px;border-radius:50%;display:inline-block}
+.term .tw{position:absolute;left:0;right:0;top:38px;bottom:0;overflow:hidden;padding:18px 30px}
+.term .ts{position:absolute;left:30px;right:30px;top:18px}
+.term .l{white-space:pre;min-height:35px}
+.c-o{color:#D97757}.c-g{color:#7CC48E}.c-r{color:#EE7B6E}.c-d{color:#8F8B82}.c-y{color:#E6C46B}.c-b{color:#9DB8F2}.c-w{color:#FFFFFF;font-weight:700}
+.box{border:1px solid #57544E;border-radius:8px;padding:10px 18px;margin:6px 0 8px;display:inline-block;min-width:1200px}
+/* ---------- github ---------- */
+.gh{position:absolute;left:0;top:0;width:1292.3px;height:670.8px;transform:scale(1.3);transform-origin:0 0;background:#fff;font-family:Inter,G,sans-serif;color:#1F2328}
+.gh .gt{height:60px;background:#F6F8FA;border-bottom:1px solid #D1D9E0;display:flex;align-items:center;padding:0 26px;gap:12px;font-size:16px;color:#59636E}
+.gh .ttl{padding:22px 40px 0;font-size:30px;font-weight:400}
+.gh .ttl span{color:#59636E;font-weight:300}
+.gh .meta{padding:12px 40px 14px;display:flex;align-items:center;gap:12px;font-size:15px;color:#59636E;border-bottom:1px solid #D1D9E0}
+.gh .open{background:#1F883D;color:#fff;border-radius:20px;padding:5px 14px;font-weight:500;font-size:14px}
+.gh .bd{position:absolute;left:40px;top:168px;width:780px;bottom:10px}
+.gh .side{position:absolute;left:850px;top:168px;width:400px;font-size:14px;color:#59636E}
+.gh .cm{border:1px solid #D1D9E0;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.gh .cmh{background:#F6F8FA;border-bottom:1px solid #D1D9E0;padding:10px 16px;font-size:14px;color:#59636E}
+.gh .cmb{padding:14px 18px;font-size:15px;line-height:1.5}
+.gh .cmb h5{font-size:16px;margin:10px 0 2px}
+.gh .ck{display:flex;align-items:center;gap:12px;padding:10px 16px;border-top:1px solid #D1D9E0;font-size:15px}
+.gh .st{width:18px;height:18px;border-radius:50%;flex:none;position:relative}
+.gh .st.run{border:3px solid #BF8700;border-right-color:transparent;animation:none}
+.gh .st.ok{background:#1F883D}
+.gh .st.ok:after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+/* stats */
+.stat{position:absolute;width:480px}
+.stat .v{font-family:G;font-weight:500;font-size:120px;letter-spacing:-2px;line-height:1}
+.stat .d{font-family:G;font-size:26px;line-height:1.35;color:var(--ink2);margin-top:14px}
+/* diagram */
+.col4{position:absolute;top:250px;width:330px;height:470px;border:1.5px solid #CFCAC0;border-radius:16px;background:#FBFAF7;padding:24px}
+.col4 .t{font-weight:600;font-size:22px;margin:8px 0 16px}
+.col4 .i{font-size:19px;padding:9px 0;border-top:1px solid var(--line)}
+.agent{font-size:18px;padding:10px 12px;margin:8px 0;border:1px solid var(--line);border-radius:10px;background:#fff}
+.credit{position:absolute;font-size:17px;line-height:1.4;color:var(--ink2);width:330px}
+.arrow{position:absolute;top:478px;height:2px;background:var(--ink);transform-origin:0 50%}
+.gate{position:absolute;top:463px;width:32px;height:32px;transform:rotate(45deg);border:2.5px solid var(--acc);background:var(--paper)}
+</style></head><body>
+
+<!-- ===================== S01 opening ===================== -->
+<section id="s01"><div class="cam">
+  <div class="abs eyebrow" style="left:200px;top:330px" data-in="@0.2" data-fx="fade" data-out="1:-0.05">An evolving proof of concept</div>
+  <div class="abs head" style="left:200px;top:380px;width:1350px" data-in="@0.4" data-fx="type" data-cps="24" data-caret="1" data-out="1:-0.05">What if your delivery methodology didn't live in documents, but ran <em>inside</em> the work?</div>
+  <div class="abs head" style="left:200px;top:400px;font-size:76px;font-weight:600" data-in="1:0" data-fx="type" data-cps="24">AI in Delivery</div>
+  <div class="abs sub" style="left:204px;top:510px" data-in="1:0.8" data-fx="type" data-cps="24" data-caret="1">A New Zealand bank, one feature, one <em>day</em>.</div>
+</div></section>
+
+<!-- ===================== S02 engine diagram ===================== -->
+<section id="s02"><div class="cam">
+  <div class="abs eyebrow" style="left:120px;top:96px" data-in="@0.2" data-fx="fade">The engine, in one breath</div>
+  
+  <!-- nCino guidance feed -->
+  <div class="abs chip p" style="left:540px;top:196px;font-size:15px" data-in="1:3.2" data-fx="fade">nCino guidance · Admin MCP</div>
+  <div class="col4" style="left:120px" data-in="1:0" data-fx="pop">
+    <div class="lbl">Reads</div><div class="t">Lending repository</div>
+    <div class="i">Policies</div><div class="i">Products</div><div class="i">SDLC</div><div class="i">The as-built</div><div class="i">The contracts</div>
+  </div>
+  <div class="arrow" style="left:452px;width:86px" data-in="2:-0.3" data-fx="grow"></div>
+  <div class="col4" style="left:540px" data-in="2:0" data-fx="pop">
+    <div class="lbl">Shape</div><div class="t">Discovery and functional agents</div>
+    <div class="agent">Refinement &amp; Reconcile</div><div class="agent">Story Writer</div><div class="agent">Task Decomposer</div><div class="agent">Publisher</div>
+  </div>
+  <div class="credit" style="left:540px;top:735px" data-in="2:0.9" data-fx="fade">Discovery and functional agents<br><b style="color:var(--ink);font-weight:500">Miles Blair, Delivery Lead</b></div>
+  <div class="arrow" style="left:872px;width:86px" data-in="3:-0.3" data-fx="grow"></div>
+  <div class="gate" style="left:899px" data-in="4:0.4" data-fx="pop"></div>
+  <div class="col4" style="left:960px" data-in="3:0" data-fx="pop">
+    <div class="lbl">Build</div><div class="t">Code and development agents</div>
+    <div class="agent">Dev</div><div class="agent">QA Plan</div><div class="agent">Unit-test gate</div><div class="agent">Architect</div>
+  </div>
+  <div class="credit" style="left:960px;top:735px" data-in="3:0.9" data-fx="fade">Code and development agents<br><b style="color:var(--ink);font-weight:500">Fabian Goetzens, Noland Smith</b></div>
+  <div class="arrow" style="left:1292px;width:86px" data-in="4:-0.3" data-fx="grow"></div>
+  <div class="gate" style="left:1319px" data-in="4:0.6" data-fx="pop"></div>
+  <div class="col4" style="left:1380px;width:420px" data-in="4:0" data-fx="pop">
+    <div class="lbl">Decide</div><div class="t">People and the gates</div>
+    <div class="i"><span class="gate" style="position:relative;display:inline-block;top:4px;left:0;width:16px;height:16px;margin:0 14px 0 4px;border-width:2px"></span>Human checkpoint at every gate</div>
+    <div class="i">Hooks enforce the rules</div><div class="i">CI enforces the rules</div><div class="i">A named reviewer merges</div>
+  </div>
+  <div class="cap" style="top:860px;width:1680px" data-in="4:0.4" data-fx="type" data-cps="30">Grounded in the bank's own repository and nCino's own guidance through the Admin MCP. Human checkpoints at every gate. Hooks and CI enforce the rules mechanically.</div>
+</div></section>
+
+<!-- ===================== S03 title ===================== -->
+<section id="s03"><div class="cam">
+  <div class="abs head" style="left:200px;top:400px" data-in="@0.3" data-fx="type" data-cps="24">One feature.</div>
+  <div class="abs head" style="left:200px;top:470px;color:var(--ink2)" data-in="@1.0" data-fx="type" data-cps="24" data-caret="1">Morning in Wellington, afternoon in <em>Manila</em>.</div>
+</div></section>
+
+<!-- ===================== S04 cowork morning ===================== -->
+<section id="s04"><div class="cam">
+ <div class="frame"><div class="cw">
+  <div class="top"><span class="ico"></span>Drop room · Harbour Business Line (synthetic) <span style="color:var(--ink3)">⌄</span></div>
+  <div class="rail">
+    <div class="rc">Progress <span style="float:right;color:var(--ink3)">›</span></div>
+    <div class="rc">Working folder <span style="float:right;color:var(--ink3)">›</span></div>
+    <div class="rc">Context
+      <small>Connectors</small><div class="it"><span class="dot"></span>Atlassian</div><div class="it"><span class="dot" style="background:#17A7DA"></span>nCino Admin MCP</div>
+      <small>Agents</small><div class="it">Refinement &amp; Reconcile</div>
+    </div>
+  </div>
+  <div class="chat"><div class="scroll" data-autoscroll="1">
+    <div class="ub" data-in="@1.7" data-fx="fade">Open the HBL-F03 feature page</div>
+    <div class="step" data-in="@2.3" data-fx="fade"><span class="ok"></span>Opened drop room <code>drop-rooms/hbl/</code></div>
+    <div class="card" style="margin:14px 0" data-in="@2.8" data-fx="pop">
+      <div class="lbl">Feature page</div>
+      <div style="font-size:22px;font-weight:500;margin:8px 0 10px">HBL-F03 · Business lending, application to booked</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip">Product: Harbour Business Line (new)</span><span class="chip g">Signed off · 19 Aug 2026</span></div>
+      <div style="font-size:15px;line-height:1.55;color:var(--ink2);margin-top:12px">Capture, assess, decide and book a business-lending application for the new product. Sections: process, rules, data, off-platform steps.</div>
+      <div style="margin-top:12px" data-in="1:0.2" data-fx="pop"><span class="chip a">The org has changed since sign-off</span></div>
+    </div>
+    <div class="ub" data-in="3:1.7" data-fx="fade">Run Refinement &amp; Reconcile on HBL-F03</div>
+    <div class="step" style="color:var(--ink);font-weight:500" data-in="3:2.2" data-fx="fade"><svg class="spark" viewBox="0 0 24 24"><g stroke="#D97757" stroke-width="2.6" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></g></svg>Refinement &amp; Reconcile</div>
+    <div class="step" data-in="3:2.8" data-fx="fade"><span class="ok"></span>Loaded the drop room <code>drop-rooms/hbl/</code></div>
+    <div class="step" data-in="3:3.6" data-fx="fade"><span class="ok"></span>Loaded the requirement ID map <code>requirements/id-map.yaml</code></div>
+    <div class="step" data-in="3:4.4" data-fx="fade"><span class="ok"></span>Loaded Drop 1 and Drop 2 predecessor pages <code>drops/drop-1/ · drops/drop-2/</code></div>
+    <div class="step" data-in="3:5.2" data-fx="fade"><span class="ok"></span>Loaded the policy rule packs <code>policy/rule-packs/</code></div>
+    <div class="step" data-in="3:6.0" data-fx="fade"><span class="ok"></span>Loaded the nCino as-built snapshot <code>as-built/ncino-snapshot/</code></div>
+    <div class="as" style="margin-top:16px" data-in="4:0.3" data-fx="fade">The booking step on this page no longer matches the org: the booked-stage flow changed after sign-off. <span class="chip">as-built/ncino-snapshot/flows/booking.md</span></div>
+  </div></div>
+  <div class="comp"><span data-in="@0.3" data-fx="type" data-cps="22" data-out="@1.7">Open the HBL-F03 feature page</span><span data-in="3:0.2" data-fx="type" data-cps="22" data-out="3:1.7">Run Refinement &amp; Reconcile on HBL-F03</span>
+    <span class="ph" data-in="@1.7" data-out="3:0.2">Write a message…</span><span class="ph" data-in="3:1.7">Write a message…</span>
+    <div class="row">＋ &nbsp;▭ &nbsp;Act ⌄<span class="send" data-cls="on@0.3-1.7;on@3:0.2-3:1.7"></span></div></div>
+ </div></div>
+ <div class="cap" data-in="0:0.1" data-fx="type" data-cps="26" data-out="4:-0.1">The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'.</div>
+ <div class="cap" data-in="4:0" data-fx="type" data-cps="26"><em>Every claim it makes carries a path.</em> No path, no claim.</div>
+</div></section>
+
+<!-- ===================== S05 reconcile report ===================== -->
+<section id="s05"><div class="cam">
+ <div class="frame"><div class="cw">
+  <div class="top"><span class="ico"></span>Drop room · Harbour Business Line (synthetic) <span style="color:var(--ink3)">⌄</span></div>
+  <div class="panel" data-in="@0.2" data-fx="pop">
+   <div class="ph2"><b>Reconcile report</b> · HBL-F03 <span style="margin-left:auto">✕</span></div>
+   <div class="body">
+    <div class="lbl" data-in="@0.5" data-fx="fade">Feature Process Map · swimlanes by profile and system</div>
+    <div style="position:relative;height:210px;margin-top:12px" data-in="@0.6" data-fx="fade">
+      <div class="lane" style="top:0"><div class="ln">Banker profile</div></div>
+      <div class="lane" style="top:52px"><div class="ln">Credit profile</div></div>
+      <div class="lane" style="top:104px"><div class="ln">nCino</div></div>
+      <div class="lane" style="top:156px;border-bottom:1px solid var(--cwline)"><div class="ln">Off-platform</div></div>
+      <div class="stp" style="left:160px;top:8px" data-in="@0.9" data-fx="wipe">Capture application</div>
+      <div class="stp" style="left:320px;top:112px" data-in="@1.2" data-fx="wipe">Spread and assess</div>
+      <div class="stp" style="left:470px;top:60px" data-in="@1.5" data-fx="wipe">Credit decision</div>
+      <div class="stp" style="left:620px;top:60px" data-in="@1.8" data-fx="wipe" data-cls="f@3.0">Policy exception path ?</div>
+      <div class="stp" style="left:820px;top:112px" data-in="@2.1" data-fx="wipe">Book the loan</div>
+      <div class="stp" style="left:950px;top:112px" data-in="@2.4" data-fx="wipe" data-cls="f@3.6">Record exception at booked stage</div>
+      <div class="stp" style="left:950px;top:164px" data-in="@2.7" data-fx="wipe">Customer letter (SOP)</div>
+      <div class="chip p abs" style="left:630px;top:-12px" data-in="@3.0" data-fx="pop">Q-01</div>
+      <div class="chip p abs" style="left:960px;top:92px" data-in="@3.6" data-fx="pop">Q-02</div>
+    </div>
+    <div class="lbl" style="margin-top:18px" data-in="@4.6" data-fx="fade">Questions register</div>
+    <div style="margin-top:8px">
+      <div class="qrow" style="color:var(--ink3);font-family:GM;font-size:12.5px;letter-spacing:2px" data-in="@4.8" data-fx="fade"><span>ID</span><span>OWNER</span><span>QUESTION</span><span style="text-align:right">CLOCK</span></div>
+      <div class="qrow" data-in="1:0" data-fx="rise"><span class="id">Q-01</span><span><span class="chip">Business analyst</span></span><span>The feature page names no policy exception path for the new product. Confirm with the product owner whether an exception is required, or state that none applies.</span><span class="clk" data-clk="3:2.0">3d 00:00:00</span></div>
+      <div class="qrow" data-in="2:0" data-fx="rise"><span class="id">Q-02</span><span><span class="chip">nCino Professional Services</span></span><span>A known product issue on policy-exception handling (PDI-SYN-0417, from the snapshot) may affect how the exception is recorded at the booked stage. Confirm the fix version and whether it is in the bank's package.</span><span class="clk" data-clk="3:2.0">3d 00:00:00</span></div>
+    </div>
+    <div style="position:absolute;right:30px;bottom:16px;display:flex;gap:12px;align-items:center">
+      <span class="chip g" data-in="3:2.6" data-fx="fade">Posted to Open questions · visible to the whole team</span>
+      <span class="btn">Edit</span><span id="acc5" class="btn pri" data-in="@0.4" data-out="3:2.0">Accept report</span><span class="btn pri" style="background:#1F6B3D;border-color:#1F6B3D" data-in="3:2.0">Accepted ✓</span>
+    </div>
+   </div>
+  </div>
+ </div></div>
+ <div class="cap" data-in="1:0.1" data-fx="type" data-cps="26" data-out="2:-0.1">A gap in the requirement, routed to the person who owns the answer.</div>
+ <div class="cap" data-in="2:0" data-fx="type" data-cps="26" data-out="4:-0.1">A platform question, routed to the platform. <em>Never assumed.</em></div>
+ <div class="cap" data-in="4:0" data-fx="type" data-cps="26">The agent found them. She decided they were real. The clock starts.</div>
+</div></section>
+
+<!-- ===================== S06 stories, tasks, board ===================== -->
+<section id="s06"><div class="cam">
+ <div class="frame">
+ <div class="cw" data-out="4:3.2">
+  <div class="top"><span class="ico"></span>Drop room · Harbour Business Line (synthetic) <span style="color:var(--ink3)">⌄</span></div>
+  <div class="panel" data-out="3:0">
+   <div class="ph2"><b>Story Writer</b> · reconciled requirements, HBL-F03 <span style="margin-left:auto">✕</span></div>
+   <div class="body">
+    <div class="story" style="left:0px;top:6px" data-in="@0.6" data-fx="pop"><div class="k">STORY 1</div><div class="t">Capture a business lending application for the new product</div>
+      <ol><li>Product and purpose are mandatory before submission <span class="chip p" data-cls="hl@1:0">RULE BL-03</span></li><li>Borrower entity is matched to an existing relationship <span class="chip p">RULE BL-07</span></li></ol></div>
+    <div class="story" style="left:414px;top:6px" data-in="@1.4" data-fx="pop"><div class="k">STORY 2</div><div class="t">Assess and decide the application within delegated authority</div>
+      <ol><li>Decision routes to the credit profile above the product limit <span class="chip p">RULE CR-12</span></li><li>Decision and conditions are recorded on the loan <span class="chip p">RULE CR-15</span></li></ol></div>
+    <div class="story" style="left:828px;top:6px" data-in="@2.2" data-fx="pop"><div class="k">STORY 3</div><div class="t">Route policy exceptions at the booked stage</div>
+      <ol><li>An exception is recorded before booking <span class="chip p">RULE PE-02</span></li></ol>
+      <div style="margin-top:12px" data-in="2:0.3" data-fx="pop"><span class="chip r">DRAFT · blocked by Q-01, Q-02</span></div></div>
+    <div class="story" style="left:0px;top:300px;width:1224px;background:#FBFAF7" data-in="@3.2" data-fx="pop"><div class="k">STANDARD OPERATING PROCEDURE UPDATES · NOT ACCEPTANCE CRITERIA</div>
+      <div style="margin-top:8px">Off-platform: customer letter on decision, file note on manual identity checks.</div></div>
+   </div>
+  </div>
+  <div class="panel" data-in="3:0" data-fx="pop">
+   <div class="ph2"><b>Task Decomposer</b> · Story 1 and Story 2 <span style="margin-left:auto">✕</span></div>
+   <div class="body">
+    <table class="ttab">
+     <tr data-in="3:0.3" data-fx="fade"><th>Task</th><th>Object</th><th>Field</th><th>Class</th><th>Contract ref</th><th>Tests</th><th>Profile</th></tr>
+     <tr data-in="3:0.6" data-fx="rise"><td>Product purpose required</td><td class="m">LLC_BI__Loan__c</td><td class="m">Purpose__c</td><td>Config</td><td class="m">CT-LOAN-01</td><td>Validation rule test</td><td>Banker</td></tr>
+     <tr data-in="3:0.9" data-fx="rise"><td>Match borrower to relationship</td><td class="m">Account</td><td class="m">Relationship_Id__c</td><td id="cell6"><span data-out="4:1.2">Config</span><span data-in="4:1.2" data-fx="pop" class="chip a">Extend · edited</span></td><td class="m">CT-ACCT-04</td><td>Matching unit test</td><td>Banker</td></tr>
+     <tr data-in="3:1.2" data-fx="rise"><td>Route above product limit</td><td class="m">LLC_BI__Loan__c</td><td class="m">Approval_Route__c</td><td>Extend</td><td class="m">CT-LOAN-07</td><td>Flow path tests</td><td>Credit</td></tr>
+     <tr data-in="3:1.5" data-fx="rise"><td>Record decision conditions</td><td class="m">LLC_BI__Loan__c</td><td><span class="chip a">QUESTION: field not held in the repository</span></td><td>Config</td><td class="m">CT-LOAN-09</td><td>Field-level test</td><td>Credit</td></tr>
+    </table>
+    <div style="position:absolute;right:30px;bottom:24px;display:flex;gap:12px">
+      <span class="btn">Edit</span><span id="app6" class="btn pri" data-out="4:3.0">Approve</span><span class="btn pri" style="background:#1F6B3D;border-color:#1F6B3D" data-in="4:3.0">Approved ✓</span>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="jira" data-in="4:3.2">
+   <div class="jt"><span class="logo"></span><b>Jira</b><span style="color:#626F86">Projects / Harbour Business Line (synthetic) / Board</span></div>
+   <div class="nav"><div>For you</div><div>Recent</div><div>Starred</div><div style="color:#0C66E4;font-weight:600">Board</div><div>Backlog</div><div>Timeline</div></div>
+   <div class="main"><div style="font-size:24px;font-weight:600">HBL board</div>
+    <div class="cols">
+     <div class="col"><h4>TO DO</h4>
+      <div class="jc" data-in="4:3.6" data-fx="rise">Business lending, application to booked<div class="r"><span class="ty" style="background:#8F7EE7"></span>HBL-F03 · Feature</div></div>
+      <div class="jc" data-in="4:4.0" data-fx="rise">Capture a business lending application<div class="r"><span class="ty" style="background:#22A06B"></span>HBL-101 · Story<span class="par">HBL-F03</span></div></div>
+      <div class="jc" data-in="4:4.3" data-fx="rise">Assess and decide within delegated authority<div class="r"><span class="ty" style="background:#22A06B"></span>HBL-102 · Story<span class="par">HBL-F03</span></div></div>
+      <div class="jc" data-in="4:4.6" data-fx="rise">Route policy exceptions at the booked stage<div class="r"><span class="ty" style="background:#22A06B"></span>HBL-103 · Story · Draft<span class="par">HBL-F03</span></div></div>
+     </div>
+     <div class="col"><h4>TO DO · TASKS</h4>
+      <div class="jc" data-in="4:4.9" data-fx="rise">Product purpose required<div class="r"><span class="ty" style="background:#1D7AFC"></span>HBL-104 · Task<span class="par">HBL-101</span></div></div>
+      <div class="jc" data-in="4:5.2" data-fx="rise">Match borrower to relationship<div class="r"><span class="ty" style="background:#1D7AFC"></span>HBL-105 · Task<span class="par">HBL-101</span></div></div>
+      <div class="jc" data-in="4:5.5" data-fx="rise">Route above product limit<div class="r"><span class="ty" style="background:#1D7AFC"></span>HBL-106 · Task<span class="par">HBL-102</span></div></div>
+      <div class="jc" data-in="4:5.8" data-fx="rise">Record decision conditions<div class="r"><span class="ty" style="background:#1D7AFC"></span>HBL-107 · Task<span class="par">HBL-102</span></div></div>
+     </div>
+     <div class="col" style="width:280px"><h4>IN PROGRESS</h4></div>
+    </div>
+    <div class="chip g abs" style="left:30px;bottom:24px;font-size:14px" data-in="4:6.6" data-fx="fade">Ticket IDs written back to the repository</div>
+   </div>
+ </div>
+ </div>
+ <div class="cap" data-in="3:0" data-fx="type" data-cps="26" data-out="4:3.1">Prescriptive enough to start. Where the repository does not hold a fact, the task carries <em>the question</em>, not a guess.</div>
+ <div class="cap" data-in="4:3.2" data-fx="type" data-cps="26">Lineage from feature page to ticket, kept by the repository, not by memory.</div>
+</div></section>
+
+<!-- ===================== S07 six hours ===================== -->
+<section id="s07"><div class="cam">
+  <div class="abs head" style="left:200px;top:430px" data-in="@0.3" data-fx="type" data-cps="20" data-caret="1">Six hours <em>later</em>.</div>
+</div></section>
+
+<!-- ===================== S08 terminal ===================== -->
+<section id="s08"><div class="cam">
+ <div class="frame"><div class="term">
+  <div class="bar"><i style="background:#ED6A5E"></i><i style="background:#F5BF4F"></i><i style="background:#61C554"></i><span style="margin-left:14px">lending-delivery · claude</span></div>
+  <div class="tw"><div class="ts" data-autoscroll="1">
+   <div data-in="@0.2" data-fx="fade"><div class="box"><span class="c-o">✻</span> <span class="c-w">Welcome to Claude Code</span><br><span class="c-d">  /help for help · cwd: ~/work/lending-delivery</span></div></div>
+   <div class="l c-b" data-in="@0.9" data-fx="fade">● identity  developer · lending squad · org dev-clone-hbl (synthetic)</div>
+   <div class="l" data-in="@1.5"><span class="c-d">&gt; </span><span data-in="@1.5" data-fx="type" data-cps="18">/health</span></div>
+   <div class="l" data-in="@2.3" data-fx="fade">  health  <span class="c-g">CLEARED</span></div>
+   <div class="l" data-in="@3.0"><span class="c-d">&gt; </span><span data-in="@3.0" data-fx="type" data-cps="18">/my-tickets</span></div>
+   <div class="l" data-in="@3.9" data-fx="fade">  HBL-104  Task  Product purpose required          <span class="c-y">To Do</span></div>
+   <div class="l" data-in="@4.1" data-fx="fade">  HBL-105  Task  Match borrower to relationship    <span class="c-y">To Do</span></div>
+   <div class="l" data-in="@4.3" data-fx="fade">  HBL-106  Task  Route above product limit         <span class="c-y">To Do</span></div>
+   <div class="l" data-in="@5.4"><span class="c-d">&gt; </span><span data-in="@5.4" data-fx="type" data-cps="18">/ticket HBL-106</span></div>
+   <div data-in="@6.4" data-fx="fade"><div class="box">
+     <span class="c-w">HBL-106</span> Task · story <span class="c-b">HBL-102</span> · feature <span class="c-b">HBL-F03</span><br>
+     Story   Assess and decide within delegated authority<br>
+     AC1     Decision routes to the credit profile above the product limit  <span class="c-d">[RULE CR-12]</span><br>
+     AC2     Decision and conditions are recorded on the loan             <span class="c-d">[RULE CR-15]</span><br>
+     Lineage <span class="c-d">feature page HBL-F03 → HBL-102 → HBL-106</span></div></div>
+   <div class="l" data-in="1:0" data-fx="fade"><span class="c-o">⏺</span> Dev agent: change routes to flow <span class="c-w">HBL_Approval_Router</span> · flow change</div>
+   <div class="l" data-in="1:0.9" data-fx="fade"><span class="c-o">⏺</span> Edit(force-app/main/default/flows/HBL_Approval_Router.flow-meta.xml)</div>
+   <div class="l c-r" data-in="1:1.6" data-fx="fade">  ⎿ blocked by flow edit guard: no impact map for HBL_Approval_Router. Run /impact first.</div>
+   <div class="l" data-in="1:2.8"><span class="c-d">&gt; </span><span data-in="1:2.8" data-fx="type" data-cps="18">/impact HBL_Approval_Router</span></div>
+   <div data-in="1:4.4" data-fx="fade"><div class="box">
+     <span class="c-w">Blast radius</span> · HBL_Approval_Router<br>
+     callers            <span class="c-w">3</span>   HBL_Decision_Screen · HBL_Limit_Check · HBL_Booking_Handler<br>
+     cross-domain edge  <span class="c-w">1</span>   → collateral<br>
+     impact map         impact/HBL_Approval_Router.md<br>
+     edit unlocked      <span class="c-g" data-countdown="1:4.4">60:00</span> remaining</div></div>
+   <div class="l" data-in="2:1.0" data-fx="fade"><span class="c-o">⏺</span> Edit(force-app/main/default/flows/HBL_Approval_Router.flow-meta.xml)</div>
+   <div class="l c-g" data-in="2:1.6" data-fx="fade">  ⎿ updated · impact map present</div>
+   <div class="l c-d" data-in="3:0" data-fx="fade">  building on cloned dev org dev-clone-hbl</div>
+   <div class="l" data-in="3:1.0"><span class="c-d">&gt; </span><span data-in="3:1.0" data-fx="type" data-cps="18">/ncino-fit</span></div>
+   <div class="l" data-in="3:2.0" data-fx="fade">  tier <span class="c-w">ADAPT</span> · follow nCino guidance: approval routing (Admin MCP, KA-SYN-0192)</div>
+   <div class="l" data-in="3:4.4"><span class="c-d">&gt; </span><span data-in="3:4.4" data-fx="type" data-cps="18">/validate</span></div>
+   <div class="l" data-in="3:5.4" data-fx="fade">  check-only deploy → sandbox · <span class="c-g">Succeeded</span> · nothing committed</div>
+   <div class="l" data-in="4:0" data-fx="fade"><span class="c-o">⏺</span> Unit-test gate</div>
+   <div class="l" data-in="4:0.5" data-fx="fade">  coverage on changed classes   <span class="c-g">✓</span></div>
+   <div class="l" data-in="4:0.9" data-fx="fade">  real assertions               <span class="c-r">✗ 1 finding</span></div>
+   <div class="l" data-in="4:1.3" data-fx="fade">  static analysis on the diff   <span class="c-g">✓</span></div>
+   <div class="l" data-in="4:1.7" data-fx="fade">  account-sync guard            <span class="c-g">✓ clean</span></div>
+   <div class="l c-r" data-in="4:2.3" data-fx="fade">  ⎿ BLOCKED · HBL_ApprovalRouterTest.routesAboveLimit has no assertion</div>
+   <div class="l" data-in="4:3.4" data-fx="fade"><span class="c-o">⏺</span> Dev agent: add the missing assertion</div>
+   <div class="l c-g" data-in="4:4.0" data-fx="fade">  +  System.assertEquals('Credit', loan.Approval_Route__c);</div>
+   <div class="l" data-in="4:5.0" data-fx="fade"><span class="c-o">⏺</span> Unit-test gate (re-run) <span class="c-g">✓ ✓ ✓ ✓</span>  <span class="c-g">PASSED</span></div>
+   <div class="l" data-in="6:0" data-fx="fade"><span class="c-o">⏺</span> QA Plan agent → qa-plans/HBL-106-ST2.md</div>
+   <div data-in="6:0.7" data-fx="fade"><div class="box">
+     <span class="c-w">QA plan · HBL-106 · ST2</span><br>
+     Personas              Banker (synthetic) · Credit officer (synthetic)<br>
+     Test data             loan above the product limit · loan within limit<br>
+     Developer attestation signed · gate PASSED<br>
+     Tester amendments     <span class="c-d">owned by the tester from handoff</span></div></div>
+   <div class="l c-g" data-in="6:2.6" data-fx="fade">  ⎿ handed off to the tester · ST2</div>
+  </div></div>
+ </div></div>
+ <div class="cap" data-in="0:0.1" data-fx="type" data-cps="26" data-out="2:-0.1">The ticket arrives with its story, its criteria and its lineage. No copy-paste.</div>
+ <div class="cap" data-in="2:0" data-fx="type" data-cps="26" data-out="5:-0.1"><em>No impact map, no edit.</em> The flow edit guard enforces it, not a reviewer's memory.</div>
+ <div class="cap" data-in="5:0" data-fx="type" data-cps="26" data-out="6:-0.1">The gate blocks; it never softens on a second attempt.</div>
+ <div class="cap" style="font-size:26px" data-in="6:0" data-fx="type" data-cps="30">The developer generates it once tests pass. From handoff it belongs to the tester, who executes in ST2. The developer never edits it again.</div>
+</div></section>
+
+<!-- ===================== S09 PR ===================== -->
+<section id="s09"><div class="cam">
+ <div class="frame">
+  <div class="term" data-out="1:-0.2">
+   <div class="bar"><i style="background:#ED6A5E"></i><i style="background:#F5BF4F"></i><i style="background:#61C554"></i><span style="margin-left:14px">lending-delivery · claude</span></div>
+   <div class="tw"><div class="ts">
+    <div class="l"><span class="c-d">&gt; </span><span data-in="@0.2" data-fx="type" data-cps="18">/pr</span></div>
+    <div data-in="@0.9" data-fx="fade"><div class="box"><span class="c-w">PR body · reviewer-first</span><br>
+      1  What to look at first<br>2  What could go wrong<br>3  What was deliberately not changed<br>4  Impact card<br>5  Gate evidence<br>6  OOTB fit</div></div>
+    <div class="l c-d" data-in="@2.6" data-fx="fade">  run:</div>
+    <div class="l" data-in="@2.8" data-fx="fade">  gh pr create --title "HBL-106 Route above product limit" --body-file .pr/HBL-106.md</div>
+    <div class="l" data-in="@4.0"><span class="c-d">$ </span><span data-in="@4.0" data-fx="type" data-cps="40">gh pr create --title "HBL-106 Route above product limit" --body-file .pr/HBL-106.md</span></div>
+    <div class="l c-b" data-in="@6.4" data-fx="fade">  https://github.com/example-lending/lending-delivery/pull/212</div>
+   </div></div>
+  </div>
+  <div class="gh" data-in="1:-0.2" data-out="2:-0.2">
+   <div class="gt"><b style="color:#1F2328">example-lending</b> / lending-delivery <span style="margin-left:24px">Pull requests</span></div>
+   <div class="ttl">HBL-106 Route above product limit <span>#212</span></div>
+   <div class="meta"><span class="open">⟟ Open</span> dev wants to merge 1 commit into <span class="chip">st2</span> from <span class="chip">feature/HBL-106</span></div>
+   <div class="bd">
+    <div class="cm"><div class="cmh">Reviewer-first summary</div><div class="cmb">
+      <h5>What to look at first</h5>Approval routing branch in HBL_Approval_Router.
+      <h5>What could go wrong</h5>A loan at exactly the limit routes to the wrong profile.
+      <h5>What was deliberately not changed</h5>Booking and collateral flows.
+      <h5>Impact card · gate evidence · OOTB fit</h5>3 callers, 1 cross-domain edge · unit-test gate PASSED · ADAPT</div></div>
+    <div class="cm"><div class="cmh">Checks</div>
+      <div class="ck"><span class="st run" data-out="1:1.2"></span><span class="st ok" data-in="1:1.2"></span>map freshness</div>
+      <div class="ck"><span class="st run" data-out="1:1.8"></span><span class="st ok" data-in="1:1.8"></span>QA plan presence</div>
+      <div class="ck"><span class="st run" data-out="1:2.4"></span><span class="st ok" data-in="1:2.4"></span>Apex test evidence</div>
+      <div class="ck"><span class="st run" data-out="1:3.0"></span><span class="st ok" data-in="1:3.0"></span>off-limits token scan</div>
+    </div>
+   </div>
+   <div class="side">
+    <div style="font-weight:600;color:#1F2328;margin-bottom:8px">Reviewers</div>
+    <div>reviewer-a (named reviewer) <span data-out="1:5.0" style="color:#BF8700">· review required</span><span data-in="1:5.0" data-fx="fade" style="color:#1F883D">· ✓ approved</span></div>
+    <div style="margin-top:26px;border:1px solid #D1D9E0;border-radius:8px;padding:14px 16px;color:#1F2328">
+      <span data-out="1:5.0">Merging is blocked until a named reviewer approves.</span><span data-in="1:5.0" data-fx="fade">Approved by reviewer-a. Merge is done by a person. On merge, CI deploys to ST2.</span></div>
+   </div>
+  </div>
+  <div class="term" data-in="2:-0.2">
+   <div class="bar"><i style="background:#ED6A5E"></i><i style="background:#F5BF4F"></i><i style="background:#61C554"></i><span style="margin-left:14px">lending-delivery · claude</span></div>
+   <div class="tw"><div class="ts">
+    <div class="l c-d">  https://github.com/example-lending/lending-delivery/pull/212 · approved by reviewer-a</div>
+    <div class="l"><span class="c-d">&gt; </span><span data-in="2:0.3" data-fx="type" data-cps="18">/retro</span></div>
+    <div class="l" data-in="2:1.2" data-fx="fade">  <span class="c-g">1 lesson captured</span> · lessons/HBL-106.md</div>
+    <div class="l" data-in="2:1.8" data-fx="fade">  "Test the exact-limit boundary on approval routing."</div>
+    <div class="l c-d" data-in="2:2.6" data-fx="fade">  seen 1 time · graduates into a skill or a gate on the second hit</div>
+   </div></div>
+  </div>
+ </div>
+ <div class="cap" data-in="1:0" data-fx="type" data-cps="28" data-out="2:-0.1"><em>Nothing merges by machine.</em> A named reviewer approves. On merge, CI deploys to ST2; the tester picks up the plan.</div>
+ <div class="cap" data-in="2:0" data-fx="type" data-cps="26">The second time the same lesson is hit, it graduates into a skill or a gate.</div>
+</div></section>
+
+<!-- ===================== S10 figures ===================== -->
+<section id="s10"><div class="cam">
+  <div class="abs eyebrow" style="left:200px;top:150px" data-in="@0.2" data-fx="fade">Measured sprints · AI on against AI off</div>
+  <div class="abs" style="left:200px;top:196px;font-size:46px;font-weight:500" data-in="@0.3" data-fx="type" data-cps="30">What a day like this adds up to</div>
+  <div class="stat" style="left:200px;top:330px" data-in="0:0.6" data-fx="rise"><div class="v" data-count="3" data-dec="0" data-at="0:0.6">≈ 3×</div><div class="d">Velocity to SIT</div></div>
+  <div class="stat" style="left:740px;top:330px" data-in="0:1.4" data-fx="rise"><div class="v" data-count="2.8" data-dec="1" data-at="0:1.4">≈ 2.8×</div><div class="d">Story points to SIT,<br>story size unchanged</div></div>
+  <div class="stat" style="left:1280px;top:330px" data-in="0:2.2" data-fx="rise"><div class="v" data-count="2" data-dec="0" data-at="0:2.2">≈ 2×</div><div class="d">Per developer</div></div>
+  <div class="abs" style="left:200px;top:640px;width:1500px;font-size:28px;line-height:1.45" data-in="1:0" data-fx="type" data-cps="34">Bugs per story rose from 0.77 to 1.08. Faster build exposes acceptance-criteria gaps sooner. That is why the shaping agents exist.</div>
+  <div class="abs" style="left:200px;top:770px;width:1500px;font-size:28px;line-height:1.45;color:var(--ink2)" data-in="2:0" data-fx="type" data-cps="38">The bank plans on 30 to 40 percent on design, build and unit test only, and zero on SIT and UAT. The measured uplift is the evidence, not the commitment.</div>
+</div></section>
+
+<!-- ===================== S11 close ===================== -->
+<section id="s11"><div class="cam">
+  <div class="abs head" style="left:200px;top:380px" data-in="@0.4" data-fx="type" data-cps="22" data-out="@5.0">Agents draft.</div>
+  <div class="abs head" style="left:200px;top:450px" data-in="@1.4" data-fx="type" data-cps="22" data-out="@5.0">People <em>decide</em>.</div>
+  <div class="abs head" style="left:200px;top:520px" data-in="@2.4" data-fx="type" data-cps="22" data-caret="1" data-out="@5.0">Nothing merges by machine.</div>
+  <div class="abs sub" style="left:200px;top:470px;width:1400px;color:var(--ink)" data-in="@5.1" data-fx="type" data-cps="40" data-out="@7.2">An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026.</div>
+  <div data-in="@7.3" data-fx="fade">
+    <div class="abs" style="left:200px;top:330px;font-size:26px;line-height:1.6">
+      <span style="color:var(--ink2)">Discovery and functional agents</span><br>Miles Blair, Delivery Lead<br><br>
+      <span style="color:var(--ink2)">Code and development agents</span><br>Fabian Goetzens, Noland Smith<br><br>
+      <span style="color:var(--ink2)">Run with the bank's nCino squad.</span></div>
+    <img class="abs" src="../../ds/logos/accenture-logo-black.svg" style="left:1340px;top:470px;width:380px">
+  </div>
+  <div id="black" class="abs" style="inset:0;background:#000;opacity:0"></div>
+</div></section>
+
+<div id="clock"><span id="ck-l"></span><b id="ck-t"></b></div>
+<div id="poc">An evolving proof of concept · synthetic data throughout</div>
+<svg id="cursor" viewBox="0 0 34 40"><path d="M3 2 L3 33 L11 25 L17 38 L22 36 L16 23 L28 23 Z" fill="#111" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>
+<div id="ring"></div>
+
+<script>
+let TM=null;
+const ORDER=['s01','s02','s03','s04','s05','s06','s07','s08','s09','s10','s11'];
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+function ref(sc,spec){
+  spec=String(spec).trim();
+  if(spec[0]==='@') return parseFloat(spec.slice(1));
+  const [k,o]=spec.split(':'); return TM[sc].starts[parseInt(k)]+parseFloat(o||0);
+}
+// clocks: [t, label, minutes-since-midnight]
+const CLOCK=[[40,'WELLINGTON',9*60+2],[146.07,'WELLINGTON',11*60+40],[150,'WELLINGTON',11*60+40]];
+const CLOCK2=[[155,'MANILA',12*60+40],[236.975,'MANILA',17*60+20],[240,'MANILA',17*60+20]];
+// cursor scripts per scene: [spec, x, y, click]
+const CUR={
+  s05:[['3:0.2',1400,640],['3:1.6','#acc5',1]],
+  s06:[['4:0.0',1000,640],['4:0.9','#cell6',1],['4:2.2',1300,700],['4:2.8','#app6',1]],
+};
+let inited=false;
+function init(){
+  document.querySelectorAll('[data-fx="type"]').forEach(el=>{
+    const segs=[];el.childNodes.forEach(n=>{ if(n.nodeType===3) segs.push({t:n.textContent,em:false}); else segs.push({t:n.textContent,em:n.tagName==='EM'}); });
+    el._segs=segs; el._len=segs.reduce((a,s)=>a+s.t.length,0);
+  });
+  inited=true;
+}
+function typeHTML(el,n,caret){
+  let out='',left=n;
+  for(const s of el._segs){ if(left<=0)break; const part=s.t.slice(0,left); left-=part.length;
+    const esc=part.replace(/&/g,'&amp;').replace(/</g,'&lt;'); out+=s.em?'<em>'+esc+'</em>':esc; }
+  if(caret) out+='<span class="caret"></span>';
+  return out;
+}
+function sceneAt(t){ for(const k of ORDER){const [a,b]=TM[k].win; if(t>=a&&t<b) return k;} return 's11'; }
+function fmtClock(m){m=Math.floor(m);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+function interp(tab,t){ if(t<=tab[0][0])return tab[0][2]; for(let i=0;i<tab.length-1;i++){const [t0,,v0]=tab[i],[t1,,v1]=tab[i+1]; if(t<=t1) return v0+(v1-v0)*(t-t0)/(t1-t0);} return tab[tab.length-1][2]; }
+window.render=function(t){
+  if(!inited) init();
+  const sc=sceneAt(t);
+  for(const k of ORDER) document.getElementById(k).style.display=k===sc?'block':'none';
+  const [a,b]=TM[sc].win, lt=t-a, D=b-a;
+  const root=document.getElementById(sc);
+  // living camera: one eased push per scene
+  const p=eio(clamp(lt/D,0,1));
+  root.querySelector('.cam').style.transform=`scale(${(1+0.022*p).toFixed(5)}) translate(${(-6*p).toFixed(2)}px,${(-4*p).toFixed(2)}px)`;
+  root.querySelectorAll('[data-in],[data-out]').forEach(el=>{
+    const tin=el.dataset.in?ref(sc,el.dataset.in):-1e9, tout=el.dataset.out?ref(sc,el.dataset.out):1e9;
+    const fx=el.dataset.fx||'cut';
+    const anc=el.parentElement&&el.parentElement.closest('[data-in],[data-out]');
+    if(lt<tin||lt>=tout||(anc&&anc._hid)){ el.style.visibility='hidden'; el._hid=true; return; }
+    el._hid=false; el.style.visibility='visible';
+    const k=lt-tin, d=fx==='type'?0:clamp(k/0.35,0,1), e=eo(d);
+    let op=1,tr='';
+    if(fx==='fade'){op=e;tr=`translateY(${(1-e)*10}px)`;}
+    else if(fx==='rise'){op=e;tr=`translateY(${(1-e)*18}px)`;}
+    else if(fx==='pop'){op=e;tr=`scale(${0.96+0.04*e})`;}
+    else if(fx==='grow'){tr=`scaleX(${e})`;}
+    else if(fx==='wipe'){el.style.clipPath=`inset(0 ${(1-e)*100}% 0 0)`;}
+    else if(fx==='type'){
+      const cps=parseFloat(el.dataset.cps||24), n=Math.min(el._len,Math.floor(k*cps)+1);
+      const done=n>=el._len, caret=!done||el.dataset.caret==='1';
+      const key=n+'|'+caret; if(el._k!==key){el.innerHTML=typeHTML(el,n,caret);el._k=key;}
+    }
+    // fade out over 0.2s before tout if it is a scheduled out inside the scene
+    if(tout<1e8){ const r=tout-lt; if(r<0.2) op*=r/0.2; }
+    el.style.opacity=op; if(fx!=='wipe'&&fx!=='type') el.style.transform=tr;
+  });
+  // class toggles: data-cls="cls@spec" or "cls@spec-spec"
+  root.querySelectorAll('[data-cls]').forEach(el=>{
+    el.dataset.cls.split(';').forEach(rule=>{ const [cls,rng]=rule.split('@'); const [s,e]=rng.split('-');
+      const on=lt>=ref(sc,s.includes(':')?s:'@'+s)&&(e===undefined||lt<ref(sc,e.includes(':')?e:'@'+e));
+      if(cls==='hl'){el.style.outline=on?'2px solid #A100FF':'none';} else el.classList.toggle(cls,on); });
+  });
+  root.querySelectorAll('.st.run').forEach(el=>{el.style.transform=`rotate(${(lt*360)%360}deg)`;});
+  // autoscroll: follow the newest arrived line, eased, deterministic
+  root.querySelectorAll('[data-autoscroll]').forEach(el=>{
+    const H=el.parentElement.clientHeight-24; const kids=[...el.children].filter(c=>c.dataset.in).map(c=>[ref(sc,c.dataset.in),c.offsetTop+c.offsetHeight]).sort((a,b)=>a[0]-b[0]);
+    let full=0,y=0; for(const [ti,bt] of kids){ if(ti>lt) break; const tgt=Math.max(full,bt-H); y=full+(tgt-full)*eio(clamp((lt-ti)/0.5,0,1)); full=tgt; }
+    el.style.transform=`translateY(${(-y).toFixed(2)}px)`; });
+  // scroll keyframes
+  root.querySelectorAll('[data-scroll]').forEach(el=>{
+    const ks=el.dataset.scroll.split(';').map(s=>{const [v,sp]=s.split('@');return [ref(sc,sp),parseFloat(v)];});
+    let y=ks[0][1];
+    for(let i=1;i<ks.length;i++){const [kt,kv]=ks[i]; if(lt>=kt) y=kv; else { const w=lt-(kt-1.0); if(w>0) y=ks[i-1][1]+(kv-ks[i-1][1])*eio(w/1.0); break; } }
+    el.style.transform=`translateY(${y.toFixed(2)}px)`;
+  });
+  // countdowns
+  root.querySelectorAll('[data-clk]').forEach(el=>{ const s0=ref(sc,el.dataset.clk); const left=Math.max(0,72*3600-Math.max(0,lt-s0)*1);
+    const d=Math.floor(left/86400), h=Math.floor(left%86400/3600), m=Math.floor(left%3600/60), s=Math.floor(left%60);
+    el.textContent=`${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; });
+  root.querySelectorAll('[data-countdown]').forEach(el=>{ const s0=ref(sc,el.dataset.countdown); const left=Math.max(0,3600-Math.max(0,lt-s0));
+    el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(Math.floor(left%60)).padStart(2,'0'); });
+  // counters
+  root.querySelectorAll('[data-count]').forEach(el=>{ const s0=ref(sc,el.dataset.at), to=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec);
+    const v=to*eo(clamp((lt-s0)/1.2,0,1)); el.textContent='≈ '+v.toFixed(dec)+'×'; });
+  // clock
+  const ck=document.getElementById('clock');
+  let tab=null; if(t>=40&&t<150) tab=CLOCK; else if(t>=155&&t<240) tab=CLOCK2;
+  if(sc==='s07'){ ck.style.display='block'; document.getElementById('ck-l').textContent='WELLINGTON 17:40 · MANILA';
+    document.getElementById('ck-t').textContent='12:40'; ck.classList.add('hot'); ck.style.top='938px'; }
+  else if(tab){ ck.style.display='block'; document.getElementById('ck-l').textContent=tab[0][1];
+    document.getElementById('ck-t').textContent=fmtClock(interp(tab,t));
+    ck.classList.toggle('hot', (t>=146.07&&t<150)||(t>=236.975&&t<240)); }
+  else ck.style.display='none';
+  // cursor
+  const cur=document.getElementById('cursor'), ring=document.getElementById('ring');
+  const cs=CUR[sc]; cur.style.display='none'; ring.style.display='none';
+  if(cs){ const pts=cs.map(c=>{ if(typeof c[1]==='string'){ const r=document.querySelector(c[1]).getBoundingClientRect(); return [ref(sc,c[0]),r.left+r.width*0.55,r.top+r.height*0.6,c[2]]; } return [ref(sc,c[0]),c[1],c[2],c[3]]; });
+    if(lt>pts[pts.length-1][0]+0.8) pts.length=0;
+    if(pts.length)
+    if(lt>=pts[0][0]-0.3){ let x=pts[0][1],y=pts[0][2];
+      for(let i=1;i<pts.length;i++){ if(lt>=pts[i][0]){x=pts[i][1];y=pts[i][2];continue;}
+        const w=clamp((lt-(pts[i][0]-0.7))/0.7,0,1); if(w>0){x=pts[i-1][1]+(pts[i][1]-pts[i-1][1])*eio(w);y=pts[i-1][2]+(pts[i][2]-pts[i-1][2])*eio(w);} break; }
+      const fin=clamp((lt-(pts[0][0]-0.3))/0.3,0,1);
+      cur.style.display='block'; cur.style.opacity=fin; cur.style.transform=`translate(${x}px,${y}px)`;
+      for(const pt of pts){ if(pt[3]&&lt>=pt[0]&&lt<pt[0]+0.35){ const q=(lt-pt[0])/0.35; ring.style.display='block';
+        ring.style.left=(x-24)+'px'; ring.style.top=(y-24)+'px'; ring.style.opacity=1-q; ring.style.transform=`scale(${0.6+0.6*q})`; } } } }
+  // poc label: hidden on s11 credits so nothing competes with the mark
+  document.getElementById('poc').style.display=(sc==='s11'&&lt>7)?'none':'block';
+  // end fade
+  if(sc==='s11') document.getElementById('black').style.opacity=clamp((lt-9.3)/0.7,0,1);
+};
+window.setTM=x=>{TM=x};
+</script>
+</body></html>

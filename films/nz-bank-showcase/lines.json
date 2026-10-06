@@ -1,0 +1,108 @@
+{
+ "s01": [
+  0,
+  10,
+  [
+   "What if your delivery methodology didn't live in documents, but ran inside the work?",
+   "AI in Delivery, at a New Zealand bank."
+  ]
+ ],
+ "s02": [
+  10,
+  35,
+  [
+   "Here's the engine, read left to right.",
+   "Everything reads from the bank's own lending repository: its policies, its products, and the system as it's actually built.",
+   "Discovery and functional agents shape the work.",
+   "Code and development agents help build and test it.",
+   "People decide at every gate, and hooks and automated checks enforce the rules."
+  ]
+ ],
+ "s03": [
+  35,
+  40,
+  [
+   "One feature. Morning in Wellington, afternoon in Manila."
+  ]
+ ],
+ "s04": [
+  40,
+  70,
+  [
+   "It's morning in Wellington. A functional consultant opens the feature page for a new business lending product.",
+   "It was signed off weeks ago, but the system has changed since.",
+   "So her first question isn't what to build. It's what is still true.",
+   "She runs the Refinement and Reconcile agent. It reads the earlier pages, the policy rules, and a snapshot of how nCino is set up today.",
+   "Every claim it makes points to a source. No path, no claim."
+  ]
+ ],
+ "s05": [
+  70,
+  110,
+  [
+   "The agent comes back with a process map, and two open questions.",
+   "The first is a gap in the requirement. No exception path is defined for the new product, so it goes to the business analyst.",
+   "The second is a possible known issue in the platform itself. That one goes to nCino's professional services team. It's never assumed.",
+   "Each question gets an owner, and a three day clock.",
+   "The agent found them. She decided they were real."
+  ]
+ ],
+ "s06": [
+  110,
+  150,
+  [
+   "Next, the Story Writer turns the requirements into three stories, in plain business language.",
+   "Every acceptance criterion cites the rule it came from.",
+   "The story that depends on the open questions stays in draft.",
+   "The Task Decomposer breaks the other two into tasks precise enough to start. Where a fact is missing, the task carries the question, not a guess.",
+   "She adjusts one task, and approves. The Publisher puts it all on the board, linked back to the feature page.",
+   "It's eleven forty in Wellington."
+  ]
+ ],
+ "s07": [
+  150,
+  155,
+  [
+   "Six hours later, in Manila."
+  ]
+ ],
+ "s08": [
+  155,
+  215,
+  [
+   "A developer opens Claude Code. The health check clears, and his ticket arrives with its story, its criteria, and its lineage. No copy and paste.",
+   "This is a flow change, so the agent maps the impact first: three callers, and one link into another domain.",
+   "Until that map exists, the edit is blocked. A guard enforces it, not a reviewer's memory.",
+   "He builds in a cloned dev org. The change is checked against nCino's own guidance, then validated against the sandbox.",
+   "The unit test gate finds one missing assertion. The agent fixes it, and the gate goes green.",
+   "The gate blocks. It never softens on a second try.",
+   "Then the QA Plan agent writes the test plan, and hands it to the tester."
+  ]
+ ],
+ "s09": [
+  215,
+  240,
+  [
+   "He raises the pull request. It tells the reviewer what to look at first, and what could go wrong.",
+   "The automated checks all pass. But nothing merges by machine. A named reviewer approves.",
+   "A short retro captures one lesson. Hit it twice, and it becomes a skill or a gate.",
+   "It's twenty past five in Manila."
+  ]
+ ],
+ "s10": [
+  240,
+  260,
+  [
+   "Measured sprints, AI on against AI off: about three times the velocity to system testing, and about twice per developer.",
+   "Bugs per story rose too, because faster builds surface gaps sooner.",
+   "And the bank still plans conservatively, on design, build and unit test only."
+  ]
+ ],
+ "s11": [
+  260,
+  270,
+  [
+   "Agents draft. People decide. Nothing merges by machine."
+  ]
+ ]
+}
