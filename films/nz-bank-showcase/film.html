@@ -164,6 +164,21 @@ section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%
 .dtag{left:0;width:1920px;top:915px;display:flex;align-items:center;justify-content:center;gap:34px}
 .dtl{font-size:42px;font-weight:600;letter-spacing:-.5px;color:#F7F4FF}
 .dtl em{color:#C26BFF}
+
+/* ---------- s10 measured outcome ---------- */
+.fig{position:absolute;top:400px;width:480px}
+.fig .v{font-family:G;font-weight:500;font-size:116px;letter-spacing:-2px;line-height:1}
+.fig .fl{font-size:25px;font-weight:500;margin-top:18px;line-height:1.3}
+.fig .fm{font-size:21px;line-height:1.45;color:var(--ink2);margin-top:10px}
+.half{position:absolute;top:170px;width:780px;height:420px;border:1.5px solid #CFCAC0;border-radius:18px;background:#FBFAF7;padding:34px 38px}
+.half .hv{font-weight:500;font-size:96px;letter-spacing:-2px;line-height:1}
+.half .ht{font-size:30px;font-weight:500;margin-top:16px}
+.half .hd{font-size:23px;line-height:1.45;color:var(--ink2);margin-top:14px}
+.stm{position:absolute;width:780px;height:350px;border:1.5px solid #CFCAC0;border-radius:18px;background:#FBFAF7;padding:28px 34px}
+.stm .sn{font-family:GM;font-size:16px;letter-spacing:3px;color:var(--acc)}
+.stm .st{font-size:30px;font-weight:500;margin-top:8px;line-height:1.2}
+.stm .sd{font-size:20px;line-height:1.45;color:var(--ink);margin-top:12px}
+.stm .sc{font-size:19px;line-height:1.45;color:var(--ink2);margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 </style></head><body>
 
 <!-- ===================== S01 opening ===================== -->
@@ -450,20 +465,20 @@ section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%
    <div class="l" data-in="4:3.4" data-fx="fade"><span class="c-o">⏺</span> Dev agent: add the missing assertion</div>
    <div class="l c-g" data-in="4:4.0" data-fx="fade">  +  System.assertEquals('Credit', loan.Approval_Route__c);</div>
    <div class="l" data-in="4:5.0" data-fx="fade"><span class="c-o">⏺</span> Unit-test gate (re-run) <span class="c-g">✓ ✓ ✓ ✓</span>  <span class="c-g">PASSED</span></div>
-   <div class="l" data-in="6:0" data-fx="fade"><span class="c-o">⏺</span> QA Plan agent → qa-plans/HBL-106-ST2.md</div>
+   <div class="l" data-in="6:0" data-fx="fade"><span class="c-o">⏺</span> QA Plan agent → qa-plans/HBL-106.md</div>
    <div data-in="6:0.7" data-fx="fade"><div class="box">
-     <span class="c-w">QA plan · HBL-106 · ST2</span><br>
+     <span class="c-w">QA plan · HBL-106 · for the bank's testing</span><br>
      Personas              Banker (synthetic) · Credit officer (synthetic)<br>
      Test data             loan above the product limit · loan within limit<br>
      Developer attestation signed · gate PASSED<br>
      Tester amendments     <span class="c-d">owned by the tester from handoff</span></div></div>
-   <div class="l c-g" data-in="6:2.6" data-fx="fade">  ⎿ handed off to the tester · ST2</div>
+   <div class="l c-g" data-in="6:2.6" data-fx="fade">  ⎿ handed off to the tester</div>
   </div></div>
  </div></div>
  <div class="cap" data-in="0:0.1" data-fx="type" data-cps="26" data-out="2:-0.1">The ticket arrives with its story, its criteria and its lineage. No copy-paste.</div>
  <div class="cap" data-in="2:0" data-fx="type" data-cps="26" data-out="5:-0.1"><em>No impact map, no edit.</em> The flow edit guard enforces it, not a reviewer's memory.</div>
  <div class="cap" data-in="5:0" data-fx="type" data-cps="26" data-out="6:-0.1">The gate blocks; it never softens on a second attempt.</div>
- <div class="cap" style="font-size:26px" data-in="6:0" data-fx="type" data-cps="30">The developer generates it once tests pass. From handoff it belongs to the tester, who executes in ST2. The developer never edits it again.</div>
+ <div class="cap" style="font-size:26px" data-in="6:0" data-fx="type" data-cps="30">The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again.</div>
 </div></section>
 
 <!-- ===================== S09 PR ===================== -->
@@ -484,7 +499,7 @@ section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%
   <div class="gh" data-in="1:-0.2" data-out="2:-0.2">
    <div class="gt"><b style="color:#1F2328">example-lending</b> / lending-delivery <span style="margin-left:24px">Pull requests</span></div>
    <div class="ttl">HBL-106 Route above product limit <span>#212</span></div>
-   <div class="meta"><span class="open">⟟ Open</span> dev wants to merge 1 commit into <span class="chip">st2</span> from <span class="chip">feature/HBL-106</span></div>
+   <div class="meta"><span class="open">⟟ Open</span> dev wants to merge 1 commit into <span class="chip">develop</span> from <span class="chip">feature/HBL-106</span></div>
    <div class="bd">
     <div class="cm"><div class="cmh">Reviewer-first summary</div><div class="cmb">
       <h5>What to look at first</h5>Approval routing branch in HBL_Approval_Router.
@@ -502,7 +517,7 @@ section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%
     <div style="font-weight:600;color:#1F2328;margin-bottom:8px">Reviewers</div>
     <div>reviewer-a (named reviewer) <span data-out="1:5.0" style="color:#BF8700">· review required</span><span data-in="1:5.0" data-fx="fade" style="color:#1F883D">· ✓ approved</span></div>
     <div style="margin-top:26px;border:1px solid #D1D9E0;border-radius:8px;padding:14px 16px;color:#1F2328">
-      <span data-out="1:5.0">Merging is blocked until a named reviewer approves.</span><span data-in="1:5.0" data-fx="fade">Approved by reviewer-a. Merge is done by a person. On merge, CI deploys to ST2.</span></div>
+      <span data-out="1:5.0">Merging is blocked until a named reviewer approves.</span><span data-in="1:5.0" data-fx="fade">Approved by reviewer-a. Merge is done by a person. On merge, CI hands it to the bank for its testing.</span></div>
    </div>
   </div>
   <div class="term" data-in="2:-0.2">
@@ -516,19 +531,53 @@ section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%
    </div></div>
   </div>
  </div>
- <div class="cap" data-in="1:0" data-fx="type" data-cps="28" data-out="2:-0.1"><em>Nothing merges by machine.</em> A named reviewer approves. On merge, CI deploys to ST2; the tester picks up the plan.</div>
+ <div class="cap" data-in="1:0" data-fx="type" data-cps="28" data-out="2:-0.1"><em>Nothing merges by machine.</em> A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan.</div>
  <div class="cap" data-in="2:0" data-fx="type" data-cps="26">The second time the same lesson is hit, it graduates into a skill or a gate.</div>
 </div></section>
 
-<!-- ===================== S10 figures ===================== -->
+<!-- ===================== S10 what a month adds up to ===================== -->
 <section id="s10"><div class="cam">
-  <div class="abs eyebrow" style="left:200px;top:150px" data-in="@0.2" data-fx="fade">Measured sprints · AI on against AI off</div>
-  <div class="abs" style="left:200px;top:196px;font-size:46px;font-weight:500" data-in="@0.3" data-fx="type" data-cps="30">What a day like this adds up to</div>
-  <div class="stat" style="left:200px;top:330px" data-in="0:0.6" data-fx="rise"><div class="v" data-count="3" data-dec="0" data-at="0:0.6">≈ 3×</div><div class="d">Velocity to SIT</div></div>
-  <div class="stat" style="left:740px;top:330px" data-in="0:1.4" data-fx="rise"><div class="v" data-count="2.8" data-dec="1" data-at="0:1.4">≈ 2.8×</div><div class="d">Story points to SIT,<br>story size unchanged</div></div>
-  <div class="stat" style="left:1280px;top:330px" data-in="0:2.2" data-fx="rise"><div class="v" data-count="2" data-dec="0" data-at="0:2.2">≈ 2×</div><div class="d">Per developer</div></div>
-  <div class="abs" style="left:200px;top:640px;width:1500px;font-size:28px;line-height:1.45" data-in="1:0" data-fx="type" data-cps="34">Bugs per story rose from 0.77 to 1.08. Faster build exposes acceptance-criteria gaps sooner. That is why the shaping agents exist.</div>
-  <div class="abs" style="left:200px;top:770px;width:1500px;font-size:28px;line-height:1.45;color:var(--ink2)" data-in="2:0" data-fx="type" data-cps="38">The bank plans on 30 to 40 percent on design, build and unit test only, and zero on SIT and UAT. The measured uplift is the evidence, not the commitment.</div>
+ <!-- page 1: headline and the three figures -->
+ <div data-out="2:-0.15">
+  <div class="abs eyebrow" style="left:160px;top:110px" data-in="@0.2" data-fx="fade">Measured sprints · AI on against AI off · one month in</div>
+  <div class="abs" style="left:160px;top:152px;width:1560px;font-size:50px;font-weight:500;line-height:1.15;letter-spacing:-.5px" data-in="0:0" data-fx="type" data-cps="40">The information is at the programme's fingertips, and the delivery pod is shaped around <em>it</em>.</div>
+  <div class="fig" style="left:160px" data-in="1:0" data-fx="rise"><div class="v" data-count="3" data-dec="0" data-at="1:0">≈ 3×</div>
+    <div class="fl">Velocity: tickets completed per two-week sprint</div>
+    <div class="fm">Built, tested by the squad and handed to the bank for its testing. About 35 a sprint with AI on, against 11 or 12 before.</div></div>
+  <div class="fig" style="left:700px" data-in="1:1.6" data-fx="rise"><div class="v" data-count="2.8" data-dec="1" data-at="1:1.6">≈ 2.8×</div>
+    <div class="fl">Work delivered per sprint, in story points</div>
+    <div class="fm">The average story stayed the same size, about 5.5 points, so the extra throughput is real work, not smaller stories.</div></div>
+  <div class="fig" style="left:1240px" data-in="1:3.2" data-fx="rise"><div class="v" data-count="2" data-dec="0" data-at="1:3.2">≈ 2×</div>
+    <div class="fl">Per developer</div>
+    <div class="fm">Each developer completed about twice as many tickets a sprint as before, with the same people.</div></div>
+ </div>
+ <!-- page 2: what the 3x is made of -->
+ <div data-in="2:-0.1" data-out="3:-0.15">
+  <div class="abs eyebrow" style="left:160px;top:110px" data-in="2:-0.1" data-fx="fade">What the 3× is made of</div>
+  <div class="half" style="left:160px" data-in="2:0.4" data-fx="pop"><div class="hv">≈ 2×</div><div class="ht">user stories delivered</div><div class="hd">26 in the first AI-on sprint, against an average of 11 or 12 before.</div></div>
+  <div class="half" style="left:980px" data-in="2:2.6" data-fx="pop"><div class="hv">Backlog</div><div class="ht">of older bugs cleared</div><div class="hd">New bugs were raised and fixed in the same sprint, before the work moved on to the bank's testing.</div></div>
+  <div class="abs" style="left:160px;top:640px;width:1600px;font-size:24px;line-height:1.5;color:var(--ink2)" data-in="2:4.2" data-fx="fade">Three times the velocity is made of two things. First, about twice as many user stories were delivered: 26 in the first AI-on sprint against an average of 11 or 12 before. Second, the squad cleared bugs. A significant share of the bugs it closed were older ones from a backlog that earlier sprints had not had capacity to reach: cleared, not new. The rest were raised on work being built that same sprint, and were fixed before the sprint ended and before the work moved on to the bank's testing. Both are what you want: the backlog is gone, and new problems are caught close to where they are made.</div>
+ </div>
+ <!-- page 3: four statements -->
+ <div data-in="3:-0.1" data-out="5:-0.15">
+  <div class="abs eyebrow" style="left:160px;top:96px" data-in="3:-0.1" data-fx="fade">One month in</div>
+  <div class="stm" style="left:160px;top:140px" data-in="3:0" data-fx="pop"><div class="sn">1</div><div class="st">Nothing carried forward.</div>
+    <div class="sd">Every bug raised in the first AI-on sprint was fixed in that sprint: 25 of 25.</div><div class="sc">More delivered, and the team kept up.</div></div>
+  <div class="stm" style="left:980px;top:140px" data-in="3:1.9" data-fx="pop"><div class="sn">2</div><div class="st">Problems found close to where they are made.</div>
+    <div class="sd">New defects are raised and fixed within the sprint, before the work goes to the bank for testing. The enablement week put three real tickets into production with no new defects found.</div>
+    <div class="sc">Faster build brings gaps forward, and the discovery agents now catch them in refinement, before a story is even built.</div></div>
+  <div class="stm" style="left:160px;top:520px" data-in="4:0" data-fx="pop"><div class="sn">3</div><div class="st">One standard for every developer.</div>
+    <div class="sd">Every change passes the same automated checks before a person reviews it: test coverage, meaningful tests, code analysis, a test plan with the right user roles.</div>
+    <div class="sc">Consistency in code quality is built into the pipeline, not left to the individual.</div></div>
+  <div class="stm" style="left:980px;top:520px" data-in="4:2.0" data-fx="pop"><div class="sn">4</div><div class="st">Built on what nCino already provides.</div>
+    <div class="sd">The platform's own release notes, known issues and data model are checked at design time, so capability that exists or is about to ship is used rather than rebuilt.</div>
+    <div class="sc">Avoiding technical debt at the point of design.</div></div>
+ </div>
+ <!-- page 4: the model -->
+ <div data-in="5:-0.1">
+  <div class="abs" style="left:160px;top:360px;width:1560px;font-size:52px;font-weight:500;line-height:1.2;letter-spacing:-.5px" data-in="5:0" data-fx="type" data-cps="36" data-caret="1">A reusable model, trained into the squad in nine weeks: 13 of 13 <em>ready</em>, and packaged for the next cohort.</div>
+  <div class="abs" style="left:160px;top:640px;width:1400px;font-size:24px;line-height:1.5;color:var(--ink2)" data-in="5:3.4" data-fx="fade">The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment.</div>
+ </div>
 </div></section>
 
 <!-- ===================== S11 close ===================== -->

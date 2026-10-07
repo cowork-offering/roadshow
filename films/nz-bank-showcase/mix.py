@@ -2,7 +2,9 @@
 # gaps, head-fades from silence; then two-pass loudnorm of the full mix to -14 LUFS / -1 dBTP.
 import json, sys, subprocess, numpy as np, soundfile as sf
 VODIR=sys.argv[1] if len(sys.argv)>1 else '.'
-SR=48000; N=int(270*SR)
+SR=48000
+import json as _j
+TOTAL=max(v['win'][1] for v in _j.load(open('timing.json')).values()); N=int(TOTAL*SR)
 def load(path,ch):
     raw=subprocess.run(['ffmpeg','-v','error','-i',path,'-ar',str(SR),'-ac',str(ch),'-f','f32le','-'],capture_output=True,check=True).stdout
     return np.frombuffer(raw,np.float32).reshape(-1,ch).copy()
@@ -30,7 +32,7 @@ g=10**((GAP-mus_gap_db+DUCK*env)/20)
 # head fade 2.5 s from -60 dB, tail: follow the picture's fade to black (269.3 -> 270.0)
 t=np.arange(N)/SR
 g*=np.where(t<2.5,10**((-60+60*np.clip(t/2.5,0,1))/20),1.0)
-g*=np.clip((270.0-t)/0.7,0,1)
+g*=np.clip((TOTAL-t)/0.7,0,1)
 bed=mus*g[:,None]
 mix=bed+vo
 sf.write('mix_pre.wav',mix,SR)

@@ -13,7 +13,9 @@ sel=(lags>=200*60/180)&(lags<=200*60/80); lag=lags[sel][np.argmax(ac[sel])]
 y0,y1,y2=ac[lag-1],ac[lag],ac[lag+1]; beat=(lag+0.5*(y0-y2)/(y0-2*y1+y2))/200
 t=np.arange(len(o))/200; ph=np.linspace(0,beat,200,endpoint=False)
 phase=ph[int(np.argmax([o[((t-p)%beat)<0.01].sum() for p in ph]))]
-bar=4*beat; L=16*bar
+import sys
+BARS=int(sys.argv[1]) if len(sys.argv)>1 else 16
+bar=4*beat; L=BARS*bar
 def feat(t):
     a=int(t*sr); w=mono[a:a+int(2*sr)]; S=np.abs(np.fft.rfft(w*np.hanning(len(w))))
     return np.log(np.add.reduceat(S,np.unique(np.geomspace(1,len(S)-1,40).astype(int)))+1e-6)

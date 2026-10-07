@@ -4,7 +4,8 @@ m=WhisperModel("base.en",device="cpu",compute_type="int8")
 L=json.load(open('lines.json')); fails=[]
 norm=lambda s:re.sub(r'[^a-z0-9 ]','',s.lower().replace('-',' ').replace('ncino','encino')).split()
 only=set(sys.argv[1:])
-for k,(a,b,sents) in L.items():
+for k,v_ in L.items():
+    a,b,sents=v_[:3]
     for i,s in enumerate(sents):
         key=f'{k}_{i}'
         if only and key not in only: continue

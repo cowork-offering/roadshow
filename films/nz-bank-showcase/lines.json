@@ -92,16 +92,27 @@
  ],
  "s10": [
   240,
-  260,
+  290,
   [
-   "Measured sprints, AI on against AI off: about three times the velocity to system testing, and about twice per developer.",
-   "Bugs per story rose too, because faster builds surface gaps sooner.",
-   "And the bank still plans conservatively, on design, build and unit test only."
+   "One month in, the information is at the programme's fingertips, and the delivery pod is shaped around it.",
+   "Measured sprint against sprint, with AI on and off, the squad completed about three times as many tickets, with stories the same size and the same people.",
+   "That three times is two good stories. About twice as many user stories were delivered, and the squad cleared a backlog of older bugs, while fixing new ones in the same sprint they were raised.",
+   "Nothing was carried forward, and problems are now found close to where they are made.",
+   "Every developer is held to one standard, and every design builds on what nCino already provides.",
+   "It's a reusable model, trained into the squad in nine weeks, and packaged for the next cohort."
+  ],
+  [
+   0.6,
+   1.6,
+   1.0,
+   2.6,
+   4.0,
+   0
   ]
  ],
  "s11": [
-  260,
-  270,
+  290,
+  300,
   [
    "Agents draft. People decide. Nothing merges by machine."
   ]

@@ -5,7 +5,8 @@ torch.set_num_threads(4)
 EX,CFG=0.7,0.4
 L=json.load(open('lines.json')); only=set(sys.argv[1:])
 m=ChatterboxTTS.from_pretrained(device="cpu")
-for k,(a,b,sents) in L.items():
+for k,v_ in L.items():
+    a,b,sents=v_[:3]
     for i,s in enumerate(sents):
         key=f'{k}_{i}'
         if only and key not in only: continue
