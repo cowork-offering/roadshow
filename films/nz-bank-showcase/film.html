@@ -498,8 +498,8 @@ function ref(sc,spec){
   const [k,o]=spec.split(':'); return TM[sc].starts[parseInt(k)]+parseFloat(o||0);
 }
 // clocks: [t, label, minutes-since-midnight]
-const CLOCK=[[40,'WELLINGTON',9*60+2],[146.07,'WELLINGTON',11*60+40],[150,'WELLINGTON',11*60+40]];
-const CLOCK2=[[155,'MANILA',12*60+40],[236.975,'MANILA',17*60+20],[240,'MANILA',17*60+20]];
+// clock beats land on the narration lines that say them (s06 line 5: 11:40, s09 line 3: 17:20)
+let CLOCK=null, CLOCK2=null, K1=0, K2=0;
 // cursor scripts per scene: [spec, x, y, click]
 const CUR={
   s05:[['3:0.2',1400,640],['3:1.6','#acc5',1]],
@@ -589,7 +589,7 @@ window.render=function(t){
     document.getElementById('ck-t').textContent='12:40'; ck.classList.add('hot'); ck.style.top='938px'; }
   else if(tab){ ck.style.display='block'; document.getElementById('ck-l').textContent=tab[0][1];
     document.getElementById('ck-t').textContent=fmtClock(interp(tab,t));
-    ck.classList.toggle('hot', (t>=146.07&&t<150)||(t>=236.975&&t<240)); }
+    ck.classList.toggle('hot', (t>=K1&&t<150)||(t>=K2&&t<240)); }
   else ck.style.display='none';
   // cursor
   const cur=document.getElementById('cursor'), ring=document.getElementById('ring');
@@ -609,6 +609,9 @@ window.render=function(t){
   // end fade
   if(sc==='s11') document.getElementById('black').style.opacity=clamp((lt-9.3)/0.7,0,1);
 };
-window.setTM=x=>{TM=x};
+window.setTM=x=>{TM=x;
+  K1=TM.s06.win[0]+TM.s06.starts[5]; K2=TM.s09.win[0]+TM.s09.starts[3];
+  CLOCK=[[40,'WELLINGTON',9*60+2],[K1,'WELLINGTON',11*60+40],[150,'WELLINGTON',11*60+40]];
+  CLOCK2=[[155,'MANILA',12*60+40],[K2,'MANILA',17*60+20],[240,'MANILA',17*60+20]];};
 </script>
 </body></html>
