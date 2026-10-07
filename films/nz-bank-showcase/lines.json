@@ -9,7 +9,7 @@
  ],
  "s02": [
   10,
-  43,
+  46,
   [
    "Here's how we run it.",
    "People orchestrate the work, and agents and skills do the heavy lifting, in discovery and in development.",
@@ -20,15 +20,15 @@
   ]
  ],
  "s03": [
-  43,
-  48,
+  46,
+  51,
   [
    "One feature. Morning in Wellington, afternoon in Manila."
   ]
  ],
  "s04": [
-  48,
-  78,
+  51,
+  81,
   [
    "It's morning in Wellington. A functional consultant opens the feature page for a new business lending product.",
    "It was signed off weeks ago, but the system has changed since.",
@@ -38,8 +38,8 @@
   ]
  ],
  "s05": [
-  78,
-  113,
+  81,
+  116,
   [
    "The agent comes back with a process map, and two open questions.",
    "The first is a gap in the requirement. No exception path is defined for the new product, so it goes to the business analyst.",
@@ -49,8 +49,8 @@
   ]
  ],
  "s06": [
-  113,
-  153,
+  116,
+  156,
   [
    "Next, the Story Writer turns the requirements into three stories, in plain business language.",
    "Every acceptance criterion cites the rule it came from.",
@@ -61,14 +61,14 @@
   ]
  ],
  "s07": [
-  153,
-  158,
+  156,
+  161,
   [
    "Six hours later, in Manila."
   ]
  ],
  "s08": [
-  158,
+  161,
   215,
   [
    "A developer opens Claude Code. The health check clears, and his ticket arrives with its story, its criteria, and its lineage. No copy and paste.",
