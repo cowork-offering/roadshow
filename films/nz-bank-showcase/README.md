@@ -4,7 +4,7 @@ The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narra
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
 - Film (5:14, the long version for client conversations): [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
-- 40-second cut for LinkedIn and sales: [`media/nz-bank-showcase-40s.mp4`](../../media/nz-bank-showcase-40s.mp4). See [The 40-second cut](#the-40-second-cut).
+- 50-second cut for LinkedIn and sales: [`media/nz-bank-showcase-50s.mp4`](../../media/nz-bank-showcase-50s.mp4). See [The short cut](#the-short-cut).
 - Storyboard, one frame per scene: [`storyboard.jpg`](storyboard.jpg)
 - Source script: `SCRIPT-ai-in-delivery-showcase-a-new-zealand-bank.md` (supplied by Miles Blair)
 - Closing scene and claims: `CLOSING-SCENE-and-PR-NARRATIVE-ncino-accenture.md` (7 October 2026). Its Part A replaces scene 10, and its claims checklist applies to the whole film.
@@ -123,31 +123,32 @@ These checks were done before export:
 
 - Master: -14.3 LUFS integrated, -1.2 dBTP (web).
 
-## The 40-second cut
+## The short cut
 
-`media/nz-bank-showcase-40s.mp4` runs 41.0 s (985 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`.
+`media/nz-bank-showcase-50s.mp4` runs 50.0 s (1201 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`. The first 40-second build felt rushed, so on 2026-10-07 it was extended to 50 seconds at Miles Blair's request.
 
 **What it uses:**
-- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. That keeps it sharp and lets long build-ups, such as the engine diagram, animate in compressed time. `cut40/map.json` lists each shot with its master range and speed.
+- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. That keeps it sharp and lets the engine diagram animate in compressed time. `cut40/map.json` lists each shot with its master range and speed.
+- **Pace:** UI shots show the moment that matters at close to real speed, mostly 1 to 2.5×, and each holds at least 1.7 s. The "Six hours later" card is the one shorter beat.
 - **Boundaries:** every shot boundary sits on a narration cue.
-- **The gate shot:** holds a fixed 2 s and shows the block, the fix, then PASSED.
+- **The gate shot:** holds 2.2 s and shows the block, the fix, then PASSED.
 - **New element:** the end card (`cut40/endcard.html`), with the nCino and Accenture logos at equal weight, the tagline in three beats and "An evolving proof of concept · live since September 2026". The master's credits frame carries only the Accenture logo.
 
 **Narration:**
-- Voice D, 115 words. The brief's own lines come to about 137 words, more than the 101 it states, which voice D would need about 46 s to say.
-- The lines were tightened without changing a claim. The full set is in `cut40/lines.json`.
-- The narration is then sped up 1.25× (pitch-preserved) to a brisk 3.1 words a second.
+- Voice D, 115 words, about 3 words a second: one gentle 1.045× speed-up, pitch-preserved.
+- Longer pauses after the Wellington and Manila lines let those screens play under the music.
+- The brief's own lines come to about 137 words, more than the 101 it states. The lines in `cut40/lines.json` tighten them without changing a claim.
 
-**Music:** "Tech Talk" again, entering on a full-energy downbeat about 30 s into the track. The voice sits about 6 dB over the music, slightly closer than in the long film, as suits a social mix.
+**Music:** "Tech Talk" again, entering on a full-energy downbeat about 30 s into the track. The voice sits about 6 dB over the music.
 
 **Rebuild,** from this folder after the long film's `timing.json` exists:
 
 ```bash
 python3.11 tts_expressive.py c40_0 c40_1 c40_2 c40_3 c40_4 c40_5 c40_6 c40_7   # -> cut40/vo/
-python3 cut40/build_map.py          # cues + shot map -> cut40/map.json
+python3 cut40/build_map.py --apply  # one gentle speed change to land on 50 s; cues + shot map -> cut40/map.json
 node cut40/render_cut.js full       # -> cut40/picture.mp4
 python3 cut40/mix_cut.py            # -> cut40/mix_master.wav
-ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-40s.mp4
+ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-50s.mp4
 ```
 
 ## Rebuild
