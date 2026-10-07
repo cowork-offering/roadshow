@@ -36,7 +36,7 @@ This film uses the craft rules of the `hypevideo` skill (`knowledge/skills/hypev
   - Miles directed this as a demonstration of how the flow could work.
   - Real recordings can replace any screen scene without re-timing. The shot list below gives the exact state each one needs.
 - **Voice:** a British female voice, chosen by Miles Blair on 2026-10-07 from a sampler of five.
-  - **Model:** Chatterbox (Resemble AI, MIT licence), run locally. It is cloned to a British female timbre from , a short reference clip generated with Kokoro's `bf_emma` voice (Apache 2.0).
+  - **Model:** Chatterbox (Resemble AI, MIT licence), run locally. It is cloned to a British female timbre from `voice_ref_british.wav`, a short reference clip generated with Kokoro's `bf_emma` voice (Apache 2.0).
   - **Settings:** exaggeration 0.7, cfg 0.4.
   - **Pronunciation:** "nCino" is spelled "Encino" in the voice input only, so it is said "en-SEE-no". The captions are unchanged.
   - **Earlier voices:** the first cut used Kokoro `af_heart`; the second used Chatterbox's default voice.
