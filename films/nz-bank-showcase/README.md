@@ -35,10 +35,12 @@ This film uses the craft rules of the `hypevideo` skill (`knowledge/skills/hypev
   - Every value on them is synthetic.
   - Miles directed this as a demonstration of how the flow could work.
   - Real recordings can replace any screen scene without re-timing. The shot list below gives the exact state each one needs.
-- **Voice:** Chatterbox (Resemble AI, MIT licence), an expressive open TTS model, run locally at exaggeration 0.7.
-  - **Expressiveness:** it carries about twice the pitch movement of the first cut's voice (14 to 15 semitones of range against 7.5), at a livelier pace of about 3.5 to 4.4 words a second.
+- **Voice:** a British female voice, chosen by Miles Blair on 2026-10-07 from a sampler of five.
+  - **Model:** Chatterbox (Resemble AI, MIT licence), run locally. It is cloned to a British female timbre from , a short reference clip generated with Kokoro's `bf_emma` voice (Apache 2.0).
+  - **Settings:** exaggeration 0.7, cfg 0.4.
   - **Pronunciation:** "nCino" is spelled "Encino" in the voice input only, so it is said "en-SEE-no". The captions are unchanged.
-  - **ElevenLabs:** the ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`. To use them instead, regenerate the 40 lines in `lines.json` into `v2/` and re-run `timing.py`, `render.js` and `mix.py`.
+  - **Earlier voices:** the first cut used Kokoro `af_heart`; the second used Chatterbox's default voice.
+  - **ElevenLabs:** the ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`. To use them instead, regenerate the lines in `lines.json` into `v2/` and re-run `timing.py`, `render.js` and `mix.py`.
 
 ## Scenes, cues and captions
 
@@ -49,16 +51,16 @@ Times are absolute. Narration cues are the start of each spoken sentence. Change
 
 | # | Window | Screen | Narration cues | On-screen captions (from the script) |
 |---|---|---|---|---|
-| 1 | 0:00-0:10 | Title cards | 0.4, 6.0 | "What if your delivery methodology didn't live in documents, but ran inside the work?" then "AI in Delivery. A New Zealand bank, one feature, one day." |
-| 2 | 0:10-0:46 | The setup (dark, in the Delivery Cockpit diagram language) | 10.5, 13.7, 20.7, 27.1, 35.5, 41.2 | People orchestrate, with Accenture people with the skills shown on a band carrying the Accenture logo. The flow runs left to right: the lending repository, then Discovery agents and skills, then people review at discovery, then Development agents and skills, then people review at code, then agents execute the remaining tasks. The nCino MCP hub, with the nCino logo, connects to every step. Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". Tagline, with the nCino logo left and the Accenture logo right: "Grounded in nCino. Decided by people. Delivered by Accenture." Sub-line: "The first SI partner to run the nCino MCP in a live SDLC. nCino's knowledge at every step, human checkpoints at discovery and code, and the people with the skills to make the efficiency real." |
+| 1 | 0:00-0:10 | Title cards | 0.4, 6.3 | "What if your delivery methodology didn't live in documents, but ran inside the work?" then "AI in Delivery. A New Zealand bank, one feature, one day." |
+| 2 | 0:10-0:46 | The setup (dark, in the Delivery Cockpit diagram language) | 10.5, 12.8, 20.1, 27.1, 35.5, 40.6 | People orchestrate, with Accenture people with the skills shown on a band carrying the Accenture logo. The flow runs left to right: the lending repository, then Discovery agents and skills, then people review at discovery, then Development agents and skills, then people review at code, then agents execute the remaining tasks. The nCino MCP hub, with the nCino logo, connects to every step. Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". Tagline, with the nCino logo left and the Accenture logo right: "Grounded in nCino. Decided by people. Delivered by Accenture." Sub-line: "The first SI partner to run the nCino MCP in a live SDLC. nCino's knowledge at every step, human checkpoints at discovery and code, and the people with the skills to make the efficiency real." |
 | 3 | 0:46-0:51 | Title | 46.5 | "One feature. Morning in Wellington, afternoon in Manila." |
-| 4 | 0:51-1:21 | Claude Cowork | 51.5, 57.9, 62.6, 67.8, 76.7 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
-| 5 | 1:21-1:56 | Claude Cowork, reconcile report | 81.5, 86.9, 94.7, 103.8, 108.3 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
-| 6 | 1:56-2:36 | Claude Cowork, then Jira | 116.5, 123.1, 127.9, 133.5, 142.6, 149.5 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
+| 4 | 0:51-1:21 | Claude Cowork | 51.5, 57.7, 62.0, 66.9, 76.0 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
+| 5 | 1:21-1:56 | Claude Cowork, reconcile report | 81.5, 87.1, 95.5, 105.2, 110.0 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
+| 6 | 1:56-2:36 | Claude Cowork, then Jira | 116.5, 124.0, 128.7, 134.4, 145.0, 152.5 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
 | 7 | 2:36-2:41 | Title | 156.5 | "Six hours later." |
-| 8 | 2:41-3:35 | Claude Code, terminal | 161.5, 170.9, 178.6, 185.3, 193.3, 200.5, 205.2 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again." |
-| 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.2, 228.8, 234.8 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
-| 10 | 4:00-4:50 | Measured outcome, in four beats | 240.5, 245.8, 254.8, 265.2, 271.9, 281.3 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
+| 8 | 2:41-3:35 | Claude Code, terminal | 161.5, 172.6, 180.4, 188.9, 198.2, 205.3, 210.0 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again." |
+| 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.2, 230.0, 237.0 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
+| 10 | 4:00-4:50 | Measured outcome, in four beats | 240.5, 246.2, 256.2, 267.4, 274.7, 284.1 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
 | 11 | 4:50-5:00 | Close and credits | 290.5 | "Agents draft. People decide. Nothing merges by machine." / "An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026." / Credits: "Discovery and functional agents · Miles Blair, Delivery Lead. Code and development agents · Fabian Goetzens, Noland Smith. Run with the bank's nCino squad." Accenture mark. |
 | 12 | 5:00-5:14 | The team, who to reach out to | 300.5 | "The team · who to reach out to". "Talk to the people who built it". Six cards with name, role, contribution and email:<br>- Miles Blair, Delivery Lead: designed the discovery agents and ways of working. miles.blair@accenture.com<br>- Fabian Goetzens, AI Engineer: delivered the development and test agents. fabian.goetzens@accenture.com<br>- Noland Smith, Anthropic Lead: enabled the technical setup. noland.smith@accenture.com<br>- Phinizy Wimberly, Engagement Lead. thomas.wimberly@accenture.com<br>- Andreas Habib, Functional Designer: provided inputs into the discovery agents. andreas.habib@accenture.com<br>- Mozammil Hassan, Functional Designer: provided inputs into the discovery agents. muhammad.m.hassan@accenture.com<br>Accenture logo. Fades to black. |
 
@@ -105,20 +107,20 @@ These checks were done before export:
 
 | Scene | Voice dB | Bed under voice | Separation | Bed in gaps |
 |---|---|---|---|---|
-| 1 | -19.2 | -37.1 | 17.9 | -30.6 |
-| 2 | -20.2 | -29.6 | 9.4 | -21.7 |
-| 3 | -19.6 | -27.3 | 7.7 | -23.4 |
-| 4 | -20.0 | -29.2 | 9.2 | -22.2 |
-| 5 | -20.4 | -30.0 | 9.6 | -22.5 |
-| 6 | -20.2 | -29.8 | 9.6 | -23.5 |
-| 7 | -20.0 | -26.3 | 6.2 | -22.2 |
-| 8 | -20.0 | -30.6 | 10.6 | -22.0 |
-| 9 | -19.8 | -28.5 | 8.7 | -21.5 |
-| 10 | -19.7 | -29.3 | 9.7 | -22.0 |
-| 11 | -20.1 | -28.5 | 8.4 | -20.2 |
-| 12 | -20.5 | -28.8 | 8.3 | -24.1 |
+| 1 | -19.9 | -36.8 | 16.9 | -31.9 |
+| 2 | -20.2 | -29.7 | 9.5 | -23.1 |
+| 3 | -18.8 | -28.1 | 9.3 | -23.7 |
+| 4 | -20.3 | -29.2 | 8.9 | -23.1 |
+| 5 | -20.3 | -29.5 | 9.2 | -23.7 |
+| 6 | -20.2 | -30.4 | 10.2 | -23.2 |
+| 7 | -20.1 | -26.9 | 6.9 | -22.6 |
+| 8 | -19.8 | -30.3 | 10.5 | -22.9 |
+| 9 | -20.2 | -28.7 | 8.5 | -22.7 |
+| 10 | -19.8 | -29.4 | 9.6 | -22.4 |
+| 11 | -19.5 | -28.1 | 8.6 | -20.3 |
+| 12 | -19.5 | -28.7 | 9.2 | -24.0 |
 
-- Master: -14.1 LUFS integrated, -1.5 dBTP (web).
+- Master: -14.2 LUFS integrated, -1.5 dBTP (web).
 
 ## Rebuild
 
