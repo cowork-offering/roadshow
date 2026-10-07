@@ -4,7 +4,7 @@ The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narra
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
 - Film (5:14, the long version for client conversations): [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
-- 60-second cut for LinkedIn and sales (setup and benefits, plus the team card): [`media/nz-bank-showcase-60s.mp4`](../../media/nz-bank-showcase-60s.mp4). See [The short cut](#the-short-cut).
+- Short cut (1:10) for LinkedIn and sales (setup and benefits, plus the team card): [`media/nz-bank-showcase-60s.mp4`](../../media/nz-bank-showcase-60s.mp4). See [The short cut](#the-short-cut).
 - Storyboard, one frame per scene: [`storyboard.jpg`](storyboard.jpg)
 - Source script: `SCRIPT-ai-in-delivery-showcase-a-new-zealand-bank.md` (supplied by Miles Blair)
 - Closing scene and claims: `CLOSING-SCENE-and-PR-NARRATIVE-ncino-accenture.md` (7 October 2026). Its Part A replaces scene 10, and its claims checklist applies to the whole film.
@@ -61,7 +61,7 @@ Times are absolute. Narration cues are the start of each spoken sentence. Change
 | 7 | 2:36-2:41 | Title | 156.5 | "Six hours later." |
 | 8 | 2:41-3:32 | Claude Code, terminal | 161.5, 172.1, 179.3, 186.1, 195.3, 202.2, 205.9 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again." |
 | 9 | 3:32-3:57 | Claude Code, GitHub PR, Claude Code | 212.5, 219.8, 227.3, 233.6 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
-| 10 | 3:57-4:50 | Measured outcome, in four beats | 237.5, 244.1, 254.7, 268.1, 275.2, 283.7 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
+| 10 | 3:57-4:50 | Measured outcome, in four beats | 237.5, 244.1, 254.7, 268.1, 275.2, 282.3 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." The voice adds that it is "packaged up as an asset, ready to be deployed". Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
 | 11 | 4:50-5:00 | Close and credits | 290.5 | "Agents draft. People decide. Nothing merges by machine." / "An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026." / Credits: "Discovery and functional agents · Miles Blair, Delivery Lead. Code and development agents · Fabian Goetzens, Noland Smith. Run with the bank's nCino squad." Accenture mark. |
 | 12 | 5:00-5:14 | The team, who to reach out to | 300.5 | "The team · who to reach out to". "Talk to the people who built it". Six cards with name, role, contribution and email:<br>- Miles Blair, Delivery Lead: designed the discovery agents and ways of working. miles.blair@accenture.com<br>- Fabian Goetzens, AI Engineer: delivered the development and test agents. fabian.goetzens@accenture.com<br>- Noland Smith, Anthropic Lead: enabled the technical setup. noland.smith@accenture.com<br>- Phinizy Wimberly, Engagement Lead. thomas.wimberly@accenture.com<br>- Andreas Habib, Functional Designer: provided inputs into the discovery agents. andreas.habib@accenture.com<br>- Mozammil Hassan, Functional Designer: provided inputs into the discovery agents. muhammad.m.hassan@accenture.com<br>Accenture logo. Fades to black. |
 
@@ -117,42 +117,45 @@ These checks were done before export:
 | 7 | -19.2 | -26.4 | 7.2 | -21.9 |
 | 8 | -20.2 | -29.5 | 9.3 | -23.5 |
 | 9 | -19.9 | -27.9 | 8.0 | -25.3 |
-| 10 | -19.7 | -28.5 | 8.8 | -22.5 |
+| 10 | -19.6 | -28.5 | 8.9 | -23.1 |
 | 11 | -20.4 | -26.9 | 6.5 | -19.7 |
 | 12 | -21.2 | -28.4 | 7.3 | -23.7 |
 
-- Master: -14.3 LUFS integrated, -1.2 dBTP (web).
+- Master: -14.3 LUFS integrated, -1.3 dBTP (web).
 
 ## The short cut
 
-`media/nz-bank-showcase-60s.mp4` runs 65.75 s (1578 frames), at -14.3 LUFS for social: a 60.6 s film, then the team card for 5.2 s. It follows `SCRIPT-60-second-cut-setup-and-benefits.md` and is built in `short60/`. It replaces the first 60 s cut, which spent its middle on the day-in-the-life; that segment is gone.
+`media/nz-bank-showcase-60s.mp4` runs 70.49 s (1692 frames), at -14.3 LUFS for social: a 66.2 s film, then the team card for 4.3 s. It follows `SCRIPT-60-second-cut-setup-and-benefits.md` and is built in `short60/`. Miles Blair asked on 2026-10-07 for up to 1:10, so that no line is cut short and nothing on screen is cut off. Two lines were added: one says that what follows is proven at a bank in New Zealand, and one says the model is packaged up as an asset, ready to be deployed.
 
 **Structure:** two halves of equal weight, then the team.
 
 | Time | Half | What is on screen |
 |---|---|---|
-| 0:00-0:05 | One (dark) | The hook, then the "AI in Delivery" title card |
-| 0:05-0:20 | One | **New:** three bodies of IP, built left to right as the voice names each (`short60/ip.html`): Accenture IP (45+ global nCino engagements, encoded as agents, skills and guardrails), the bank's IP, and nCino IP through the Admin MCP. They converge under "Accenture IP + the bank's IP + nCino IP · one context, one path". |
-| 0:20-0:29 | One | The engine diagram: the MCP lines draw on "at every step", the two checkpoints light on "discovery" and "code" with the caption "Two human checkpoints · discovery · code", then the tagline frame |
-| 0:29-0:36 | One | **New:** why it works (`short60/partner.html`). The nCino and Accenture logos at equal weight, "First live in an SDLC" beside nCino, "The first SI partner on the nCino MCP", the roles line and "The people with the skills to make the agents pay" |
-| 0:36-0:41 | Two (light) | The figures, ≈3×, ≈2.8× and ≈2×, with the bank's planning line as a small caption |
-| 0:41-0:46 | Two | What the 3× is made of |
-| 0:46-0:53 | Two | The four "One month in" statements |
-| 0:53-0:55 | Two | "13 of 13 ready", shown without being spoken |
-| 0:55-1:00 | Close | The end card: both logos, the tagline in three beats, "An evolving proof of concept · live since September 2026" |
-| 1:00-1:06 | Team | "Talk to the people who built the solution", with the six team cards, then a fade to black |
+| 0:00-0:05 | One (dark) | The hook, typed in full and held for the whole question |
+| 0:05-0:12 | One | **New:** the "AI in Delivery" title card. The voice says "What you're about to see isn't a concept, or marketing material. It's proven, live, at a bank in New Zealand." The card's sub-line, "Proven, live, at a New Zealand bank.", types as the voice reaches "It's proven", completes and holds. |
+| 0:12-0:26 | One | Three bodies of IP, built left to right as the voice names each (`short60/ip.html`): Accenture IP (45+ global nCino engagements, encoded as agents, skills and guardrails), the bank's IP, and nCino IP through the Admin MCP. They converge under "Accenture IP + the bank's IP + nCino IP · one context, one path". |
+| 0:26-0:34 | One | The engine diagram: the MCP lines draw on "at every step", the two checkpoints light on "discovery" and "code" with the caption "Two human checkpoints · discovery · code", then the tagline frame |
+| 0:34-0:41 | One | Why it works (`short60/partner.html`). The nCino and Accenture logos at equal weight, "First live in an SDLC" beside nCino, "The first SI partner on the nCino MCP", the roles line and "The people with the skills to make the agents pay" |
+| 0:41-0:45 | Two (light) | The figures, ≈3×, ≈2.8× and ≈2×, with the bank's planning line as a small caption |
+| 0:45-0:50 | Two | What the 3× is made of: the two halves pop on "twice" and "bug backlog" |
+| 0:50-0:57 | Two | The four "One month in" statements: cards 1 and 2 on "Nothing carried forward", card 3 on "One standard", card 4 on "Built on" |
+| 0:57-1:01 | Two | "13 of 13 ready, and packaged for the next cohort", now spoken: "And it's packaged up as a reusable asset, ready to be deployed." |
+| 1:01-1:06 | Close | The end card: both logos, the tagline in three beats, "An evolving proof of concept · live since September 2026" |
+| 1:06-1:10 | Team | "Talk to the people who built the solution", with the six team cards, then a fade to black |
 
 **Narration:**
-- Voice D, 131 words, in `short60/lines.json`.
-- The brief's own text is about 230 words, which it flags as too many for 60 seconds. Its trim list, then further tightening, keeps every message: three bodies of knowledge paired correctly; people deciding at discovery and code; the first SI partner, with the skilled people; the figures; "that three times is two stories"; nothing carried forward; the tagline.
-- The reusable-model beat ("13 of 13") is on screen only.
-- One gentle 1.14× speed change, pitch-preserved.
-- Two "nCino" mispronunciations were regenerated until clean.
+- Voice D, 163 words in 13 lines, in `short60/lines.json`. Every line is voiced in full.
+- The brief's own text is about 230 words, which it flags as too many for 60 seconds. Its trim list keeps every message: three bodies of knowledge paired correctly; people deciding at discovery and code; the first SI partner, with the skilled people; the figures; "that three times is two stories"; nothing carried forward; the packaged asset; the tagline.
+- One uniform 1.2× speed change, pitch-preserved. `short60/vo/speed.json` records the speed already applied to each take, so new lines can join without stretching the old ones twice.
+- Two "nCino" mispronunciations were regenerated until clean. Both new lines passed the speech-to-text gate first time.
 
 **Craft:**
 - Cuts snap to the music's beat grid.
 - Shots that belong together share one eased camera push: the diagram's MCP, checkpoint and tagline moments, and the team card's arrival and hold.
-- Every shot holds at least 2.1 s. The three-IP build runs 15 s.
+- Some shots run as a continuous piecewise time map of the master. Each reveal lands on the words that name it, and the shot holds once its content is complete.
+- Nothing appears for a fraction of a second and is cut away. Two pieces of text are left out of the short instead, because they would only have flashed on screen: the long explanation paragraph on the 3× page, and the planning paragraph under 13 of 13. The planning line is carried by the figures caption instead.
+  - The tagline frame's sub-line is hidden here because the partner card says it next.
+- Every visual shot holds at least 2.1 s. The three-IP build runs 15 s.
 - The bank stays anonymised, and no environment names appear on screen.
 
 **Rebuild,** from this folder after the long film's `timing.json` exists:
@@ -160,7 +163,7 @@ These checks were done before export:
 ```bash
 python3.11 tts_short.py all             # short60/lines.json -> short60/vo/
 python3 gate_short.py                   # speech-to-text gate
-python3 short60/build_short.py --apply  # once: speed to fit; then without --apply to rebuild the map
+python3 short60/build_short.py --apply  # speed every take to fit (safe to re-run: short60/vo/speed.json)
 node short60/render_short.js full       # -> short60/picture.mp4
 python3 short60/mix_short.py            # -> short60/mix_master.wav
 ffmpeg -i short60/picture.mp4 -i short60/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-60s.mp4

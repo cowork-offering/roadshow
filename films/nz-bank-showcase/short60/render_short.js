@@ -12,6 +12,10 @@ const mode=process.argv[2]||'full';
     const h=document.querySelector('#s12 [data-fx="type"]');                       // team card heading for this cut
     h._segs=[{t:'Talk to the people who ',em:false},{t:'built',em:true},{t:' the solution',em:false}];
     h._len=h._segs.reduce((a,s)=>a+s.t.length,0); h._k=null;
+    const sub=document.querySelector('#s01 .sub[data-fx="type"]');                  // title card: where it is proven
+    sub._segs=[{t:'Proven',em:true},{t:', live, at a New Zealand bank.',em:false}];
+    sub._len=sub._segs.reduce((a,s)=>a+s.t.length,0); sub._k=null;
+    document.querySelector('#s02 [data-in="5:1.2"]').style.display='none';         // partner sub-line: said by the next card
     const o=document.createElement('div'); o.id='ovl'; o.style.cssText='position:absolute;left:0;width:1920px;text-align:center;font-family:GM;letter-spacing:3px;opacity:0;z-index:60';
     document.body.appendChild(o); },TM);
   await P.ip.evaluate(c=>setup(c),MAP.ip); await P.partner.evaluate(c=>setup(c),MAP.partner);

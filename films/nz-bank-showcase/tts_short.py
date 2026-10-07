@@ -20,3 +20,5 @@ for key,s,out in jobs:
     w=m.generate(say,audio_prompt_path=REF,exaggeration=EX,cfg_weight=CFG).squeeze(0).numpy()
     sr=m.sr; idx=np.where(np.abs(w)>0.01)[0]; w=w[max(0,idx[0]-int(.03*sr)):idx[-1]+int(.12*sr)]
     sf.write(f'{out}/vo_{key}.wav',w,sr); print(key,round(len(w)/sr,2),flush=True)
+    sp=f'{out}/speed.json'; led=json.load(open(sp)) if __import__('os').path.exists(sp) else {}
+    led[key.split('_')[-1]]=1.0; json.dump(led,open(sp,'w'),indent=1)   # a fresh take is at natural speed
