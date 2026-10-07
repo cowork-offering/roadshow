@@ -4,7 +4,7 @@ The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narra
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
 - Film (5:14, the long version for client conversations): [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
-- 60-second cut for LinkedIn and sales: [`media/nz-bank-showcase-60s.mp4`](../../media/nz-bank-showcase-60s.mp4). See [The short cut](#the-short-cut).
+- 60-second cut for LinkedIn and sales (setup and benefits, plus the team card): [`media/nz-bank-showcase-60s.mp4`](../../media/nz-bank-showcase-60s.mp4). See [The short cut](#the-short-cut).
 - Storyboard, one frame per scene: [`storyboard.jpg`](storyboard.jpg)
 - Source script: `SCRIPT-ai-in-delivery-showcase-a-new-zealand-bank.md` (supplied by Miles Blair)
 - Closing scene and claims: `CLOSING-SCENE-and-PR-NARRATIVE-ncino-accenture.md` (7 October 2026). Its Part A replaces scene 10, and its claims checklist applies to the whole film.
@@ -125,38 +125,45 @@ These checks were done before export:
 
 ## The short cut
 
-`media/nz-bank-showcase-60s.mp4` runs 60.000 s (1440 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`. It was first cut at 40 s, then 50 s. Both felt rushed, so on 2026-10-07 it was extended to 60 s at Miles Blair's request, using the hypevideo grammar.
+`media/nz-bank-showcase-60s.mp4` runs 65.75 s (1578 frames), at -14.3 LUFS for social: a 60.6 s film, then the team card for 5.2 s. It follows `SCRIPT-60-second-cut-setup-and-benefits.md` and is built in `short60/`. It replaces the first 60 s cut, which spent its middle on the day-in-the-life; that segment is gone.
 
-**Hypevideo grammar applied:**
-- **Cut on the beat:** every shot change is snapped to the music's beat grid (139.6 BPM, 0.430 s a beat), and the bed enters on a downbeat at 0:00.
-- **A living camera on every shot:** one eased push of 3.5% with a slow drift, its origin alternating and never reversed. It is applied on top of the master's own camera, and the end card carries its own push. No two consecutive frames are identical.
-- **UI at near real speed:** each shot shows its key moment at 1.1 to 2.1× and holds 2.1 to 3.4 s. Exceptions: "Six hours later" is a 1.7 s card, and the engine diagram builds at 1.8× over 9.9 s, the one long hold the brief allows.
-- **Clock continuity:** the Wellington shots are in master order (feature page, the two questions accepted, story cards, the board), so the clock always runs forward.
-- **The gate shot:** 3.0 s, showing the block, the fix, then PASSED.
+**Structure:** two halves of equal weight, then the team.
 
-**Other elements:**
-- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. `cut40/map.json` lists each shot with its master range, speed and length in beats.
-- **End card** (`cut40/endcard.html`): the nCino and Accenture logos at equal weight, the tagline in three beats and "An evolving proof of concept · live since September 2026". The master's credits frame carries only the Accenture logo.
+| Time | Half | What is on screen |
+|---|---|---|
+| 0:00-0:05 | One (dark) | The hook, then the "AI in Delivery" title card |
+| 0:05-0:20 | One | **New:** three bodies of IP, built left to right as the voice names each (`short60/ip.html`): Accenture IP (45+ global nCino engagements, encoded as agents, skills and guardrails), the bank's IP, and nCino IP through the Admin MCP. They converge under "Accenture IP + the bank's IP + nCino IP · one context, one path". |
+| 0:20-0:29 | One | The engine diagram: the MCP lines draw on "at every step", the two checkpoints light on "discovery" and "code" with the caption "Two human checkpoints · discovery · code", then the tagline frame |
+| 0:29-0:36 | One | **New:** why it works (`short60/partner.html`). The nCino and Accenture logos at equal weight, "First live in an SDLC" beside nCino, "The first SI partner on the nCino MCP", the roles line and "The people with the skills to make the agents pay" |
+| 0:36-0:41 | Two (light) | The figures, ≈3×, ≈2.8× and ≈2×, with the bank's planning line as a small caption |
+| 0:41-0:46 | Two | What the 3× is made of |
+| 0:46-0:53 | Two | The four "One month in" statements |
+| 0:53-0:55 | Two | "13 of 13 ready", shown without being spoken |
+| 0:55-1:00 | Close | The end card: both logos, the tagline in three beats, "An evolving proof of concept · live since September 2026" |
+| 1:00-1:06 | Team | "Talk to the people who built the solution", with the six team cards, then a fade to black |
 
 **Narration:**
-- Voice D at its natural pace, with no speed change.
-- 115 words, with room after each line. The longest gaps follow the Wellington and Manila lines, so their screens play under the music.
-- The brief's own lines come to about 137 words. The lines in `cut40/lines.json` tighten them without changing a claim.
+- Voice D, 131 words, in `short60/lines.json`.
+- The brief's own text is about 230 words, which it flags as too many for 60 seconds. Its trim list, then further tightening, keeps every message: three bodies of knowledge paired correctly; people deciding at discovery and code; the first SI partner, with the skilled people; the figures; "that three times is two stories"; nothing carried forward; the tagline.
+- The reusable-model beat ("13 of 13") is on screen only.
+- One gentle 1.14× speed change, pitch-preserved.
+- Two "nCino" mispronunciations were regenerated until clean.
 
-**Music:** "Tech Talk" again. The voice sits about 6 dB over the music, and the bed lifts to about -20.5 dB in the gaps.
-
-**Dead-hold audit** (frame difference at 480 px):
-- There are no identical consecutive frames.
-- The remaining low-difference stretches are the dark engine diagram and flat paper backgrounds, where the slow camera moves few pixels per frame.
+**Craft:**
+- Cuts snap to the music's beat grid.
+- Shots that belong together share one eased camera push: the diagram's MCP, checkpoint and tagline moments, and the team card's arrival and hold.
+- Every shot holds at least 2.1 s. The three-IP build runs 15 s.
+- The bank stays anonymised, and no environment names appear on screen.
 
 **Rebuild,** from this folder after the long film's `timing.json` exists:
 
 ```bash
-python3.11 tts_expressive.py c40_0 c40_1 c40_2 c40_3 c40_4 c40_5 c40_6 c40_7   # -> cut40/vo/
-python3 cut40/build_map.py          # beat-snapped cues + shot map -> cut40/map.json (60 s)
-node cut40/render_cut.js full       # -> cut40/picture.mp4
-python3 cut40/mix_cut.py            # -> cut40/mix_master.wav
-ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-60s.mp4
+python3.11 tts_short.py all             # short60/lines.json -> short60/vo/
+python3 gate_short.py                   # speech-to-text gate
+python3 short60/build_short.py --apply  # once: speed to fit; then without --apply to rebuild the map
+node short60/render_short.js full       # -> short60/picture.mp4
+python3 short60/mix_short.py            # -> short60/mix_master.wav
+ffmpeg -i short60/picture.mp4 -i short60/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-60s.mp4
 ```
 
 ## Rebuild

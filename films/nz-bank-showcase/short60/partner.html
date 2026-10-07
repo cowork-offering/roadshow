@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:GM;font-weight:400;src:url(../fonts/geist-mono-latin-400-normal.woff2)}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#07050C;font-family:Inter,sans-serif;color:#F2EEFA}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,#140B24 0%,#07050C 70%)}
+.eb{position:absolute;top:62px;font-family:GM;letter-spacing:5px;color:#9C93B8;font-size:16px}
+.row{position:absolute;left:0;width:1920px;top:250px;display:flex;justify-content:center;align-items:center;gap:56px;opacity:0}
+.row img{height:64px}
+.tag{font-family:GM;font-size:16px;letter-spacing:2.5px;color:#fff;background:#A100FF;border-radius:6px;padding:7px 12px;margin-left:-28px}
+.rule{width:1px;height:76px;background:rgba(255,255,255,.22)}
+.h{position:absolute;left:0;width:1920px;top:430px;text-align:center;font-size:52px;font-weight:600;letter-spacing:-.6px;color:#F7F4FF}
+.caret{display:inline-block;width:3px;height:.85em;background:#F7F4FF;margin-left:4px;vertical-align:-.06em}
+.roles{position:absolute;left:0;width:1920px;top:590px;text-align:center;font-family:GM;font-size:21px;letter-spacing:4px;color:#C9A8FF;opacity:0}
+.cap{position:absolute;left:0;width:1920px;top:650px;text-align:center;font-size:24px;color:#BDB6D2;opacity:0}
+</style></head><body><div class="bg"></div>
+<div class="eb" style="left:80px">WHY IT WORKS</div>
+<div class="eb" style="right:80px;font-size:13px;letter-spacing:2.5px;color:#6F6888">AN EVOLVING PROOF OF CONCEPT · SYNTHETIC DATA</div>
+<div class="row" id="row"><img src="../logos/ncino-on-dark.svg"><span class="tag">FIRST LIVE IN AN SDLC</span><span class="rule"></span><img src="../logos/accenture-logo-white.svg"></div>
+<div class="h" id="h"></div>
+<div class="roles" id="roles">FUNCTIONAL CONSULTANT · ARCHITECT · DEVELOPERS · QA</div>
+<div class="cap" id="cap">The people with the skills to make the agents pay.</div>
+<script>
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)), eo=x=>1-Math.pow(1-x,3);
+let C={head:0.3,roles:4.0};
+const TXT='The first SI partner on the nCino MCP';
+window.setup=c=>{C=Object.assign(C,c)};
+window.render=lt=>{
+  const r=eo(clamp(lt/0.5,0,1)); const rs=document.getElementById('row').style; rs.opacity=r; rs.transform=`translateY(${(1-r)*14}px)`;
+  const n=clamp(Math.floor((lt-C.head)*32)+1,0,TXT.length);
+  document.getElementById('h').innerHTML=TXT.slice(0,n)+(lt>=C.head?'<span class="caret"></span>':'');
+  [['roles',C.roles],['cap',C.roles+0.6]].forEach(([id,t])=>{const e=eo(clamp((lt-t)/0.5,0,1)); const s=document.getElementById(id).style; s.opacity=e; s.transform=`translateY(${(1-e)*10}px)`;});
+};
+</script></body></html>

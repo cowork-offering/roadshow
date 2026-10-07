@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:GM;font-weight:400;src:url(../fonts/geist-mono-latin-400-normal.woff2)}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#07050C;font-family:Inter,sans-serif;color:#F2EEFA}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 48%,#120A20 0%,#07050C 70%)}
+.mono{font-family:GM}
+.eb{position:absolute;top:62px;font-family:GM;letter-spacing:5px;color:#9C93B8;font-size:16px}
+.title{position:absolute;left:160px;top:150px;font-size:54px;font-weight:600;letter-spacing:-.6px;color:#F7F4FF}
+.title em{font-style:normal;color:#C26BFF}
+.caret{display:inline-block;width:3px;height:.85em;background:#F7F4FF;margin-left:4px;vertical-align:-.06em}
+.p{position:absolute;box-sizing:border-box;top:320px;width:500px;height:330px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(16,11,26,.94);padding:30px 34px;opacity:0}
+.p .lb{font-family:GM;font-size:15px;letter-spacing:3.5px;color:#C9A8FF}
+.p .lg{position:absolute;right:30px;top:26px;height:28px}
+.p .t{font-size:38px;font-weight:600;line-height:1.18;margin-top:40px;color:#F7F4FF}
+.p .b{font-size:25px;line-height:1.45;color:#BDB6D2;margin-top:20px}
+.plus{position:absolute;top:455px;font-size:48px;font-weight:300;color:#8D7BC4;opacity:0;width:50px;text-align:center}
+.cap{position:absolute;left:0;width:1920px;top:760px;text-align:center;font-family:GM;font-size:19px;letter-spacing:3px;color:#C9A8FF;opacity:0}
+</style></head><body><div class="bg"></div>
+<div class="eb" style="left:80px">HOW WE RUN IT</div>
+<div class="eb" style="right:80px;font-size:13px;letter-spacing:2.5px;color:#6F6888">AN EVOLVING PROOF OF CONCEPT · SYNTHETIC DATA</div>
+<div class="title" id="title"></div>
+<div class="p" id="p1" style="left:160px"><img class="lg" src="../logos/accenture-logo-white.svg"><div class="lb">ACCENTURE IP</div><div class="t">45+ global nCino engagements</div><div class="b">Encoded as agents, skills and guardrails.</div></div>
+<div class="plus" id="x1" style="left:660px">+</div>
+<div class="p" id="p2" style="left:710px"><div class="lb">THE BANK'S IP</div><div class="t">The bank's own knowledge</div><div class="b">Its rules, products and live platform, readable inside the repository.</div></div>
+<div class="plus" id="x2" style="left:1210px">+</div>
+<div class="p" id="p3" style="left:1260px"><img class="lg" src="../logos/ncino-on-dark.svg" style="height:24px;top:30px"><div class="lb">nCINO IP</div><div class="t">nCino's own knowledge</div><div class="b">Through the nCino Admin MCP, at every step.</div></div>
+<div class="cap" id="cap">ACCENTURE IP + THE BANK'S IP + nCINO IP · ONE CONTEXT, ONE PATH</div>
+<script>
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)), eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+let C={title:0.2,p1:1.8,p2:4.0,p3:6.0,conv:7.6};
+const SEG=[{t:'Three bodies of knowledge, ',em:0},{t:'paired',em:1},{t:' correctly.',em:0}], LEN=SEG.reduce((a,s)=>a+s.t.length,0);
+window.setup=c=>{C=Object.assign(C,c)};
+window.render=lt=>{
+  const n=clamp(Math.floor((lt-C.title)*32)+1,0,LEN); let h='',left=n;
+  for(const s of SEG){ if(left<=0)break; const p=s.t.slice(0,left); left-=p.length; h+=s.em?'<em>'+p+'</em>':p; }
+  document.getElementById('title').innerHTML=h+(lt>=C.title?'<span class="caret"></span>':'');
+  const cv=eio(clamp((lt-C.conv)/0.9,0,1));
+  [['p1',C.p1,-1],['p2',C.p2,0],['p3',C.p3,1]].forEach(([id,t,side])=>{
+    const e=eo(clamp((lt-t)/0.4,0,1)), el=document.getElementById(id).style;
+    el.opacity=e; el.transform=`translateX(${(-side*40*cv).toFixed(1)}px) translateY(${(-24*cv).toFixed(1)}px) scale(${(0.96+0.04*e)*(1-0.1*cv)})`;
+  });
+  [['x1',C.p2],['x2',C.p3]].forEach(([id,t])=>{const e=eo(clamp((lt-t)/0.4,0,1)); const s=document.getElementById(id).style; s.opacity=e; s.transform=`translateY(${(-24*cv).toFixed(1)}px)`;});
+  const ce=eo(clamp((lt-C.conv-0.4)/0.5,0,1)); const cs=document.getElementById('cap').style; cs.opacity=ce; cs.transform=`translateY(${(1-ce)*10}px)`;
+};
+</script></body></html>
