@@ -4,7 +4,7 @@ The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narra
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
 - Film (5:14, the long version for client conversations): [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
-- 50-second cut for LinkedIn and sales: [`media/nz-bank-showcase-50s.mp4`](../../media/nz-bank-showcase-50s.mp4). See [The short cut](#the-short-cut).
+- 60-second cut for LinkedIn and sales: [`media/nz-bank-showcase-60s.mp4`](../../media/nz-bank-showcase-60s.mp4). See [The short cut](#the-short-cut).
 - Storyboard, one frame per scene: [`storyboard.jpg`](storyboard.jpg)
 - Source script: `SCRIPT-ai-in-delivery-showcase-a-new-zealand-bank.md` (supplied by Miles Blair)
 - Closing scene and claims: `CLOSING-SCENE-and-PR-NARRATIVE-ncino-accenture.md` (7 October 2026). Its Part A replaces scene 10, and its claims checklist applies to the whole film.
@@ -125,30 +125,38 @@ These checks were done before export:
 
 ## The short cut
 
-`media/nz-bank-showcase-50s.mp4` runs 50.0 s (1201 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`. The first 40-second build felt rushed, so on 2026-10-07 it was extended to 50 seconds at Miles Blair's request.
+`media/nz-bank-showcase-60s.mp4` runs 60.000 s (1440 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`. It was first cut at 40 s, then 50 s. Both felt rushed, so on 2026-10-07 it was extended to 60 s at Miles Blair's request, using the hypevideo grammar.
 
-**What it uses:**
-- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. That keeps it sharp and lets the engine diagram animate in compressed time. `cut40/map.json` lists each shot with its master range and speed.
-- **Pace:** UI shots show the moment that matters at close to real speed, mostly 1 to 2.5×, and each holds at least 1.7 s. The "Six hours later" card is the one shorter beat.
-- **Boundaries:** every shot boundary sits on a narration cue.
-- **The gate shot:** holds 2.2 s and shows the block, the fix, then PASSED.
-- **New element:** the end card (`cut40/endcard.html`), with the nCino and Accenture logos at equal weight, the tagline in three beats and "An evolving proof of concept · live since September 2026". The master's credits frame carries only the Accenture logo.
+**Hypevideo grammar applied:**
+- **Cut on the beat:** every shot change is snapped to the music's beat grid (139.6 BPM, 0.430 s a beat), and the bed enters on a downbeat at 0:00.
+- **A living camera on every shot:** one eased push of 3.5% with a slow drift, its origin alternating and never reversed. It is applied on top of the master's own camera, and the end card carries its own push. No two consecutive frames are identical.
+- **UI at near real speed:** each shot shows its key moment at 1.1 to 2.1× and holds 2.1 to 3.4 s. Exceptions: "Six hours later" is a 1.7 s card, and the engine diagram builds at 1.8× over 9.9 s, the one long hold the brief allows.
+- **Clock continuity:** the Wellington shots are in master order (feature page, the two questions accepted, story cards, the board), so the clock always runs forward.
+- **The gate shot:** 3.0 s, showing the block, the fix, then PASSED.
+
+**Other elements:**
+- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. `cut40/map.json` lists each shot with its master range, speed and length in beats.
+- **End card** (`cut40/endcard.html`): the nCino and Accenture logos at equal weight, the tagline in three beats and "An evolving proof of concept · live since September 2026". The master's credits frame carries only the Accenture logo.
 
 **Narration:**
-- Voice D, 115 words, about 3 words a second: one gentle 1.045× speed-up, pitch-preserved.
-- Longer pauses after the Wellington and Manila lines let those screens play under the music.
-- The brief's own lines come to about 137 words, more than the 101 it states. The lines in `cut40/lines.json` tighten them without changing a claim.
+- Voice D at its natural pace, with no speed change.
+- 115 words, with room after each line. The longest gaps follow the Wellington and Manila lines, so their screens play under the music.
+- The brief's own lines come to about 137 words. The lines in `cut40/lines.json` tighten them without changing a claim.
 
-**Music:** "Tech Talk" again, entering on a full-energy downbeat about 30 s into the track. The voice sits about 6 dB over the music.
+**Music:** "Tech Talk" again. The voice sits about 6 dB over the music, and the bed lifts to about -20.5 dB in the gaps.
+
+**Dead-hold audit** (frame difference at 480 px):
+- There are no identical consecutive frames.
+- The remaining low-difference stretches are the dark engine diagram and flat paper backgrounds, where the slow camera moves few pixels per frame.
 
 **Rebuild,** from this folder after the long film's `timing.json` exists:
 
 ```bash
 python3.11 tts_expressive.py c40_0 c40_1 c40_2 c40_3 c40_4 c40_5 c40_6 c40_7   # -> cut40/vo/
-python3 cut40/build_map.py --apply  # one gentle speed change to land on 50 s; cues + shot map -> cut40/map.json
+python3 cut40/build_map.py          # beat-snapped cues + shot map -> cut40/map.json (60 s)
 node cut40/render_cut.js full       # -> cut40/picture.mp4
 python3 cut40/mix_cut.py            # -> cut40/mix_master.wav
-ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-50s.mp4
+ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-60s.mp4
 ```
 
 ## Rebuild
