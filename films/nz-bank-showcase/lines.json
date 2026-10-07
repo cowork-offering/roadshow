@@ -9,25 +9,26 @@
  ],
  "s02": [
   10,
-  35,
+  43,
   [
-   "Here's the engine, read left to right.",
-   "Everything reads from the bank's own lending repository: its policies, its products, and the system as it's actually built.",
-   "Discovery and functional agents shape the work.",
-   "Code and development agents help build and test it.",
-   "People decide at every gate, and hooks and automated checks enforce the rules."
+   "Here's how we run it.",
+   "People orchestrate the work, and agents and skills do the heavy lifting, in discovery and in development.",
+   "At every step, the agents check their work against nCino's own knowledge, through the nCino MCP.",
+   "People review the outputs twice, at discovery and again at code. Only then do the agents execute the remaining tasks.",
+   "And it's Accenture people, with the skills, who make the efficiency real.",
+   "Grounded in nCino. Decided by people. Delivered by Accenture."
   ]
  ],
  "s03": [
-  35,
-  40,
+  43,
+  48,
   [
    "One feature. Morning in Wellington, afternoon in Manila."
   ]
  ],
  "s04": [
-  40,
-  70,
+  48,
+  78,
   [
    "It's morning in Wellington. A functional consultant opens the feature page for a new business lending product.",
    "It was signed off weeks ago, but the system has changed since.",
@@ -37,8 +38,8 @@
   ]
  ],
  "s05": [
-  70,
-  110,
+  78,
+  113,
   [
    "The agent comes back with a process map, and two open questions.",
    "The first is a gap in the requirement. No exception path is defined for the new product, so it goes to the business analyst.",
@@ -48,8 +49,8 @@
   ]
  ],
  "s06": [
-  110,
-  150,
+  113,
+  153,
   [
    "Next, the Story Writer turns the requirements into three stories, in plain business language.",
    "Every acceptance criterion cites the rule it came from.",
@@ -60,14 +61,14 @@
   ]
  ],
  "s07": [
-  150,
-  155,
+  153,
+  158,
   [
    "Six hours later, in Manila."
   ]
  ],
  "s08": [
-  155,
+  158,
   215,
   [
    "A developer opens Claude Code. The health check clears, and his ticket arrives with its story, its criteria, and its lineage. No copy and paste.",

@@ -142,6 +142,28 @@ em{font-style:normal;color:var(--acc)}
 .credit{position:absolute;font-size:17px;line-height:1.4;color:var(--ink2);width:330px}
 .arrow{position:absolute;top:478px;height:2px;background:var(--ink);transform-origin:0 50%}
 .gate{position:absolute;top:463px;width:32px;height:32px;transform:rotate(45deg);border:2.5px solid var(--acc);background:var(--paper)}
+
+/* ---------- s02 dark setup diagram (cockpit visual language) ---------- */
+section.dk{background:#07050C;font-family:Inter,G,sans-serif;color:#F2EEFA}
+section.dk .cam{background:radial-gradient(ellipse 70% 60% at 50% 45%,#120A20 0%,#07050C 70%)}
+.dmono{font-family:GM}
+.dband{position:absolute;left:470px;top:110px;width:1370px;height:86px;border:1px solid rgba(161,0,255,.38);border-radius:14px;background:rgba(161,0,255,.05);display:flex;align-items:center;gap:22px;padding:0 30px}
+.dband.hot{border-color:rgba(180,75,255,.9);box-shadow:0 0 28px rgba(161,0,255,.35)}
+.dcard{position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(14,10,22,.92);padding:22px 24px}
+.dlbl{font-family:GM;font-size:13px;letter-spacing:2px;white-space:nowrap;color:#9C93B8;margin-bottom:12px}
+.dtt{font-size:26px;font-weight:600;color:#F7F4FF;margin-bottom:12px;line-height:1.2}
+.dli{font-size:18px;color:#C7C0DA;padding:10px 0;border-top:1px solid rgba(255,255,255,.08)}
+.dchip{font-size:17px;color:#E9E3FF;padding:9px 13px;margin:8px 0;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.03)}
+.dcred{position:absolute;left:24px;bottom:18px;font-size:14px;line-height:1.45;color:#9C93B8}
+.dcred b{color:#F2EEFA;font-weight:600}
+.dgate{position:absolute;top:390px;width:100px;height:100px;border:2px solid #A100FF;border-radius:20px;background:#0E0818;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(161,0,255,.35)}
+.dgate.hot{box-shadow:0 0 42px rgba(180,75,255,.75);border-color:#C26BFF}
+.dgl{position:absolute;top:504px;width:180px;text-align:center;font-size:16px;color:#BDB6D2;line-height:1.5}
+.dhub{position:absolute;left:890px;top:690px;width:140px;height:140px;border-radius:50%;border:2.5px solid #A100FF;background:radial-gradient(circle at 50% 45%,#2A0A45 0%,#12081E 70%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 34px rgba(161,0,255,.45),0 0 0 14px rgba(161,0,255,.06)}
+.dhub span{font-family:GM;font-size:34px;letter-spacing:4px;color:#F2EEFA}
+.dtag{left:0;width:1920px;top:915px;display:flex;align-items:center;justify-content:center;gap:34px}
+.dtl{font-size:42px;font-weight:600;letter-spacing:-.5px;color:#F7F4FF}
+.dtl em{color:#C26BFF}
 </style></head><body>
 
 <!-- ===================== S01 opening ===================== -->
@@ -152,37 +174,81 @@ em{font-style:normal;color:var(--acc)}
   <div class="abs sub" style="left:204px;top:510px" data-in="1:0.8" data-fx="type" data-cps="24" data-caret="1">A New Zealand bank, one feature, one <em>day</em>.</div>
 </div></section>
 
-<!-- ===================== S02 engine diagram ===================== -->
-<section id="s02"><div class="cam">
-  <div class="abs eyebrow" style="left:120px;top:96px" data-in="@0.2" data-fx="fade">The engine, in one breath</div>
-  
-  <!-- nCino guidance feed -->
-  <div class="abs chip p" style="left:540px;top:196px;font-size:15px" data-in="1:3.2" data-fx="fade">nCino guidance · Admin MCP</div>
-  <div class="col4" style="left:120px" data-in="1:0" data-fx="pop">
-    <div class="lbl">Reads</div><div class="t">Lending repository</div>
-    <div class="i">Policies</div><div class="i">Products</div><div class="i">SDLC</div><div class="i">The as-built</div><div class="i">The contracts</div>
+<!-- ===================== S02 the setup (dark, cockpit diagram language) ===================== -->
+<section id="s02" class="dk"><div class="cam">
+  <div class="abs dmono" style="left:80px;top:62px;font-size:16px;letter-spacing:5px;color:#9C93B8" data-in="0:0" data-fx="fade">HOW WE RUN IT</div>
+  <div class="abs dmono" style="right:80px;top:62px;font-size:13px;letter-spacing:2.5px;color:#6F6888;text-align:right" data-in="0:0" data-fx="fade">AN EVOLVING PROOF OF CONCEPT · SYNTHETIC DATA</div>
+
+  <!-- people orchestrate band -->
+  <div class="dband" data-in="1:0" data-fx="fade" data-cls="hot@4:0">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E9E3FF" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9" r="2.6"/><path d="M15 14.2c2.6-.3 4.6 1.2 5.3 4.3"/></svg>
+    <div><div class="dmono" style="font-size:14px;letter-spacing:4px;color:#C9A8FF">PEOPLE ORCHESTRATE</div>
+      <div style="font-size:21px;color:#F2EEFA;margin-top:4px">Accenture people with the skills, deciding at every gate</div></div>
+    <img src="logos/accenture-logo-white.svg" style="height:34px;margin-left:auto">
   </div>
-  <div class="arrow" style="left:452px;width:86px" data-in="2:-0.3" data-fx="grow"></div>
-  <div class="col4" style="left:540px" data-in="2:0" data-fx="pop">
-    <div class="lbl">Shape</div><div class="t">Discovery and functional agents</div>
-    <div class="agent">Refinement &amp; Reconcile</div><div class="agent">Story Writer</div><div class="agent">Task Decomposer</div><div class="agent">Publisher</div>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" fill="none">
+    <path d="M935 196 V388" stroke="#A100FF" stroke-opacity=".55" stroke-width="1.6" stroke-dasharray="4 6" data-in="3:0" data-fx="fade"/>
+    <path d="M1480 196 V388" stroke="#A100FF" stroke-opacity=".55" stroke-width="1.6" stroke-dasharray="4 6" data-in="3:2.0" data-fx="fade"/>
+    <!-- flow arrows -->
+    <path d="M400 440 H468" stroke="#6E6787" stroke-width="1.6" pathLength="1" data-in="1:0.4" data-fx="draw"/>
+    <path d="M830 440 H883" stroke="#6E6787" stroke-width="1.6" pathLength="1" data-in="3:-0.3" data-fx="draw"/>
+    <path d="M987 440 H1028" stroke="#6E6787" stroke-width="1.6" pathLength="1" data-in="3:0.3" data-fx="draw"/>
+    <path d="M1390 440 H1428" stroke="#6E6787" stroke-width="1.6" pathLength="1" data-in="3:1.7" data-fx="draw"/>
+    <path d="M1532 440 H1578" stroke="#6E6787" stroke-width="1.6" pathLength="1" data-in="3:3.4" data-fx="draw"/>
+    <!-- nCino MCP to every step -->
+    <path d="M900 742 C 600 742, 260 700, 240 582" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:0.5" data-fx="draw"/>
+    <path d="M908 718 C 760 700, 650 680, 650 602" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:0.8" data-fx="draw"/>
+    <path d="M948 690 C 945 650, 936 600, 935 560" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:1.1" data-fx="draw"/>
+    <path d="M1012 718 C 1160 700, 1210 680, 1210 602" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:1.4" data-fx="draw"/>
+    <path d="M1020 742 C 1300 740, 1470 660, 1480 560" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:1.7" data-fx="draw"/>
+    <path d="M1028 760 C 1400 770, 1700 700, 1710 552" stroke="#8D7BC4" stroke-opacity=".75" stroke-width="1.5" pathLength="1" data-in="2:2.0" data-fx="draw"/>
+  </svg>
+
+  <!-- bank context -->
+  <div class="dcard" style="left:80px;top:300px;width:320px;height:282px" data-in="0:0.2" data-fx="pop">
+    <div class="dlbl">BANK CONTEXT</div><div class="dtt">Lending repository</div>
+    <div class="dli">Policies and products</div><div class="dli">SDLC and the as-built</div><div class="dli">Contracts</div>
   </div>
-  <div class="credit" style="left:540px;top:735px" data-in="2:0.9" data-fx="fade">Discovery and functional agents<br><b style="color:var(--ink);font-weight:500">Miles Blair, Delivery Lead</b></div>
-  <div class="arrow" style="left:872px;width:86px" data-in="3:-0.3" data-fx="grow"></div>
-  <div class="gate" style="left:899px" data-in="4:0.4" data-fx="pop"></div>
-  <div class="col4" style="left:960px" data-in="3:0" data-fx="pop">
-    <div class="lbl">Build</div><div class="t">Code and development agents</div>
-    <div class="agent">Dev</div><div class="agent">QA Plan</div><div class="agent">Unit-test gate</div><div class="agent">Architect</div>
+  <!-- discovery -->
+  <div class="dcard" style="left:470px;top:262px;width:360px;height:340px" data-in="1:0.6" data-fx="pop">
+    <div class="dlbl">DISCOVERY · AGENTS AND SKILLS</div>
+    <div class="dchip">Refinement &amp; Reconcile</div><div class="dchip">Story Writer</div><div class="dchip">Task Decomposer</div><div class="dchip">Publisher</div>
+    <div class="dcred" data-in="4:0.4" data-fx="fade">Discovery and functional agents<br><b>Miles Blair, Delivery Lead</b></div>
   </div>
-  <div class="credit" style="left:960px;top:735px" data-in="3:0.9" data-fx="fade">Code and development agents<br><b style="color:var(--ink);font-weight:500">Fabian Goetzens, Noland Smith</b></div>
-  <div class="arrow" style="left:1292px;width:86px" data-in="4:-0.3" data-fx="grow"></div>
-  <div class="gate" style="left:1319px" data-in="4:0.6" data-fx="pop"></div>
-  <div class="col4" style="left:1380px;width:420px" data-in="4:0" data-fx="pop">
-    <div class="lbl">Decide</div><div class="t">People and the gates</div>
-    <div class="i"><span class="gate" style="position:relative;display:inline-block;top:4px;left:0;width:16px;height:16px;margin:0 14px 0 4px;border-width:2px"></span>Human checkpoint at every gate</div>
-    <div class="i">Hooks enforce the rules</div><div class="i">CI enforces the rules</div><div class="i">A named reviewer merges</div>
+  <!-- gate 1 -->
+  <div class="dgate" style="left:885px" data-in="3:0" data-fx="pop" data-cls="hot@3:0-3:2.0">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="9.5" cy="8" r="3.4" stroke="#F2EEFA" stroke-width="1.6"/><path d="M3.5 19.5c.7-3.5 3-5.4 6-5.4 1.4 0 2.6.4 3.6 1.1" stroke="#F2EEFA" stroke-width="1.6"/><path d="M15 15.5l2.2 2.2 4.3-5" stroke="#B44BFF" stroke-width="2"/></svg>
   </div>
-  <div class="cap" style="top:860px;width:1680px" data-in="4:0.4" data-fx="type" data-cps="30">Grounded in the bank's own repository and nCino's own guidance through the Admin MCP. Human checkpoints at every gate. Hooks and CI enforce the rules mechanically.</div>
+  <div class="dgl" style="left:845px" data-in="3:0.2" data-fx="fade"><div class="dmono" style="font-size:13px;letter-spacing:3.5px;color:#C9A8FF">PEOPLE REVIEW</div><div>at discovery</div></div>
+  <!-- development -->
+  <div class="dcard" style="left:1030px;top:262px;width:360px;height:340px" data-in="1:1.6" data-fx="pop">
+    <div class="dlbl">DEVELOPMENT · AGENTS AND SKILLS</div>
+    <div class="dchip">Dev</div><div class="dchip">QA Plan</div><div class="dchip">Unit-test gate</div><div class="dchip">Architect</div>
+    <div class="dcred" data-in="4:0.8" data-fx="fade">Code and development agents<br><b>Fabian Goetzens, Noland Smith</b></div>
+  </div>
+  <!-- gate 2 -->
+  <div class="dgate" style="left:1430px" data-in="3:2.0" data-fx="pop" data-cls="hot@3:2.0-3:3.6">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="9.5" cy="8" r="3.4" stroke="#F2EEFA" stroke-width="1.6"/><path d="M3.5 19.5c.7-3.5 3-5.4 6-5.4 1.4 0 2.6.4 3.6 1.1" stroke="#F2EEFA" stroke-width="1.6"/><path d="M15 15.5l2.2 2.2 4.3-5" stroke="#B44BFF" stroke-width="2"/></svg>
+  </div>
+  <div class="dgl" style="left:1390px" data-in="3:2.2" data-fx="fade"><div class="dmono" style="font-size:13px;letter-spacing:3.5px;color:#C9A8FF">PEOPLE REVIEW</div><div>at code</div></div>
+  <!-- execute -->
+  <div class="dcard" style="left:1580px;top:330px;width:260px;height:222px" data-in="3:3.6" data-fx="pop">
+    <div class="dlbl">THEN</div><div class="dtt" style="font-size:22px">Agents execute the remaining tasks</div>
+    <div style="font-size:16px;color:#A79FBF;margin-top:10px">Merged by a named reviewer</div>
+  </div>
+  <!-- nCino MCP hub -->
+  <div class="dhub" data-in="2:0" data-fx="pop"><span>MCP</span></div>
+  <div class="abs" style="left:760px;width:400px;top:842px;text-align:center" data-in="2:0.4" data-fx="fade">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px"><img src="logos/ncino-on-dark.svg" style="height:22px"><span class="dmono" style="font-size:13px;letter-spacing:3.5px;color:#C9A8FF">MCP · AT EVERY STEP</span></div>
+    <div style="font-size:17px;color:#BDB6D2;margin-top:6px">nCino's own knowledge behind every draft</div>
+  </div>
+  <!-- tagline -->
+  <div class="abs dtag" data-in="5:-0.2" data-fx="fade">
+    <img src="logos/ncino-on-dark.svg" style="height:40px">
+    <div class="dtl"><span data-in="5:0" data-fx="fade">Grounded in nCino.</span> <span data-in="5:1.05" data-fx="fade">Decided by <em>people</em>.</span> <span data-in="5:2.15" data-fx="fade">Delivered by Accenture.</span></div>
+    <img src="logos/accenture-logo-white.svg" style="height:40px">
+  </div>
+  <div class="abs" style="left:160px;width:1600px;top:1005px;text-align:center;font-size:18px;line-height:1.4;color:#A79FBF" data-in="5:3.0" data-fx="type" data-cps="60">The first SI partner to run the nCino MCP in a live SDLC. nCino's knowledge at every step, human checkpoints at discovery and code, and the people with the skills to make the efficiency real.</div>
 </div></section>
 
 <!-- ===================== S03 title ===================== -->
@@ -545,6 +611,7 @@ window.render=function(t){
     else if(fx==='pop'){op=e;tr=`scale(${0.96+0.04*e})`;}
     else if(fx==='grow'){tr=`scaleX(${e})`;}
     else if(fx==='wipe'){el.style.clipPath=`inset(0 ${(1-e)*100}% 0 0)`;}
+    else if(fx==='draw'){const dd=eo(clamp(k/0.8,0,1)); el.style.strokeDasharray='1'; el.style.strokeDashoffset=String(1-dd);}
     else if(fx==='type'){
       const cps=parseFloat(el.dataset.cps||24), n=Math.min(el._len,Math.floor(k*cps)+1);
       const done=n>=el._len, caret=!done||el.dataset.caret==='1';
@@ -552,7 +619,7 @@ window.render=function(t){
     }
     // fade out over 0.2s before tout if it is a scheduled out inside the scene
     if(tout<1e8){ const r=tout-lt; if(r<0.2) op*=r/0.2; }
-    el.style.opacity=op; if(fx!=='wipe'&&fx!=='type') el.style.transform=tr;
+    el.style.opacity=op; if(fx!=='wipe'&&fx!=='type'&&fx!=='draw') el.style.transform=tr;
   });
   // class toggles: data-cls="cls@spec" or "cls@spec-spec"
   root.querySelectorAll('[data-cls]').forEach(el=>{
@@ -584,12 +651,12 @@ window.render=function(t){
     const v=to*eo(clamp((lt-s0)/1.2,0,1)); el.textContent='≈ '+v.toFixed(dec)+'×'; });
   // clock
   const ck=document.getElementById('clock');
-  let tab=null; if(t>=40&&t<150) tab=CLOCK; else if(t>=155&&t<240) tab=CLOCK2;
+  let tab=null; if(t>=TM.s04.win[0]&&t<TM.s06.win[1]) tab=CLOCK; else if(t>=TM.s08.win[0]&&t<TM.s09.win[1]) tab=CLOCK2;
   if(sc==='s07'){ ck.style.display='block'; document.getElementById('ck-l').textContent='WELLINGTON 17:40 · MANILA';
     document.getElementById('ck-t').textContent='12:40'; ck.classList.add('hot'); ck.style.top='938px'; }
   else if(tab){ ck.style.display='block'; document.getElementById('ck-l').textContent=tab[0][1];
     document.getElementById('ck-t').textContent=fmtClock(interp(tab,t));
-    ck.classList.toggle('hot', (t>=K1&&t<150)||(t>=K2&&t<240)); }
+    ck.classList.toggle('hot', (t>=K1&&t<TM.s06.win[1])||(t>=K2&&t<TM.s09.win[1])); }
   else ck.style.display='none';
   // cursor
   const cur=document.getElementById('cursor'), ring=document.getElementById('ring');
@@ -605,13 +672,13 @@ window.render=function(t){
       for(const pt of pts){ if(pt[3]&&lt>=pt[0]&&lt<pt[0]+0.35){ const q=(lt-pt[0])/0.35; ring.style.display='block';
         ring.style.left=(x-24)+'px'; ring.style.top=(y-24)+'px'; ring.style.opacity=1-q; ring.style.transform=`scale(${0.6+0.6*q})`; } } } }
   // poc label: hidden on s11 credits so nothing competes with the mark
-  document.getElementById('poc').style.display=(sc==='s11'&&lt>7)?'none':'block';
+  document.getElementById('poc').style.display=((sc==='s11'&&lt>7)||sc==='s02')?'none':'block';
   // end fade
   if(sc==='s11') document.getElementById('black').style.opacity=clamp((lt-9.3)/0.7,0,1);
 };
 window.setTM=x=>{TM=x;
   K1=TM.s06.win[0]+TM.s06.starts[5]; K2=TM.s09.win[0]+TM.s09.starts[3];
-  CLOCK=[[40,'WELLINGTON',9*60+2],[K1,'WELLINGTON',11*60+40],[150,'WELLINGTON',11*60+40]];
-  CLOCK2=[[155,'MANILA',12*60+40],[K2,'MANILA',17*60+20],[240,'MANILA',17*60+20]];};
+  CLOCK=[[TM.s04.win[0],'WELLINGTON',9*60+2],[K1,'WELLINGTON',11*60+40],[TM.s06.win[1],'WELLINGTON',11*60+40]];
+  CLOCK2=[[TM.s08.win[0],'MANILA',12*60+40],[K2,'MANILA',17*60+20],[TM.s09.win[1],'MANILA',17*60+20]];};
 </script>
 </body></html>
