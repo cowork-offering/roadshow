@@ -1,19 +1,22 @@
-# Expressive narration: Chatterbox (MIT), exaggeration 0.7, cfg 0.4. One file per sentence, silence trimmed.
+# Voice D, cloned from the approved sample itself (voice_ref_D_sample.wav), exaggeration 0.7, cfg 0.4.
+# Usage: tts_both.py [all | key ...]  keys like s04_2 (long film) or c40_3 (40 s cut)
 import json, sys, torch, numpy as np, soundfile as sf
 from chatterbox.tts import ChatterboxTTS
 torch.set_num_threads(4)
-EX,CFG=0.7,0.4
-REF='voice_ref_british.wav'
-L=json.load(open('lines.json')); only=set(sys.argv[1:])
+EX,CFG,REF=0.7,0.4,'voice_ref_D_sample.wav'
+SUB=[('nCino','Encino'),("It's eleven forty in Wellington.","It is now eleven forty, in Wellington."),('So her first','So, her first'),
+     ('He builds in a cloned dev org. The change is checked against Encino','He builds in a cloned dev org. Next, his change is checked against Encino')]
+jobs=[]
+for path,out in [('lines.json','v2'),('cut40/lines.json','cut40/vo')]:
+    for k,v in json.load(open(path)).items():
+        for i,s in enumerate(v[2]): jobs.append((f'{k}_{i}',s,out))
+only=set(sys.argv[1:])-{'all'}
 m=ChatterboxTTS.from_pretrained(device="cpu")
-for k,v_ in L.items():
-    a,b,sents=v_[:3]
-    for i,s in enumerate(sents):
-        key=f'{k}_{i}'
-        if only and key not in only: continue
-        say=s.replace('nCino','Encino').replace("It's eleven forty in Wellington.","It is now eleven forty, in Wellington.").replace('So her first','So, her first').replace('He builds in a cloned dev org. The change is checked against Encino','He builds in a cloned dev org. Next, his change is checked against Encino')
-        if only: torch.manual_seed(abs(hash(key))%10000+7)
-        w=m.generate(say, audio_prompt_path=REF, exaggeration=EX, cfg_weight=CFG).squeeze(0).numpy()
-        idx=np.where(np.abs(w)>0.01)[0]; sr=m.sr
-        w=w[max(0,idx[0]-int(.03*sr)):idx[-1]+int(.12*sr)]
-        sf.write(f'v2/vo_{key}.wav',w,sr); print(key,round(len(w)/sr,2),flush=True)
+for key,s,out in jobs:
+    if only and key not in only: continue
+    say=s
+    for a,b in SUB: say=say.replace(a,b)
+    if only: torch.manual_seed(abs(hash(key+str(len(only))))%10000+3)
+    w=m.generate(say,audio_prompt_path=REF,exaggeration=EX,cfg_weight=CFG).squeeze(0).numpy()
+    sr=m.sr; idx=np.where(np.abs(w)>0.01)[0]; w=w[max(0,idx[0]-int(.03*sr)):idx[-1]+int(.12*sr)]
+    sf.write(f'{out}/vo_{key}.wav',w,sr); print(key,round(len(w)/sr,2),flush=True)

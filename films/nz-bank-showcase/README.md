@@ -3,7 +3,8 @@
 The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narrated. It is labelled
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
-- Film: [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
+- Film (5:14, the long version for client conversations): [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
+- 40-second cut for LinkedIn and sales: [`media/nz-bank-showcase-40s.mp4`](../../media/nz-bank-showcase-40s.mp4). See [The 40-second cut](#the-40-second-cut).
 - Storyboard, one frame per scene: [`storyboard.jpg`](storyboard.jpg)
 - Source script: `SCRIPT-ai-in-delivery-showcase-a-new-zealand-bank.md` (supplied by Miles Blair)
 - Closing scene and claims: `CLOSING-SCENE-and-PR-NARRATIVE-ncino-accenture.md` (7 October 2026). Its Part A replaces scene 10, and its claims checklist applies to the whole film.
@@ -35,12 +36,12 @@ This film uses the craft rules of the `hypevideo` skill (`knowledge/skills/hypev
   - Every value on them is synthetic.
   - Miles directed this as a demonstration of how the flow could work.
   - Real recordings can replace any screen scene without re-timing. The shot list below gives the exact state each one needs.
-- **Voice:** a British female voice, chosen by Miles Blair on 2026-10-07 from a sampler of five.
-  - **Model:** Chatterbox (Resemble AI, MIT licence), run locally. It is cloned to a British female timbre from `voice_ref_british.wav`, a short reference clip generated with Kokoro's `bf_emma` voice (Apache 2.0).
+- **Voice:** voice D, a British female voice chosen by Miles Blair on 2026-10-07 from a sampler of five.
+  - **Model:** Chatterbox (Resemble AI, MIT licence), run locally. It is cloned from `voice_ref_D_sample.wav`, the approved sample itself, so both films match what was signed off.
   - **Settings:** exaggeration 0.7, cfg 0.4.
   - **Pronunciation:** "nCino" is spelled "Encino" in the voice input only, so it is said "en-SEE-no". The captions are unchanged.
-  - **Earlier voices:** the first cut used Kokoro `af_heart`; the second used Chatterbox's default voice.
-  - **ElevenLabs:** the ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`. To use them instead, regenerate the lines in `lines.json` into `v2/` and re-run `timing.py`, `render.js` and `mix.py`.
+  - **Script:** `tts_expressive.py` voices both films.
+  - **ElevenLabs:** the ElevenLabs voices on the Banksy box write audio to the box and cannot be exported as `.mp3`.
 
 ## Scenes, cues and captions
 
@@ -52,15 +53,15 @@ Times are absolute. Narration cues are the start of each spoken sentence. Change
 | # | Window | Screen | Narration cues | On-screen captions (from the script) |
 |---|---|---|---|---|
 | 1 | 0:00-0:10 | Title cards | 0.4, 6.3 | "What if your delivery methodology didn't live in documents, but ran inside the work?" then "AI in Delivery. A New Zealand bank, one feature, one day." |
-| 2 | 0:10-0:46 | The setup (dark, in the Delivery Cockpit diagram language) | 10.5, 12.8, 20.1, 27.1, 35.5, 40.6 | People orchestrate, with Accenture people with the skills shown on a band carrying the Accenture logo. The flow runs left to right: the lending repository, then Discovery agents and skills, then people review at discovery, then Development agents and skills, then people review at code, then agents execute the remaining tasks. The nCino MCP hub, with the nCino logo, connects to every step. Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". Tagline, with the nCino logo left and the Accenture logo right: "Grounded in nCino. Decided by people. Delivered by Accenture." Sub-line: "The first SI partner to run the nCino MCP in a live SDLC. nCino's knowledge at every step, human checkpoints at discovery and code, and the people with the skills to make the efficiency real." |
+| 2 | 0:10-0:46 | The setup (dark, in the Delivery Cockpit diagram language) | 10.5, 12.2, 18.9, 25.9, 34.4, 39.8 | People orchestrate, with Accenture people with the skills shown on a band carrying the Accenture logo. The flow runs left to right: the lending repository, then Discovery agents and skills, then people review at discovery, then Development agents and skills, then people review at code, then agents execute the remaining tasks. The nCino MCP hub, with the nCino logo, connects to every step. Credits on the diagram: "Discovery and functional agents · Miles Blair, Delivery Lead"; "Code and development agents · Fabian Goetzens, Noland Smith". Tagline, with the nCino logo left and the Accenture logo right: "Grounded in nCino. Decided by people. Delivered by Accenture." Sub-line: "The first SI partner to run the nCino MCP in a live SDLC. nCino's knowledge at every step, human checkpoints at discovery and code, and the people with the skills to make the efficiency real." |
 | 3 | 0:46-0:51 | Title | 46.5 | "One feature. Morning in Wellington, afternoon in Manila." |
-| 4 | 0:51-1:21 | Claude Cowork | 51.5, 57.7, 62.0, 66.9, 76.0 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
-| 5 | 1:21-1:56 | Claude Cowork, reconcile report | 81.5, 87.1, 95.5, 105.2, 110.0 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
-| 6 | 1:56-2:36 | Claude Cowork, then Jira | 116.5, 124.0, 128.7, 134.4, 145.0, 152.5 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
+| 4 | 0:51-1:22 | Claude Cowork | 51.5, 58.2, 62.2, 67.2, 76.5 | "The page was signed off weeks ago. The org has changed since. The first question is not 'what do we build' but 'what is still true'." / "Every claim it makes carries a path. No path, no claim." |
+| 5 | 1:22-1:56 | Claude Cowork, reconcile report | 82.5, 88.2, 97.9, 107.3, 111.6 | "A gap in the requirement, routed to the person who owns the answer." / "A platform question, routed to the platform. Never assumed." / "The agent found them. She decided they were real. The clock starts." |
+| 6 | 1:56-2:36 | Claude Cowork, then Jira | 116.5, 123.8, 128.2, 133.0, 144.5, 152.4 | "Prescriptive enough to start. Where the repository does not hold a fact, the task carries the question, not a guess." / "Lineage from feature page to ticket, kept by the repository, not by memory." Clock reaches 11:40 Wellington. |
 | 7 | 2:36-2:41 | Title | 156.5 | "Six hours later." |
-| 8 | 2:41-3:35 | Claude Code, terminal | 161.5, 172.6, 180.4, 188.9, 198.2, 205.3, 210.0 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again." |
-| 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.2, 230.0, 237.0 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
-| 10 | 4:00-4:50 | Measured outcome, in four beats | 240.5, 246.2, 256.2, 267.4, 274.7, 284.1 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
+| 8 | 2:41-3:32 | Claude Code, terminal | 161.5, 172.1, 179.3, 186.1, 195.3, 202.2, 205.9 | "The ticket arrives with its story, its criteria and its lineage. No copy-paste." / "No impact map, no edit. The flow edit guard enforces it, not a reviewer's memory." / "The gate blocks; it never softens on a second attempt." / "The developer generates it once tests pass. From handoff it belongs to the tester, who runs it in the bank's own testing. The developer never edits it again." |
+| 9 | 3:32-3:57 | Claude Code, GitHub PR, Claude Code | 212.5, 219.8, 227.3, 233.6 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
+| 10 | 3:57-4:50 | Measured outcome, in four beats | 237.5, 244.1, 254.7, 268.1, 275.2, 283.7 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
 | 11 | 4:50-5:00 | Close and credits | 290.5 | "Agents draft. People decide. Nothing merges by machine." / "An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026." / Credits: "Discovery and functional agents · Miles Blair, Delivery Lead. Code and development agents · Fabian Goetzens, Noland Smith. Run with the bank's nCino squad." Accenture mark. |
 | 12 | 5:00-5:14 | The team, who to reach out to | 300.5 | "The team · who to reach out to". "Talk to the people who built it". Six cards with name, role, contribution and email:<br>- Miles Blair, Delivery Lead: designed the discovery agents and ways of working. miles.blair@accenture.com<br>- Fabian Goetzens, AI Engineer: delivered the development and test agents. fabian.goetzens@accenture.com<br>- Noland Smith, Anthropic Lead: enabled the technical setup. noland.smith@accenture.com<br>- Phinizy Wimberly, Engagement Lead. thomas.wimberly@accenture.com<br>- Andreas Habib, Functional Designer: provided inputs into the discovery agents. andreas.habib@accenture.com<br>- Mozammil Hassan, Functional Designer: provided inputs into the discovery agents. muhammad.m.hassan@accenture.com<br>Accenture logo. Fades to black. |
 
@@ -107,20 +108,47 @@ These checks were done before export:
 
 | Scene | Voice dB | Bed under voice | Separation | Bed in gaps |
 |---|---|---|---|---|
-| 1 | -19.9 | -36.8 | 16.9 | -31.9 |
-| 2 | -20.2 | -29.7 | 9.5 | -23.1 |
-| 3 | -18.8 | -28.1 | 9.3 | -23.7 |
-| 4 | -20.3 | -29.2 | 8.9 | -23.1 |
-| 5 | -20.3 | -29.5 | 9.2 | -23.7 |
-| 6 | -20.2 | -30.4 | 10.2 | -23.2 |
-| 7 | -20.1 | -26.9 | 6.9 | -22.6 |
-| 8 | -19.8 | -30.3 | 10.5 | -22.9 |
-| 9 | -20.2 | -28.7 | 8.5 | -22.7 |
-| 10 | -19.8 | -29.4 | 9.6 | -22.4 |
-| 11 | -19.5 | -28.1 | 8.6 | -20.3 |
-| 12 | -19.5 | -28.7 | 9.2 | -24.0 |
+| 1 | -19.0 | -36.1 | 17.1 | -33.2 |
+| 2 | -20.1 | -28.7 | 8.6 | -24.7 |
+| 3 | -19.4 | -27.7 | 8.3 | -22.0 |
+| 4 | -20.2 | -28.7 | 8.5 | -25.6 |
+| 5 | -20.0 | -28.7 | 8.7 | -23.8 |
+| 6 | -20.2 | -29.4 | 9.2 | -25.1 |
+| 7 | -19.2 | -26.4 | 7.2 | -21.9 |
+| 8 | -20.2 | -29.5 | 9.3 | -23.5 |
+| 9 | -19.9 | -27.9 | 8.0 | -25.3 |
+| 10 | -19.7 | -28.5 | 8.8 | -22.5 |
+| 11 | -20.4 | -26.9 | 6.5 | -19.7 |
+| 12 | -21.2 | -28.4 | 7.3 | -23.7 |
 
-- Master: -14.2 LUFS integrated, -1.5 dBTP (web).
+- Master: -14.3 LUFS integrated, -1.2 dBTP (web).
+
+## The 40-second cut
+
+`media/nz-bank-showcase-40s.mp4` runs 41.0 s (985 frames), at -14.2 LUFS for social. It follows `SCRIPT-40-second-cut-nz-bank-showcase.md` and is built in `cut40/`.
+
+**What it uses:**
+- **Pictures:** every shot comes from the master, rendered fresh from `film.html` at remapped master times. That keeps it sharp and lets long build-ups, such as the engine diagram, animate in compressed time. `cut40/map.json` lists each shot with its master range and speed.
+- **Boundaries:** every shot boundary sits on a narration cue.
+- **The gate shot:** holds a fixed 2 s and shows the block, the fix, then PASSED.
+- **New element:** the end card (`cut40/endcard.html`), with the nCino and Accenture logos at equal weight, the tagline in three beats and "An evolving proof of concept · live since September 2026". The master's credits frame carries only the Accenture logo.
+
+**Narration:**
+- Voice D, 115 words. The brief's own lines come to about 137 words, more than the 101 it states, which voice D would need about 46 s to say.
+- The lines were tightened without changing a claim. The full set is in `cut40/lines.json`.
+- The narration is then sped up 1.25× (pitch-preserved) to a brisk 3.1 words a second.
+
+**Music:** "Tech Talk" again, entering on a full-energy downbeat about 30 s into the track. The voice sits about 6 dB over the music, slightly closer than in the long film, as suits a social mix.
+
+**Rebuild,** from this folder after the long film's `timing.json` exists:
+
+```bash
+python3.11 tts_expressive.py c40_0 c40_1 c40_2 c40_3 c40_4 c40_5 c40_6 c40_7   # -> cut40/vo/
+python3 cut40/build_map.py          # cues + shot map -> cut40/map.json
+node cut40/render_cut.js full       # -> cut40/picture.mp4
+python3 cut40/mix_cut.py            # -> cut40/mix_master.wav
+ffmpeg -i cut40/picture.mp4 -i cut40/mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase-40s.mp4
+```
 
 ## Rebuild
 

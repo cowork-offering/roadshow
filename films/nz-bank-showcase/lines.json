@@ -28,7 +28,7 @@
  ],
  "s04": [
   51,
-  81,
+  82,
   [
    "It's morning in Wellington. A functional consultant opens the feature page for a new business lending product.",
    "It was signed off weeks ago, but the system has changed since.",
@@ -38,7 +38,7 @@
   ]
  ],
  "s05": [
-  81,
+  82,
   116,
   [
    "The agent comes back with a process map, and two open questions.",
@@ -69,7 +69,7 @@
  ],
  "s08": [
   161,
-  215,
+  212,
   [
    "A developer opens Claude Code. The health check clears, and his ticket arrives with its story, its criteria, and its lineage. No copy and paste.",
    "This is a flow change, so the agent maps the impact first: three callers, and one link into another domain.",
@@ -81,8 +81,8 @@
   ]
  ],
  "s09": [
-  215,
-  240,
+  212,
+  237,
   [
    "He raises the pull request. It tells the reviewer what to look at first, and what could go wrong.",
    "The automated checks all pass. But nothing merges by machine. A named reviewer approves.",
@@ -91,7 +91,7 @@
   ]
  ],
  "s10": [
-  240,
+  237,
   290,
   [
    "One month in, the information is at the programme's fingertips, and the delivery pod is shaped around it.",
@@ -102,11 +102,11 @@
    "It's a reusable model, trained into the squad in nine weeks, and packaged for the next cohort."
   ],
   [
-   0.6,
-   1.6,
-   1.0,
+   0.5,
+   1.4,
+   0.8,
+   2.2,
    2.6,
-   4.0,
    0
   ]
  ],

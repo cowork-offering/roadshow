@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:G;font-weight:400;src:url(../../../ds/fonts/Graphik-Regular.woff2)}
+@font-face{font-family:G;font-weight:500;src:url(../../../ds/fonts/Graphik-Medium.woff2)}
+@font-face{font-family:GM;font-weight:400;src:url(../fonts/geist-mono-latin-400-normal.woff2)}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#F3F1EA;font-family:G;color:#1A1915}
+.cam{position:absolute;inset:0;transform-origin:50% 50%}
+.logos{position:absolute;left:0;width:1920px;top:300px;display:flex;justify-content:center;align-items:center;gap:120px}
+.logos img{height:72px}
+.tag{position:absolute;left:0;width:1920px;top:500px;text-align:center;font-size:58px;font-weight:500;letter-spacing:-.6px}
+.tag em{font-style:normal;color:#A100FF}
+.tag span{opacity:0}
+.cap{position:absolute;left:0;width:1920px;top:640px;text-align:center;font-family:GM;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:#5E5A52;opacity:0}
+#black{position:absolute;inset:0;background:#000;opacity:0}
+</style></head><body><div class="cam" id="cam">
+<div class="logos" id="logos"><img src="../../../ds/logos/ncino.svg"><img src="../../../ds/logos/accenture-logo-black.svg"></div>
+<div class="tag"><span id="b0">Grounded in nCino.</span> <span id="b1">Decided by <em>people</em>.</span> <span id="b2">Delivered by Accenture.</span></div>
+<div class="cap" id="cap">An evolving proof of concept · live since September 2026</div>
+<div id="black"></div></div>
+<script>
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)), eo=x=>1-Math.pow(1-x,3);
+let B=[0.3,1.3,2.3], D=4;
+window.setBeats=(b,d)=>{B=b;D=d};
+window.render=lt=>{
+  const p=clamp(lt/D,0,1); document.getElementById('cam').style.transform=`scale(${1+0.02*p})`;
+  const lg=eo(clamp(lt/0.4,0,1)); document.getElementById('logos').style.opacity=lg; document.getElementById('logos').style.transform=`translateY(${(1-lg)*12}px)`;
+  B.forEach((b,i)=>{const e=eo(clamp((lt-b)/0.35,0,1)); const s=document.getElementById('b'+i).style; s.opacity=e; s.display='inline-block'; s.transform=`translateY(${(1-e)*10}px)`;});
+  const c=eo(clamp((lt-B[2]-0.6)/0.4,0,1)); document.getElementById('cap').style.opacity=c;
+  document.getElementById('black').style.opacity=clamp((lt-(D-0.5))/0.5,0,1);
+};
+</script></body></html>
