@@ -1,6 +1,6 @@
 # AI in Delivery at a New Zealand bank: one feature, one day, two time zones
 
-The showcase film for the New Zealand case study: 5:00, 1920x1080, 24 fps, narrated. It is labelled
+The showcase film for the New Zealand case study: 5:14, 1920x1080, 24 fps, narrated. It is labelled
 "an evolving proof of concept" for its whole running time, and every screen carries synthetic data.
 
 - Film: [`media/nz-bank-showcase.mp4`](../../media/nz-bank-showcase.mp4)
@@ -24,9 +24,9 @@ This film uses the craft rules of the `hypevideo` skill (`knowledge/skills/hypev
 - Web loudness of -14 LUFS / -1 dBTP.
 
 **Departures from hypevideo:**
-- **Length:** a 5:00 explainer rather than the 75 s music-cut spine. The script targeted 4:30; the reworked setup scene (2) and closing scene (10) need the extra 30 seconds to be readable.
+- **Length:** a 5:14 explainer rather than the 75 s music-cut spine. The script targeted 4:30. The reworked setup scene (2) and closing scene (10) need 30 more seconds to be readable, and the team card (12) adds 14.
 - **Music:** "Tech Talk" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0. It is upbeat electronic at 139.6 BPM, credited on the closing card as the licence requires.
-  - **Length:** extended from 4:02 to 5:04 by repeating 36 bars from its middle, spliced on the downbeat where the music best matches itself (0.9975 spectral match). See `extend_music.py 36`. The mix fades it out with the picture at 5:00.
+  - **Length:** extended from 4:02 to 5:16 by repeating 43 bars from its middle, spliced on the downbeat where the music best matches itself (0.994 spectral match). See `extend_music.py 43`. The mix fades it out with the picture at 5:14.
   - **Mix:** the bed head-fades from silence over 2.5 s, ducks under every spoken line (150 ms attack, 600 ms release) and sits at about -21 dB in the gaps.
   - **Licensing:** it is not a licensed library track. If a licensed library such as Epidemic is required for client use, swap the file and re-run `mix.py`; nothing else changes.
 - **Plates and people:** none. Every shot is a product screen, a diagram or a title card.
@@ -60,6 +60,7 @@ Times are absolute. Narration cues are the start of each spoken sentence. Change
 | 9 | 3:35-4:00 | Claude Code, GitHub PR, Claude Code | 215.5, 222.2, 228.8, 234.8 | "Nothing merges by machine. A named reviewer approves. On merge, CI hands it to the bank for its testing; the tester picks up the plan." / "The second time the same lesson is hit, it graduates into a skill or a gate." Clock reaches 17:20 Manila. |
 | 10 | 4:00-4:50 | Measured outcome, in four beats | 240.5, 245.8, 254.8, 265.2, 271.9, 281.3 | **1, headline and figures.** "Measured sprints · AI on against AI off · one month in". "The information is at the programme's fingertips, and the delivery pod is shaped around it."<br>- ≈3× Velocity: tickets completed per two-week sprint. About 35 a sprint against 11 or 12, handed to the bank for its testing.<br>- ≈2.8× Work delivered per sprint, in story points. Story size unchanged at about 5.5.<br>- ≈2× Per developer, same people.<br>**2, what the 3× is made of.** About 2× the user stories (26 against 11 or 12), and a backlog of older bugs cleared. The brief's explanation block follows, with "roughly half" written as "a significant share" because the tagged bug split is not yet captured.<br>**3, four statements, each with its caption.** Nothing carried forward (25 of 25). Problems found close to where they are made (three real tickets to production, no new defects). One standard for every developer. Built on what nCino already provides.<br>**4, the model.** "A reusable model, trained into the squad in nine weeks: 13 of 13 ready, and packaged for the next cohort." Beneath it: "The bank plans on a 30 to 40 percent gain on design, build and unit test only, and none on its own testing phases. The measured uplift is the evidence, not the commitment." |
 | 11 | 4:50-5:00 | Close and credits | 290.5 | "Agents draft. People decide. Nothing merges by machine." / "An evolving proof of concept, live in a New Zealand bank's SDLC since September 2026." / Credits: "Discovery and functional agents · Miles Blair, Delivery Lead. Code and development agents · Fabian Goetzens, Noland Smith. Run with the bank's nCino squad." Accenture mark. |
+| 12 | 5:00-5:14 | The team, who to reach out to | 300.5 | "The team · who to reach out to". "Talk to the people who built it". Six cards with name, role, contribution and email:<br>- Miles Blair, Delivery Lead: designed the discovery agents and ways of working. miles.blair@accenture.com<br>- Fabian Goetzens, AI Engineer: delivered the development and test agents. fabian.goetzens@accenture.com<br>- Noland Smith, Anthropic Lead: enabled the technical setup. noland.smith@accenture.com<br>- Phinizy Wimberly, Engagement Lead. thomas.wimberly@accenture.com<br>- Andreas Habib, Functional Designer: provided inputs into the discovery agents. andreas.habib@accenture.com<br>- Mozammil Hassan, Functional Designer: provided inputs into the discovery agents. muhammad.m.hassan@accenture.com<br>Accenture logo. Fades to black. |
 
 The full narration is in `lines.json`, one sentence per entry.
 
@@ -88,7 +89,7 @@ These checks were done before export:
 - **Bank employees:** shown by role only (functional consultant, business analyst, developer, tester, named reviewer). No bank employee is named.
 - **Identifiers:** every ID, path, org, repo and reference is fictional. HBL, PDI-SYN, KA-SYN and example-lending are all invented.
 - **Production screenshots:** none.
-- **Credits:** the Accenture names (Miles Blair; Fabian Goetzens; Noland Smith) appear only on the scene 2 diagram and the scene 11 credits card.
+- **Credits:** Accenture names appear only on the scene 2 diagram, the scene 11 credits card and the scene 12 team card. Scene 12 adds Phinizy Wimberly, Andreas Habib and Mozammil Hassan, with each person's email, at Miles Blair's request on 2026-10-07.
 - **Logos:** the Accenture and nCino logos appear only in scene 2 (the diagram and the tagline) and on the scene 11 card (Accenture). `logos/ncino-on-dark.svg` is the repo's nCino logo with its wordmark recoloured white for the dark scene.
 - **Figures:** every figure is one given in the script or the closing-scene brief.
 - **Environment names:** none on screen (no SIT, ST2 or Preprod).
@@ -96,7 +97,7 @@ These checks were done before export:
 
 ## Measurements
 
-- Picture: 7200 frames at 24 fps = 300.000 s.
+- Picture: 7536 frames at 24 fps = 314.000 s.
 - Narration: 40 sentences, each measured after rendering and gated by speech-to-text (faster-whisper base.en, `gate.py`) for wording and pace.
   - Seven lines failed the first gate and were regenerated: a mis-said word, a question-like rise, or a pace over 4.5 words a second.
   - Two of those were still fast and were slowed by about 10% with pitch-preserving time-stretch.
@@ -114,7 +115,8 @@ These checks were done before export:
 | 8 | -20.0 | -29.7 | 9.7 | -21.4 |
 | 9 | -19.8 | -29.0 | 9.2 | -23.1 |
 | 10 | -19.7 | -29.7 | 10.0 | -20.9 |
-| 11 | -20.1 | -30.7 | 10.6 | -24.5 |
+| 11 | -20.1 | -28.5 | 8.4 | -20.2 |
+| 12 | -20.5 | -28.8 | 8.3 | -24.1 |
 
 - Master: -14.1 LUFS integrated, -1.5 dBTP (web).
 
@@ -127,7 +129,7 @@ python3.11 tts_expressive.py   # lines.json -> v2/vo_<scene>_<n>.wav  (pass line
 python3 gate.py                # speech-to-text and pace gate on every line
 python3 timing.py              # measured line lengths + lines.json pauses -> timing.json (cue times)
 node render.js full            # film.html + timing.json -> picture.mp4
-python3 extend_music.py 36     # music/Tech_Talk.mp3 -> music/tt_ext.wav (5:03.9)
+python3 extend_music.py 43     # music/Tech_Talk.mp3 -> music/tt_ext.wav (5:15.9)
 python3 mix.py v2              # voice + ducked bed, level table, two-pass loudnorm -> mix_master.wav
 ffmpeg -i picture.mp4 -i mix_master.wav -c:v copy -c:a aac -b:a 256k -shortest -movflags +faststart nz-bank-showcase.mp4
 ```
